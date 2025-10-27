@@ -2,7 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import TopLogo from "/public/assets/img/logo_page.png";
-import { Cinzel, Montserrat } from "next/font/google";
+import { Cinzel, Montserrat, Raleway } from "next/font/google";
+
+export const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-raleway",
+  display: "swap",
+});
 
 export const cinzel = Cinzel({
     subsets: ["latin"],
@@ -40,7 +47,7 @@ const SectionHeader = ({ title, subtitle, logo = TopLogo }) => {
             {/* Subtitle */}
             {subtitle && (
                 <p
-                    className={`text-gray-400 text-sm sm:text-base md:text-lg text-center max-w-xs sm:max-w-md md:max-w-2xl mt-2 ${montserrat.className}`}
+                    className={`text-gray-400 text-sm sm:text-base md:text-lg text-center max-w-xs sm:max-w-md md:max-w-2xl mt-2 ${raleway.className}`}
                 >
                     {subtitle}
                 </p>

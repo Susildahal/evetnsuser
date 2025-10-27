@@ -4,10 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import SectionHeader from "@/component/Title";
 
-import { Cinzel, Montserrat } from "next/font/google";
+import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+
+export const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-raleway",
+  display: "swap",
+});
 
 export const cinzel = Cinzel({
   subsets: ["latin"],
@@ -119,7 +126,7 @@ const FAQComponent = () => {
   const currentFAQs = faqCategories[activeCategory];
 
   return (
-    <div className="mt-[80px] container mx-auto px-6 py-[60px]">
+    <div className="mt-20 container mx-auto px-6 py-[60px]">
       <div data-aos="fade-down">
         <SectionHeader
           title="Frequently Asked Questions"
@@ -136,13 +143,13 @@ const FAQComponent = () => {
               setActiveCategory(category);
               setOpenIndex(null);
             }}
-            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm md:text-base font-medium transition-all duration-300 cursor-pointer
+            className={`${raleway.className} px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm md:text-base font-medium transition-all duration-300 cursor-pointer
               ${activeCategory === category
                 ? "text-black"
                 : "bg-gray-800 text-gray-300 hover:bg-[#BE9545]/20"
               }`}
             style={{
-              fontFamily: "var(--font-montserrat)",
+              fontFamily: "var(--font-raleway)",
               background: activeCategory === category
                 ? "linear-gradient(to bottom, #BE9545, #7A5E39)"
                 : undefined
@@ -166,13 +173,13 @@ const FAQComponent = () => {
           {currentFAQs.map((item, index) => (
             <div
               key={index}
-              className={`bg-gradient-to-br from-black to-[#BE9545]/20 border border-gray-600 rounded-2xl shadow-lg overflow-hidden`}
+              className={`bg-linear-to-br from-black to-[#BE9545]/20 border border-gray-600 rounded-2xl shadow-lg overflow-hidden`}
             >
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 sm:py-5 text-left cursor-pointer"
               >
-                <span className={`text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white tracking-wide ${montserrat.className}`}>
+                <span className={`text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white tracking-wide ${raleway.className}`}>
                   {item.question}
                 </span>
                 <span className="text-[#BE9545] transition-transform duration-300">
@@ -193,7 +200,7 @@ const FAQComponent = () => {
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
-                    <div className="px-4 sm:px-6 md:px-8 pb-4 pt-2 text-gray-300 text-[13px] sm:text-sm md:text-[15px] leading-relaxed text-justify border-t border-gray-700">
+                    <div className={`${raleway.className} px-4 sm:px-6 md:px-8 pb-4 pt-2 text-gray-300 text-[13px] sm:text-sm md:text-[15px] leading-relaxed text-justify border-t border-gray-700`}>
                       {item.answer}
                     </div>
                   </motion.div>

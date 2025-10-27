@@ -8,7 +8,7 @@ import Left_heading_line from "/public/assets/img/Left.png";
 import Right_heading_line from "/public/assets/img/Right.png";
 import { Gift, Umbrella, Sparkles, Music, Users, Building2, UtensilsCrossed, Headphones, Flower2, Camera, } from "lucide-react";
 import { Dialog } from "@headlessui/react";
-import { Cinzel, Montserrat } from "next/font/google";
+import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
 import ThreeStepModal from "./Modal"
 
@@ -23,6 +23,12 @@ export const montserrat = Montserrat({
     subsets: ["latin"],
     weight: ["400", "500", "600", "700", "700", "900"],
     variable: "--font-montserrat",
+});
+export const raleway = Raleway({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700", "900"],
+    variable: "--font-raleway",
+    display: "swap",
 });
 
 
@@ -104,7 +110,7 @@ export default function Navbar() {
                         <div className="mx-auto transition-all duration-300 ease-in-out bg-black backdrop-blur-md py-5 shadow-2xl">
                             <div className="mx-auto px-6 relative">
                                 {/* Desktop */}
-                                <div className={`flex items-center justify-between xl:px-[80px] py-[8px] ${montserrat.className}`}>
+                                <div className={`flex items-center justify-between xl:px-[80px] py-[8px] ${raleway.className}`}>
                                     <ul className="hidden lg:flex items-center gap-8 text-white text-[16px] font-medium">
                                         {/* Events */}
                                         <li className="relative group">
@@ -283,7 +289,7 @@ export default function Navbar() {
                                         <li>
                                             <button
                                                 onClick={() => setIsModalOpen(true)}
-                                                className="inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer" >
+                                                className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
                                                 Book Now
                                             </button>
 
@@ -293,7 +299,6 @@ export default function Navbar() {
                                             />
                                         </li>
                                     </ul>
-
                                 </div>
 
                                 {/* Mobile Menu */}
@@ -302,7 +307,7 @@ export default function Navbar() {
                                         }`}
                                 >
                                     <div className="bg-black/95 rounded-lg p-4 shadow-lg border border-gray-800/40">
-                                        <ul className="flex flex-col gap-2 text-white text-base font-medium">
+                                        <ul className={`${raleway.className} flex flex-col gap-2 text-white text-base font-medium`}>
                                             {/* Events with Submenu */}
                                             <li>
                                                 <button
@@ -423,7 +428,7 @@ export default function Navbar() {
                             </div>
 
                             {/* Left Menu */}
-                            <ul className="hidden md:flex items-center gap-6 text-white font-medium">
+                            <ul className={`${raleway.className} hidden md:flex items-center gap-6 text-white font-medium`}>
                                 {/* Events */}
                                 <li className="relative group">
                                     {/* Events */}
@@ -579,7 +584,7 @@ export default function Navbar() {
                             {/* Right Menu */}
                             <button
                                 onClick={() => setIsModalOpen(true)}
-                                className="hidden sm:inline-block px-6 py-2 rounded-md font-medium transition-shadow shadow-sm bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer">
+                                className={`${raleway.className} hidden sm:inline-block px-6 py-2 rounded-md font-medium transition-shadow shadow-sm bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
                                 Book Now
                             </button>
 
@@ -592,7 +597,7 @@ export default function Navbar() {
                         {/* Mobile Menu */}
                         <div className={`md:hidden mt-2 transition-all duration-200 ${mobileOpen ? "block" : "hidden"}`}>
                             <div className="bg-black/95 rounded-lg p-4 shadow-lg border border-gray-800/40">
-                                <ul className="flex flex-col gap-2 text-white text-sm font-medium">
+                                <ul className={`${raleway.className} flex flex-col gap-2 text-white text-sm font-medium`}>
                                     {/* Events with Submenu */}
                                     <li>
                                         <button className="w-full text-left flex justify-between items-center" onClick={() => setEventsOpen(!eventsOpen)}>
@@ -600,7 +605,7 @@ export default function Navbar() {
                                             <span>{eventsOpen ? "-" : "+"}</span>
                                         </button>
                                         {eventsOpen && (
-                                            <ul className="flex flex-col gap-2 mt-2 text-sm text-gray-300">
+                                            <ul className={`flex flex-col gap-2 mt-2 text-sm text-gray-300`}>
                                                 {menuItems.map((item, index) => {
                                                     const Icon = item.icon;
                                                     return (

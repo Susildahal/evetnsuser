@@ -16,25 +16,8 @@ import BudgetsTimelines from "@/component/Budget-timeline";
 import Banner from "@/component/Banner";
 import ToolsMarquee from "@/component/Tools-Tech";
 import { motion } from "framer-motion";
-
 import ThreeStepModal from "../../component/Modal"
-
-import {
-  Leaf,
-  Recycle,
-  Lightbulb,
-  Droplets,
-  Globe2,
-  Plant,
-  Truck,
-  HeartHandshake,
-  Hammer,
-  MessageCircle,
-  Clock,
-  Accessibility,
-  Laptop, BarChart2, Users, Layout, Server, ClipboardCheck
-} from "lucide-react";
-
+import { Leaf, Recycle, Lightbulb, Droplets, Globe2, Plant, Truck, HeartHandshake, Hammer, MessageCircle, Clock, Accessibility, Laptop, BarChart2, Users, Layout, Server, ClipboardCheck } from "lucide-react";
 
 const tools = [
   { title: "Project Clarity", desc: "Detailed timelines, supplier matrices, and guest-flow maps for transparent execution.", icon: <BarChart2 className="w-7 h-7 text-[#BE9545]" /> },
@@ -44,7 +27,6 @@ const tools = [
   { title: "Client Dashboards", desc: "Live status updates, file sharing, and transparent cost tracking.", icon: <Laptop className="w-7 h-7 text-[#BE9545]" /> },
   { title: "Feedback Analytics", desc: "Post-event reports, guest insights, and engagement metrics for refinement.", icon: <ClipboardCheck className="w-7 h-7 text-[#BE9545]" /> },
 ];
-
 
 
 const About_component = () => {
@@ -110,13 +92,12 @@ const About_component = () => {
               data-aos-easing="ease-out-cubic">
               <span
                 className="text-gray-400 text-sm sm:text-base md:text-[16px] leading-relaxed md:leading-[1.8]"
-                style={{ fontFamily: "var(--font-montserrat)" }}
+                style={{ fontFamily: "var(--font-raleway)" }}
               >
-                From intimate coastal dinners to bold, high-energy nightlife
-                experiences, from luxury corporate gatherings to full-scale
-                festivals — we deliver events that feel larger than life yet deeply
-                personal. Think luxury meets wild freedom, wrapped in a Gen Z edge
-                and finished with a touch of coastal elegance.
+                Think luxury meets wild freedom, wrapped in a Gen Z edge andfinished with a touch of coastal elegance. Whether you crave something secretive and mysterious or radiant and unforgettable, we design experiences that feel like stepping into another world — one where every detail is curated to perfection, from the catering to the lighting, from the music to the photographs that capture it all.
+                <br />
+                {/* Our clients are dreamers, travellers, and nightlife seekers who want more than the ordinary. We don’t do cookie-cutter. We don’t do basic. We createthe best you can possibly get — an event that reflects you, stuns your guests, and sets the standard others can’t touch. */}
+                There are no limits here. Only experiences worth remembering. Because at Events OC, we believe every event should feel like the event of the century
               </span>
             </div>
           </div>
@@ -127,7 +108,7 @@ const About_component = () => {
               onClick={() => setIsModalOpen(true)}
               className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 rounded-md font-medium transition-all duration-300 
                  shadow-md hover:shadow-[0_0_15px_rgba(190,149,69,0.5)]
-                 bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white text-sm sm:text-base"
+                 bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white text-sm sm:text-base cursor-pointer"
             >
               Book Now
             </button>
@@ -143,7 +124,7 @@ const About_component = () => {
         <PolaroidGallery />
 
         {/* Mission & Vision */}
-        <section className="mt-16 px-6 pb-[80px]">
+        <section className="mt-16 px-6 pb-20">
           {/* Section Header */}
           <div className="text-center mb-12">
             <motion.h2
@@ -161,7 +142,7 @@ const About_component = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.15, duration: 0.6 }}
               className="text-gray-400 text-[16px] leading-snug max-w-xl mx-auto"
-              style={{ fontFamily: "var(--font-montserrat)" }}
+              style={{ fontFamily: "var(--font-raleway)" }}
             >
               The core beliefs that drive our purpose — defining how we create, connect,
               and elevate experiences that last a lifetime.
@@ -209,7 +190,7 @@ const About_component = () => {
                 </h3>
                 <p
                   className="text-gray-400 leading-relaxed text-[16.5px] text-justify"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
+                  style={{ fontFamily: "var(--font-raleway)" }}
                 >
                   To craft extraordinary, immersive experiences that go far beyond
                   the ordinary — blending luxury, creativity, and emotion into
@@ -256,7 +237,7 @@ const About_component = () => {
                 </h3>
                 <p
                   className="text-gray-400 leading-relaxed text-[16.5px] text-justify"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
+                  style={{ fontFamily: "var(--font-raleway)" }}
                 >
                   To redefine what an event can be — transforming gatherings into art
                   forms that inspire, connect, and set the new global standard for
@@ -286,7 +267,7 @@ const About_component = () => {
                 </h2>
                 <p
                   className="text-gray-400 text-[17px] max-w-[700px] mx-auto"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
+                  style={{ fontFamily: "var(--font-raleway)" }}
                 >
                   From concept to celebration — we design, produce, and deliver events
                   that inspire and captivate every sense.
@@ -341,7 +322,7 @@ const About_component = () => {
 
                     <p
                       className="text-gray-400 text-[15px] leading-[1.8]"
-                      style={{ fontFamily: "var(--font-montserrat)" }}
+                      style={{ fontFamily: "var(--font-raleway)" }}
                     >
                       {service.desc}
                     </p>
@@ -372,7 +353,7 @@ const About_component = () => {
 
                 <p
                   className="text-gray-400 text-[17.5px] leading-[1.85]"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
+                  style={{ fontFamily: "var(--font-raleway)" }}
                 >
                   Based on the <span className="text-white font-semibold">Gold Coast</span>;
                   working across Surfers, Burleigh, Broadbeach and surrounds — including{" "}
@@ -385,7 +366,7 @@ const About_component = () => {
                 </p>
 
                 <div className="relative mt-6 before:content-[''] before:absolute before:left-0 before:top-0 before:w-[2px] before:h-full before:bg-gradient-to-b before:from-[#BE9545]/70 before:to-transparent pl-6">
-                  <ul className="space-y-3 text-gray-300 text-[16px]" style={{ fontFamily: "var(--font-montserrat)" }}>
+                  <ul className="space-y-3 text-gray-300 text-[16px]" style={{ fontFamily: "var(--font-raleway)" }}>
                     <li className="relative"><span className="text-[#BE9545] mr-2">•</span> Rooftops & coastal villas</li>
                     <li className="relative"><span className="text-[#BE9545] mr-2">•</span> Luxury beach clubs & boutique resorts</li>
                     <li className="relative"><span className="text-[#BE9545] mr-2">•</span> Urban warehouses & open-air festivals</li>
@@ -399,12 +380,12 @@ const About_component = () => {
                   >
                     Signature Styles
                   </h3>
-                  <ul className="space-y-2 text-gray-400 text-[16px]" style={{ fontFamily: "var(--font-montserrat)" }}>
+                  <ul className="space-y-2 text-gray-400 text-[16px]" style={{ fontFamily: "var(--font-raleway)" }}>
                     <li>• Coastal Luxe: stone, linen, candlelight, sculptural florals.</li>
                     <li>• After-Dark Chrome: mirror accents, neon moments, deep tones, dramatic light.</li>
                     <li>• Editorial Minimal: clean lines, tonal palette, one strong statement.</li>
                   </ul>
-                  <p className="text-gray-400 mt-2" style={{ fontFamily: "var(--font-montserrat)" }}>
+                  <p className="text-gray-400 mt-2" style={{ fontFamily: "var(--font-raleway)" }}>
                     Or we’ll design a custom world that’s entirely yours.
                   </p>
                 </div>
@@ -428,7 +409,7 @@ const About_component = () => {
                   </h3>
                   <p
                     className="text-gray-300 text-[15.5px]"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
+                    style={{ fontFamily: "var(--font-raleway)" }}
                   >
                     Surfers • Burleigh • Broadbeach • Brisbane • Byron • Sunshine Coast
                   </p>
@@ -459,7 +440,7 @@ const About_component = () => {
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="text-gray-400 text-[16px] mb-10 sm:w-[60%] mx-auto leading-relaxed"
-            style={{ fontFamily: "var(--font-montserrat)" }}
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
             We integrate mindful practices at every level — from the décor to the dining —
             ensuring your event looks exquisite while staying kind to the planet.
@@ -494,7 +475,7 @@ const About_component = () => {
                 {item.icon}
                 <span
                   className="text-gray-300 text-sm md:text-base leading-tight text-center"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
+                  style={{ fontFamily: "var(--font-raleway)" }}
                 >
                   {item.text}
                 </span>
@@ -527,7 +508,7 @@ const About_component = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.7 }}
               className="text-gray-400 text-[17px] leading-relaxed"
-              style={{ fontFamily: "var(--font-montserrat)" }}
+              style={{ fontFamily: "var(--font-raleway)" }}
             >
               Cutting-edge tools power our workflow — keeping every project precise, efficient, and innovative.
             </motion.p>
@@ -551,7 +532,7 @@ const About_component = () => {
                       </div>
                       <h3 className="text-[#BE9545] font-semibold text-lg" style={{ fontFamily: "var(--font-cinzel-regular)" }}>{tool.title}</h3>
                     </div>
-                    <p className="text-gray-300 text-[15px] leading-[1.7]" style={{ fontFamily: "var(--font-montserrat)" }}>{tool.desc}</p>
+                    <p className="text-gray-300 text-[15px] leading-[1.7]" style={{ fontFamily: "var(--font-raleway)" }}>{tool.desc}</p>
                   </div>
                 </motion.div>
               );
@@ -582,7 +563,7 @@ const About_component = () => {
             </span>
             <p
               className="text-white mt-3 text-[16px] leading-[1.8]"
-              style={{ fontFamily: "var(--font-montserrat)" }}
+              style={{ fontFamily: "var(--font-raleway)" }}
             >
               We create the best you can possibly get — an event that reflects
               you, stuns your guests, and sets the standard others can’t touch.

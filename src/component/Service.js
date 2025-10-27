@@ -45,18 +45,34 @@ import photograph_two from "/public/assets/img/Event of OC/Wedding/People at wed
 import photograph_three from "/public/assets/img/Event of OC/Wedding/Wedding Couple pose 3.jpg";
 import photograph_four from "/public/assets/img/Event of OC/Wedding/Wedding Couple pose 6.jpg";
 
-import { Cinzel, Montserrat } from "next/font/google";
+import { Cinzel, Montserrat, Cormorant_Garamond, Raleway } from "next/font/google";
 
 export const cinzel = Cinzel({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "700", "900"],
   variable: "--font-cinzel",
+  display: "swap",
 });
 
 export const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "700", "900"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+export const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-raleway",
+  display: "swap",
 });
 
 const tabs = [
@@ -142,7 +158,7 @@ export default function Service() {
                 relative py-2 px-3 sm:py-2 sm:px-4 text-base transition-all duration-300 cursor-pointer
                 ${activeTab === tab.name ? "text-[#D7B26A] font-semibold" : "text-white hover:text-[#D7B26A] font-normal"}
                 `}
-                style={{ fontFamily: "var(--font-montserrat)", lineHeight: "1.2", letterSpacing: "-0.03em" }}
+                style={{ fontFamily: "var(--font-raleway)", lineHeight: "1.2", letterSpacing: "-0.03em" }}
               >
                 {tab.name}
 

@@ -69,7 +69,7 @@ export default function About() {
 
     return (
         <section id="services" className="py-24 bg-black overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 text-center flex flex-col gap-8 md:gap-16">
+            <div className="max-w-7xl mx-auto px-6 text-center flex flex-col gap-8">
                 {/* Title */}
                 <div className="flex flex-row items-center gap-5 justify-center" data-aos="fade-up">
                     <Image src={Left_heading_line} alt="Left Line" />
@@ -83,8 +83,8 @@ export default function About() {
                 </div>
 
                 {/* Description */}
-                <p className="text-white text-base sm:text-lg md:text-[21px] leading-[1.6] w-full sm:w-11/12 md:w-10/12 lg:w-9/12 mx-auto text-center px-4 sm:px-0"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
+                <p className="tracking-normal text-white text-base sm:text-lg md:text-[21px] leading-[1.6] w-full sm:w-11/12 md:w-10/12 lg:w-9/12 mx-auto text-center px-4 sm:px-0"
+                    style={{ fontFamily: "var(--font-raleway)" }}
                     data-aos="fade-up"
                     data-aos-delay="200" >
                     EventOC plans high-energy celebrations across the Byron Bays, Sunshine

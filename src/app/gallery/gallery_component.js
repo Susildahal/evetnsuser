@@ -36,7 +36,6 @@ import conference_two from "/public/assets/img/Event of OC/Conference/Conference
 
 
 
-
 import { Cinzel, Montserrat } from "next/font/google";
 
 export const cinzel = Cinzel({
@@ -73,7 +72,7 @@ const GalleryComponent = () => {
   };
 
   // Convert Next.js image imports to plain URLs for lightbox
-  const gallerySrc = galleryData[activeTab.toLowerCase()]?.map((img) => img.src) || [];
+  const gallerySrc = galleryData[activeTab]?.map((img) => img.src) || [];
 
 
   const openLightbox = (index) => {
@@ -119,7 +118,7 @@ const GalleryComponent = () => {
         {galleryData[activeTab].map((img, idx) => (
           <motion.div
             key={idx}
-            className={`relative overflow-hidden rounded-2xl shadow-md group cursor-pointer ${idx === 0
+            className={`relative overflow-hidden rounded-2xl shadow-md group cursor-none ${idx === 0
               ? "md:col-span-2 md:row-span-2"
               : "md:col-span-1 md:row-span-1"
               }`}
@@ -129,7 +128,7 @@ const GalleryComponent = () => {
             <Image
               src={img}
               alt={`Gallery ${idx}`}
-              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 hover:cursor-none"
               placeholder="blur"
             />
 

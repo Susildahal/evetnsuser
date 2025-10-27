@@ -1,299 +1,326 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Event_OC_Logo from "/public/assets/img/EventOC_Logo.png";
-import Left_heading_line from "/public/assets/img/Left.png";
-import Right_heading_line from "/public/assets/img/Right.png";
+import { motion, AnimatePresence } from "framer-motion";
+import SectionHeader from "@/component/Title";
 
-export default function FourStepModal({ isOpen, onClose }) {
-  const [step, setStep] = useState(1);
-  const [isSuccess, setIsSuccess] = useState(false);
+import AOS from "aos";
+import "aos/dist/aos.css";
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+// Lightbox
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
-  const steps = [
-    { step: 1, label: "Basic Info" },
-    { step: 2, label: "Event Details" },
-    { step: 3, label: "Preferences" },
-    { step: 4, label: "Verification" },
-  ];
+// Project images
+import Project1a from "/public/assets/img/Event of OC/Conference/Conference.jpg";
+import Project1b from "/public/assets/img/content_image/rooftop.jpg";
+import Project1c from "/public/assets/img/Event of OC/Places/Opera-House.jpg";
+import Project1d from "/public/assets/img/Event of OC/Anniversary/Wine.jpg";
+import Project1e from "/public/assets/img/Event of OC/Birthday/Birthday Celebration.jpg";
 
-  const handleFinish = () => {
-    setIsSuccess(true);
+import { Cinzel, Montserrat } from "next/font/google";
+
+export const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "700", "900"],
+  variable: "--font-cinzel",
+});
+
+export const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "700", "900"],
+  variable: "--font-montserrat",
+});
+
+const projects = [
+  {
+    title: "Private Birthday at The Island Rooftop",
+    short_description:
+      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. ",
+    description:
+      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend, and included complimentary arrival shots for the group, negotiated as part of the package. The celebration was seamless, and guests left with an unforgettable experience.",
+    images: [Project1a, Project1b, Project1c, Project1d, Project1e, Project1e],
+    reviews: [
+      {
+        name: "John Doe",
+        rating: 5,
+        comment: "Amazing experience! Everything was perfect.",
+      },
+      {
+        name: "Jane Smith",
+        rating: 4.5,
+        comment: "Very smooth booking and great venue.",
+      },
+    ],
+    date: "June 2025",
+  },
+];
+
+const PortfolioComponent = () => {
+
+
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      offset: 100,
+      once: true,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
+
+
+  const [activeTabs, setActiveTabs] = useState({});
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Lightbox state
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxImages, setLightboxImages] = useState([]);
+
+  const handleTabClick = (index, tab) => {
+    setActiveTabs((prev) => ({ ...prev, [index]: tab }));
+  };
+
+  const openLightbox = (images, index) => {
+    setLightboxImages(images.map((img) => ({ src: img.src || img })));
+    setLightboxIndex(index);
+    setLightboxOpen(true);
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-    >
-      <Dialog.Panel className="bg-black rounded-lg w-full max-w-md sm:max-w-2xl p-4 sm:p-6 relative border border-[#D7B26A]/50 shadow-lg max-h-[90vh] overflow-y-auto">
-        {!isSuccess ? (
-          <>
-            {/* Logo & Title */}
-            <div className="flex flex-col items-center justify-center">
-              <Image src={Event_OC_Logo} alt="Logo" className="w-24 h-auto sm:w-32 mb-2" />
-              <div className="flex items-center gap-2 sm:gap-4 mt-4 flex-wrap justify-center">
-                <Image src={Left_heading_line} alt="Left line" className="w-6 sm:w-10 h-auto" />
-                <span
-                  className="text-[#D7B26A] text-[20px] sm:text-[26px] text-center uppercase"
-                  style={{ fontFamily: "var(--font-cinzel-regular)", lineHeight: "1.2" }}
-                >
-                  Excited to Engage <br /> with our Team?
-                </span>
-                <Image src={Right_heading_line} alt="Right line" className="w-6 sm:w-10 h-auto" />
+    <div className="mt-[80px] container mx-auto px-6 py-[60px]">
+      <div data-aos="fade-down">
+        <SectionHeader title="Portfolio" />
+      </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        open={lightboxOpen}
+        index={lightboxIndex}
+        close={() => setLightboxOpen(false)}
+        slides={lightboxImages}
+      />
+
+      <div className="flex flex-col gap-16 mt-12 items-center">
+        {projects.map((project, index) => {
+          const activeTab = activeTabs[index] || "Description";
+          const isHovered = hoveredCard === index;
+
+          return (
+            <div
+              key={index}
+              className="relative w-full max-w-5xl overflow-hidden rounded-3xl shadow-2xl bg-[#111] transition-all duration-500"
+              data-aos="fade-up"
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              {/* Main image */}
+              <div className="relative w-full h-[320px] md:h-[360px] lg:h-[400px]">
+                <Image
+                  src={project.images[1]}
+                  alt={project.title}
+                  className="object-cover w-full h-full rounded-3xl transition-transform duration-500"
+                  quality={100}
+                  placeholder="blur"
+                  sizes="(max-width: 640px) 100vw,
+                          (max-width: 768px) 100vw,
+                          (max-width: 1024px) 800px,
+                          1200px"
+                  priority
+                />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-3xl" />
+
+                {/* Overlay with tabs */}
+                <AnimatePresence>
+                  {isHovered && (
+                    <motion.div
+                      className="absolute inset-0 bg-black/90 flex flex-col justify-start p-6 z-20 rounded-3xl border border-[#7A5E39] backdrop-blur-sm"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {/* Tabs */}
+                      <div className="flex flex-wrap gap-3 mb-4">
+                        {["Description", "Images", "Reviews"].map((tab) => (
+                          <motion.button
+                            key={tab}
+                            onClick={() => handleTabClick(index, tab)}
+                            className={`px-4 py-1 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${activeTab === tab
+                              ? "bg-[#D7B26A] text-black shadow-lg"
+                              : "bg-gray-700 text-gray-300"
+                              }`}
+                          >
+                            {tab}
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {/* Tab content */}
+                      <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.4 }}
+                        className="text-white mt-2 text-[15px] md:text-[16px] font-montserrat overflow-auto"
+                      >
+                        {activeTab === "Description" && <p className={`${montserrat.className} text-justify`}>{project.description}</p>}
+
+                        {activeTab === "Images" && (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-2">
+                            {project.images.map((img, idx) => (
+                              <div
+                                key={idx}
+                                className="w-full aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer"
+                                onClick={() => openLightbox(project.images, idx)}
+                              >
+                                <Image
+                                  src={img}
+                                  alt={`${project.title} image ${idx + 1}`}
+                                  className="object-cover w-full h-full"
+                                  placeholder="blur"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {activeTab === "Reviews" && (
+                          <div className="flex flex-col gap-6 mt-2">
+                            {/* Existing Reviews */}
+                            {project.reviews.map((review, idx) => (
+                              <motion.div
+                                key={idx}
+                                className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 hover:bg-gray-700/80 transition-colors duration-300"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: idx * 0.1 }}
+                              >
+                                {/* Avatar / Initials */}
+                                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#D7B26A] text-black font-semibold text-lg">
+                                  {review.name
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")}
+                                </div>
+
+                                {/* Review Content */}
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <h4 className={`font-semibold text-white ${montserrat.className}`}>{review.name}</h4>
+                                    <div className="flex items-center gap-1">
+                                      {Array.from({ length: 5 }).map((_, starIdx) => (
+                                        <svg
+                                          key={starIdx}
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          viewBox="0 0 20 20"
+                                          fill={
+                                            starIdx < Math.floor(review.rating)
+                                              ? "#FFD700"
+                                              : starIdx < review.rating
+                                                ? "url(#halfStar)"
+                                                : "#555"
+                                          }
+                                          className="w-4 h-4"
+                                        >
+                                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.625a1 1 0 00.95.69h3.862c.969 0 1.371 1.24.588 1.81l-3.124 2.27a1 1 0 00-.364 1.118l1.18 3.625c.3.921-.755 1.688-1.54 1.118l-3.124-2.27a1 1 0 00-1.176 0l-3.124 2.27c-.784.57-1.838-.197-1.539-1.118l1.18-3.625a1 1 0 00-.364-1.118L2.15 9.052c-.783-.57-.38-1.81.588-1.81h3.862a1 1 0 00.95-.69l1.18-3.625z" />
+                                        </svg>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <p className={`text-gray-200 text-sm ${montserrat.className}`}>{review.comment}</p>
+                                </div>
+                              </motion.div>
+                            ))}
+
+                            {/* Static Review Form */}
+                            <div className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col gap-4 mt-6">
+                              <h3 className={`text-white font-semibold ${montserrat.className}`}>Leave a Review</h3>
+
+                              <input
+                                type="text"
+                                placeholder="Your Name"
+                                className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                              />
+
+                              <select
+                                className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                              >
+                                <option value="">Select Rating</option>
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                              </select>
+
+                              <textarea
+                                placeholder="Write your review..."
+                                rows={3}
+                                className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                              ></textarea>
+
+                              <button
+                                className="px-4 py-2 bg-[#D7B26A] text-black font-semibold rounded-md hover:bg-[#c4a240] transition-colors duration-300"
+                              >
+                                Submit Review
+                              </button>
+                            </div>
+                          </div>
+
+                        )}
+
+                      </motion.div>
+
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Text overlay (bottom) */}
+              <div className="absolute bottom-0 left-0 w-full p-6 text-white z-10 bg-gradient-to-t from-black/90 to-transparent rounded-b-3xl transition-all duration-500">
+                {/* Date */}
+                <div className="flex items-center mt-2 gap-1 text-[14px]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4 text-[#D7B26A]"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 3v2.25M17.25 3v2.25M3 7.5h18M4.5 7.5v11.25a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V7.5M4.5 7.5h15"
+                    />
+                  </svg>
+                  <span className={`text-[#D7B26A] ${montserrat.className}`}>{project.date}</span>
+                </div>
+
+                {/* Title */}
+                <h3 className={`text-[26px] md:text-[28px] font-medium mb-1 tracking-wide`}
+                  style={{ fontFamily: "var(--font-cinzel-regular)" }} >
+                  {project.title}
+                </h3>
+
+                {/* Short Description */}
+                <p className={`text-gray-300 text-[14px] md:text-[15px] ${montserrat.className}`}>
+                  {project.short_description}
+                </p>
               </div>
             </div>
-
-            {/* Step Progress Indicator */}
-            <div className="flex items-center justify-center mb-6 mt-6 flex-wrap gap-2 sm:gap-4">
-              {steps.map((item, index) => (
-                <div key={item.step} className="flex items-center">
-                  <div
-                    className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-semibold transition-all duration-300 ${step === item.step
-                      ? "bg-[#D7B26A] text-black shadow-[0_0_10px_#D7B26A]"
-                      : step > item.step
-                        ? "bg-[#D7B26A]/80 text-black"
-                        : "border border-[#D7B26A]/40 text-[#D7B26A]/60"
-                      }`}
-                  >
-                    {item.step}
-                  </div>
-                  <span
-                    className={`ml-1 sm:ml-2 text-xs sm:text-sm font-medium ${step === item.step ? "text-[#D7B26A]" : "text-[#D7B26A]/60"
-                      }`}
-                  >
-                    {item.label}
-                  </span>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`w-10 sm:w-16 h-[2px] mx-1 sm:mx-2 transition-all duration-300 ${step > item.step ? "bg-[#D7B26A]" : "bg-[#D7B26A]/30"
-                        }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Step Content */}
-            <div className="text-center text-black dark:text-white text-base sm:text-lg mb-6 space-y-4">
-              {/* Step content same as your current steps */}
-              {step === 1 && (
-                <div className="space-y-2 flex flex-col gap-3">
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      required
-                      className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <div className="flex-1">
-                      <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                        Email
-                      </label>
-                      <input
-                        type="text"
-                        name="email"
-                        required
-                        className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                        Contact Number
-                      </label>
-                      <input
-                        type="text"
-                        name="contact"
-                        required
-                        className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Step 2 */}
-              {step === 2 && (
-                <div className="space-y-2 flex flex-col gap-3">
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                      Event Type
-                    </label>
-                    <input
-                      type="text"
-                      name="eventType"
-                      required
-                      className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <div className="flex-1">
-                      <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                        Email
-                      </label>
-                      <input
-                        type="text"
-                        name="email"
-                        required
-                        className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                        Contact Number
-                      </label>
-                      <input
-                        type="text"
-                        name="contact"
-                        required
-                        className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 3 */}
-              {step === 3 && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                      Select Budget
-                    </label>
-                    <select className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-[#D7B26A] text-sm sm:text-base">
-                      <option value="">Select Budget</option>
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                      Your Message
-                    </label>
-                    <textarea
-                      placeholder="Special Requests..."
-                      rows={3}
-                      className="w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md bg-transparent text-white text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div>
-                    <p className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                      I need a:
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm sm:text-base text-[#D7B26A]">
-                      {["Venue", "Catering", "Entertainment", "AV"].map((service) => (
-                        <label key={service} className="flex items-center gap-1">
-                          <input type="checkbox" className="mr-1" /> {service}
-                        </label>
-                      ))}
-                      {["Style/Design", "Floral", "Photographer"].map((service) => (
-                        <label key={service} className="flex items-center gap-1">
-                          <input type="checkbox" className="mr-1" /> {service}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 4 */}
-              {step === 4 && (
-                <div className="space-y-4">
-                  <p className="block text-sm sm:text-base font-medium text-[#D7B26A] mb-1 text-start">
-                    Preferred Contact Method:
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm sm:text-base text-[#D7B26A]">
-                    {["Email", "Call", "SMS"].map((method) => (
-                      <label key={method} className="flex items-center gap-1">
-                        <input type="checkbox" className="mr-1" /> {method}
-                      </label>
-                    ))}
-                  </div>
-
-                  {/* Terms */}
-                  <div>
-                    <label className="flex items-center text-sm sm:text-base font-medium text-[#D7B26A] gap-1">
-                      <input type="checkbox" className="mr-1" />
-                      I agree to the{" "}
-                      <Link href="/terms-and-conditions" className="underline ml-1">
-                        Terms and Conditions
-                      </Link>
-                    </label>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Navigation Buttons */}
-            <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-between gap-3 sm:gap-0">
-              <button
-                onClick={prevStep}
-                disabled={step === 1}
-                className={`px-4 py-2 rounded border border-[#D7B26A] ${step === 1
-                  ? "bg-gray-300 text-black cursor-not-allowed"
-                  : "bg-transparent text-[#D7B26A] hover:bg-[#D7B26A] hover:text-black transition-colors"
-                  }`}
-              >
-                Back
-              </button>
-
-              {step < 4 ? (
-                <button
-                  onClick={nextStep}
-                  className="px-4 py-2 rounded bg-[#D7B26A] text-black hover:bg-[#b89652] transition-colors cursor-pointer"
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  onClick={handleFinish}
-                  className="px-4 py-2 rounded bg-[#D7B26A] text-black hover:bg-[#b89652] transition-colors cursor-pointer"
-                >
-                  Finish
-                </button>
-              )}
-            </div>
-          </>
-        ) : (
-          // Success Message
-          <div className="flex flex-col items-center justify-center gap-4 p-6">
-            <h2 className="text-[#D7B26A] text-2xl sm:text-3xl font-semibold">Thank You!</h2>
-            <p className="text-white text-base sm:text-lg text-center">
-              Your information has been successfully submitted. <br />
-              Our team will contact you shortly.
-            </p>
-            <button
-              onClick={onClose}
-              className="mt-4 px-6 py-2 bg-[#D7B26A] text-black rounded-md hover:bg-[#b89652] transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        )}
-
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-6 text-[20px] sm:text-[22px] text-[#D7B26A] hover:text-[#ffda8f] cursor-pointer"
-        >
-          ✕
-        </button>
-      </Dialog.Panel>
-    </Dialog>
+          );
+        })}
+      </div>
+    </div>
   );
-}
+};
+
+export default PortfolioComponent;

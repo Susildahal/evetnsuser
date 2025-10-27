@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Cormorant_Garamond, Cinzel, Montserrat } from "next/font/google";
+import { Cormorant_Garamond, Cinzel, Montserrat, Raleway } from "next/font/google";
 import { useState } from "react";
 import ThreeStepModal from "./Modal";
 
@@ -10,6 +10,7 @@ const cormorant = Cormorant_Garamond({
     subsets: ["latin"],
     weight: ["400", "500", "600", "700"],
     variable: "--font-cormorant",
+    display: "swap",
 });
 
 const cinzel = Cinzel({
@@ -22,6 +23,14 @@ const montserrat = Montserrat({
     subsets: ["latin"],
     weight: ["400", "500", "600", "700", "900"],
     variable: "--font-montserrat",
+    display: "swap",
+});
+
+export const raleway = Raleway({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700", "900"],
+    variable: "--font-raleway",
+    display: "swap",
 });
 
 export default function HeroSection() {
@@ -52,7 +61,7 @@ export default function HeroSection() {
                     {/* Video Background */}
                     <video
                         className="absolute top-0 left-0 w-full h-full object-cover rounded-t-none rounded-b-[20px]"
-                        src="/assets/videos/hero.mp4"
+                        src="/eventocsn/assets/videos/hero.mp4"
                         autoPlay
                         muted
                         loop>
@@ -63,14 +72,14 @@ export default function HeroSection() {
 
                     {/* Hero Content */}
                     <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                        <motion.h1 className={`text-white text-4xl md:text-[78px] font-semibold mb-4 ${cormorant.className}`}
+                        <motion.div className={`${cormorant.className} text-white text-4xl md:text-[78px] font-semibold mb-4`}
                             variants={textVariant}
                             initial="hidden"
                             animate="visible"
                             custom={0}>
                             Where events become <br /> experiences
-                        </motion.h1>
-                        <motion.span className={`font-medium text-gray-300 text-lg md:text-[16px] mb-8 max-w-2xl ${montserrat.className}`}
+                        </motion.div>
+                        <motion.span className={`font-medium text-gray-300 text-lg md:text-[16px] mb-8 max-w-2xl ${raleway.className}`}
                             variants={textVariant}
                             initial="hidden"
                             animate="visible"
@@ -82,12 +91,12 @@ export default function HeroSection() {
                             <div>
                                 <button
                                     onClick={() => setIsModalOpen(true)}
-                                    className="relative inline-flex items-center justify-center text-white px-6 py-3 rounded-lg font-normal transition-all duration-300 overflow-hidden"
+                                    className="relative inline-flex items-center justify-center text-white px-6 py-4 rounded-md font-normal transition-all duration-300 overflow-hidden"
                                     style={{
                                         background: "linear-gradient(to bottom, #BE9546, #7A5E39)",
                                     }}>
-                                    <span className="relative z-10 cursor-pointer">Book Now</span>
-                                    <span className="absolute inset-0 bg-gradient-to-b from-[#7A5E39] to-[#BE9546] opacity-0 hover:opacity-20 rounded-lg transition-opacity duration-300"></span>
+                                    <span className={`${raleway.className} font-medium relative z-10 cursor-pointer`}>Book Now</span>
+                                    <span className={`${raleway.className} font-medium absolute inset-0 bg-linear-to-b from-[#7A5E39] to-[#BE9546] opacity-0 hover:opacity-20 rounded-lg transition-opacity duration-300`}></span>
                                 </button>
 
                                 <ThreeStepModal
@@ -98,7 +107,7 @@ export default function HeroSection() {
 
                             {/* Contact Organiser */}
                             <a
-                                href="tel:+9779812345678" // replace with the organiser's phone number
+                                href="tel:0426006760"
                                 className="group relative inline-flex items-center justify-center text-white px-6 py-2 rounded-lg font-normal border border-white hover:border-transparent overflow-hidden transition-all duration-300"
                             >
                                 <span className="relative z-10">Contact Organiser</span>

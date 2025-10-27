@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { Raleway } from "next/font/google";
+
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -14,15 +16,22 @@ import BannerBg from "/public/assets/img/Banner.png";
 import ThreeStepModal from "./Modal";
 
 
+export const raleway = Raleway({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700", "900"],
+    variable: "--font-raleway",
+    display: "swap",
+});
+
 export default function Banner() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         AOS.init({
-            duration: 1000, // animation duration in ms
-            once: true,     // only animate once
+            duration: 1000,
+            once: true,
             easing: "ease-out",
-            offset: 100,    // trigger animation 100px before element comes into view
+            offset: 100,
         });
     }, []);
 
@@ -44,8 +53,8 @@ export default function Banner() {
                 </div>
 
                 {/* Subtitle */}
-                <p className="text-white text-base sm:text-lg md:text-[21px] leading-[1.6] w-full sm:w-11/12 md:w-10/12 lg:w-9/12 mx-auto text-center px-4 sm:px-0"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
+                <p className="tracking-normal text-white text-base sm:text-lg md:text-[21px] leading-[1.6] w-full sm:w-11/12 md:w-10/12 lg:w-9/12 mx-auto text-center px-4 sm:px-0"
+                    style={{ fontFamily: "var(--font-raleway)" }}
                     data-aos="fade-up"
                     data-aos-delay="200">
                     Luxe details, seamless logistics, unforgettable moments.
@@ -54,10 +63,10 @@ export default function Banner() {
                     {/* CTA Button */}
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="inline-block px-6 py-2 border border-white text-white text-lg font-light rounded-md 
-                        transition-all duration-500 ease-in-out 
-                        hover:bg-white hover:text-black hover:shadow-lg mt-[20px] cursor-pointer"
-                        data-aos="zoom-in"
+                        className={`${raleway.className} inline-block px-6 py-2 border border-white text-white text-lg font-light rounded-md
+                        transition-colors duration-700 ease-in-out
+                        hover:bg-white hover:text-black hover:shadow-xl mt-[20px] cursor-pointer will-change-auto"
+                        data-aos="zoom-in`}
                         data-aos-delay="400">
                         Book Now
                     </button>

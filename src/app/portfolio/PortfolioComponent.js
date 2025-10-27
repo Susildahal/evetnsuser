@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import SectionHeader from "@/component/Title";
+import SectionHeader, { raleway } from "@/component/Title";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -13,23 +13,23 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
 // Project images
-import Project1a from "/public/assets/img/Event of OC/Conference/Conference.jpg";
-import Project1b from "/public/assets/img/content_image/rooftop.jpg";
-import Project1c from "/public/assets/img/Event of OC/Places/Opera-House.jpg";
-import Project1d from "/public/assets/img/Event of OC/Anniversary/Wine.jpg";
-import Project1e from "/public/assets/img/Event of OC/Birthday/Birthday Celebration.jpg";
+import Project1a from "/public/assets/img/Event of OC/Anniversary/Champagne.jpg";
+import Project1b from "/public/assets/img/Event of OC/Anniversary/Drink.jpg";
+import Project1c from "/public/assets/img/Event of OC/Anniversary/Drinks.jpg";
+import Project1d from "/public/assets/img/Event of OC/Anniversary/Pink-Wine.jpg";
+import Project1e from "/public/assets/img/Event of OC/Anniversary/Red Wine.jpg";
 
 import { Cinzel, Montserrat } from "next/font/google";
 
 export const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "700", "900"],
+  weight: ["400", "500", "600", "700", "900"],
   variable: "--font-cinzel",
 });
 
 export const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "700", "900"],
+  weight: ["400", "500", "600", "700", "900"],
   variable: "--font-montserrat",
 });
 
@@ -37,52 +37,66 @@ const projects = [
   {
     title: "Private Birthday at The Island Rooftop",
     short_description:
-      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend",
+      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests.",
     description:
       "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend, and included complimentary arrival shots for the group, negotiated as part of the package. The celebration was seamless, and guests left with an unforgettable experience.",
-    images: [Project1a, Project1b, Project1c, Project1d, Project1e, Project1e],
+    images: [Project1d, Project1a, Project1b, Project1c, Project1e],
     reviews: [
       {
         name: "John Doe",
         rating: 5,
-        comment: "Amazing experience! Everything was perfect.",
+        comment: "Amazing experience! Everything was perfect."
       },
       {
         name: "Jane Smith",
         rating: 4.5,
-        comment: "Very smooth booking and great venue.",
+        comment: "Very smooth booking and great venue."
       },
     ],
     date: "June 2025",
   },
+  {
+    title: "Private Birthday at The Island Rooftop",
+    short_description:
+      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests.",
+    description:
+      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend, and included complimentary arrival shots for the group, negotiated as part of the package. The celebration was seamless, and guests left with an unforgettable experience.",
+    images: [Project1e, Project1c, Project1d],
+    reviews: [
+      { name: "John Doe", rating: 5, comment: "Amazing experience! Everything was perfect." },
+      { name: "Jane Smith", rating: 4.5, comment: "Very smooth booking and great venue." },
+    ],
+    date: "June 2025",
+  },
+  // {
+  //   title: "Private Birthday at The Island Rooftop",
+  //   short_description:
+  //     "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests.",
+  //   description:
+  //     "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend, and included complimentary arrival shots for the group, negotiated as part of the package. The celebration was seamless, and guests left with an unforgettable experience.",
+  //   images: [Project1b, Project1d, Project1e],
+  //   reviews: [
+  //     { name: "John Doe", rating: 5, comment: "Amazing experience! Everything was perfect." },
+  //     { name: "Jane Smith", rating: 4.5, comment: "Very smooth booking and great venue." },
+  //   ],
+  //   date: "June 2025",
+  // },
+
 ];
 
-const PortfolioComponent = () => {
-
-
-  // Initialize AOS
+const PortfolioFlexGridOverlay = () => {
   useEffect(() => {
-    AOS.init({
-      duration: 900,
-      offset: 100,
-      once: true,
-      easing: "ease-out-cubic",
-    });
+    AOS.init({ duration: 900, offset: 100, once: true, easing: "ease-out-cubic" });
   }, []);
-
-
 
   const [activeTabs, setActiveTabs] = useState({});
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxImages, setLightboxImages] = useState([]);
 
-  const handleTabClick = (index, tab) => {
-    setActiveTabs((prev) => ({ ...prev, [index]: tab }));
-  };
+  const handleTabClick = (index, tab) => setActiveTabs((prev) => ({ ...prev, [index]: tab }));
 
   const openLightbox = (images, index) => {
     setLightboxImages(images.map((img) => ({ src: img.src || img })));
@@ -91,12 +105,11 @@ const PortfolioComponent = () => {
   };
 
   return (
-    <div className="mt-[80px] container mx-auto px-6 py-[60px]">
+    <div className="mt-20 container mx-auto px-6 py-[60px]">
       <div data-aos="fade-down">
         <SectionHeader title="Portfolio" />
       </div>
 
-      {/* Lightbox */}
       <Lightbox
         open={lightboxOpen}
         index={lightboxIndex}
@@ -104,38 +117,33 @@ const PortfolioComponent = () => {
         slides={lightboxImages}
       />
 
-      <div className="flex flex-col gap-16 mt-12 items-center">
+      {/* Flex Grid */}
+      <div className="flex gap-4">
         {projects.map((project, index) => {
-          const activeTab = activeTabs[index] || "Description";
           const isHovered = hoveredCard === index;
+          const activeTab = activeTabs[index] || "Description";
 
           return (
-            <div
+            <motion.div
               key={index}
-              className="relative w-full max-w-5xl overflow-hidden rounded-3xl shadow-2xl bg-[#111] transition-all duration-500"
-              data-aos = "fade-up"
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
+              layout
+              animate={{ flex: isHovered ? 3 : hoveredCard !== null ? 1 : 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-[#111]"
             >
-              {/* Main image */}
-              <div className="relative w-full h-[320px] md:h-[360px] lg:h-[400px]">
+              <div className="relative w-full h-80 md:h-[360px] lg:h-[400px]">
                 <Image
-                  src={project.images[1]}
+                  src={project.images[0]}
                   alt={project.title}
-                  className="object-cover w-full h-full rounded-3xl transition-transform duration-500"
-                  quality={100}
-                  placeholder="blur"
-                  sizes="(max-width: 640px) 100vw,
-                          (max-width: 768px) 100vw,
-                          (max-width: 1024px) 800px,
-                          1200px"
-                  priority
+                  className="object-cover w-full h-full rounded-3xl"
                 />
 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-3xl" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent rounded-3xl" />
 
-                {/* Overlay with tabs */}
+                {/* Hover Overlay */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
@@ -151,9 +159,7 @@ const PortfolioComponent = () => {
                           <motion.button
                             key={tab}
                             onClick={() => handleTabClick(index, tab)}
-                            className={`px-4 py-1 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${activeTab === tab
-                              ? "bg-[#D7B26A] text-black shadow-lg"
-                              : "bg-gray-700 text-gray-300"
+                            className={`${raleway.className} px-4 py-1 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${activeTab === tab ? "bg-[#D7B26A] text-black shadow-lg" : "bg-gray-700 text-gray-300"
                               }`}
                           >
                             {tab}
@@ -161,7 +167,7 @@ const PortfolioComponent = () => {
                         ))}
                       </div>
 
-                      {/* Tab content */}
+                      {/* Tab Content */}
                       <motion.div
                         key={activeTab}
                         initial={{ opacity: 0, y: 10 }}
@@ -170,8 +176,10 @@ const PortfolioComponent = () => {
                         transition={{ duration: 0.4 }}
                         className="text-white mt-2 text-[15px] md:text-[16px] font-montserrat overflow-auto"
                       >
-                        {activeTab === "Description" && <p className={`${montserrat.className} text-justify`}>{project.description}</p>}
+                        {/* Description */}
+                        {activeTab === "Description" && <p className={`${raleway.className} text-justify`}>{project.description}</p>}
 
+                        {/* Images */}
                         {activeTab === "Images" && (
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-2">
                             {project.images.map((img, idx) => (
@@ -180,17 +188,13 @@ const PortfolioComponent = () => {
                                 className="w-full aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer"
                                 onClick={() => openLightbox(project.images, idx)}
                               >
-                                <Image
-                                  src={img}
-                                  alt={`${project.title} image ${idx + 1}`}
-                                  className="object-cover w-full h-full"
-                                  placeholder="blur"
-                                />
+                                <Image src={img} alt={`${project.title} image ${idx + 1}`} className="object-cover w-full h-full" placeholder="blur" />
                               </div>
                             ))}
                           </div>
                         )}
 
+                        {/* Reviews */}
                         {activeTab === "Reviews" && (
                           <div className="flex flex-col gap-6 mt-2">
                             {/* Existing Reviews */}
@@ -213,7 +217,7 @@ const PortfolioComponent = () => {
                                 {/* Review Content */}
                                 <div className="flex-1">
                                   <div className="flex items-center justify-between mb-1">
-                                    <h4 className={`font-semibold text-white ${montserrat.className}`}>{review.name}</h4>
+                                    <h4 className={`font-semibold text-white ${raleway.className}`}>{review.name}</h4>
                                     <div className="flex items-center gap-1">
                                       {Array.from({ length: 5 }).map((_, starIdx) => (
                                         <svg
@@ -234,14 +238,14 @@ const PortfolioComponent = () => {
                                       ))}
                                     </div>
                                   </div>
-                                  <p className={`text-gray-200 text-sm ${montserrat.className}`}>{review.comment}</p>
+                                  <p className={`text-gray-200 text-sm ${raleway.className}`}>{review.comment}</p>
                                 </div>
                               </motion.div>
                             ))}
 
                             {/* Static Review Form */}
                             <div className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col gap-4 mt-6">
-                              <h3 className={`text-white font-semibold ${montserrat.className}`}>Leave a Review</h3>
+                              <h3 className={`text-white font-semibold ${raleway.className}`}>Leave a Review</h3>
 
                               <input
                                 type="text"
@@ -273,49 +277,24 @@ const PortfolioComponent = () => {
                               </button>
                             </div>
                           </div>
-
                         )}
-
                       </motion.div>
-
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              {/* Text overlay (bottom) */}
-              <div className="absolute bottom-0 left-0 w-full p-6 text-white z-10 bg-gradient-to-t from-black/90 to-transparent rounded-b-3xl transition-all duration-500">
-                {/* Date */}
-                <div className="flex items-center mt-2 gap-1 text-[14px]">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4 text-[#D7B26A]"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.75 3v2.25M17.25 3v2.25M3 7.5h18M4.5 7.5v11.25a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V7.5M4.5 7.5h15"
-                    />
-                  </svg>
-                  <span className={`text-[#D7B26A] ${montserrat.className}`}>{project.date}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className={`text-[26px] md:text-[28px] font-medium mb-1 tracking-wide`}
-                  style={{ fontFamily: "var(--font-cinzel-regular)" }} >
+              {/* Bottom text overlay */}
+              <div className="absolute bottom-0 left-0 w-full p-6 text-white z-10 bg-linear-to-t from-black/90 to-transparent rounded-b-3xl transition-all duration-500">
+                <span className={`text-[#D7B26A] ${raleway.className}`}>{project.date}</span>
+                <h3 className="text-[26px] md:text-[28px] font-medium mb-1 tracking-wide" style={{ fontFamily: "var(--font-cinzel-regular)" }}>
                   {project.title}
                 </h3>
-
-                {/* Short Description */}
-                <p className={`text-gray-300 text-[14px] md:text-[15px] ${montserrat.className}`}>
+                <p className={`text-gray-300 text-[14px] md:text-[15px] ${raleway.className}`}>
                   {project.short_description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
@@ -323,4 +302,4 @@ const PortfolioComponent = () => {
   );
 };
 
-export default PortfolioComponent;
+export default PortfolioFlexGridOverlay;
