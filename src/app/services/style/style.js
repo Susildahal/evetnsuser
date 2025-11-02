@@ -20,7 +20,7 @@ import {
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/Event of OC/Wedding/Wedding couple pose 2.jpg";
+import VenueImg from "/public/assets/img/eventimages/dsadasdasd.jpg";
 
 const customVenues = [
     { name: "Coastal Luxe", icon: Building2 },

@@ -29,6 +29,7 @@ import birthday_one from "/public/assets/img/eventimages/34ertsdfdfgdfvg.jpg";
 import birthday_two from "/public/assets/img/eventimages/3edfdfsdf.jpg";
 import birthday_three from "/public/assets/img/eventimages/4434234.jpg";
 import birthday_four from "/public/assets/img/eventimages/4r4fr4.jpg";
+import birthday_five from "/public/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg";
 
 
 import conference_one from "/public/assets/img/eventimages/bvnbvnvbnvbn.jpg";
@@ -67,7 +68,7 @@ export const montserrat = Montserrat({
 });
 
 const GalleryComponent = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("All");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -81,11 +82,11 @@ const GalleryComponent = () => {
 
   // Gallery data
   const galleryData = {
-    all: [annivarsary_one, annivarsary_two, annivarsary_three, annivarsary_four, birthday_one, birthday_two, birthday_three, birthday_four, conference_one,
+    All: [annivarsary_one, annivarsary_two, annivarsary_three, annivarsary_four, birthday_one, birthday_two, birthday_three, birthday_four, conference_one,
       conference_two, conference_five, conference_six, conference_seven, conference_eight, conference_nine, conference_ten, conference_eleven, conference_twelve, conference_thirteen, conference_fourteen,
-      conference_fifteen, conference_sixteen, conference_seventeen],
+      conference_fifteen, conference_sixteen, conference_seventeen, birthday_five],
     Anniversary: [annivarsary_one, annivarsary_two, annivarsary_three, annivarsary_four],
-    Birthday: [birthday_one, birthday_two, birthday_three, birthday_four],
+    Birthday: [birthday_five, birthday_one, birthday_two, birthday_three, birthday_four],
     Conference: [conference_one, conference_two],
   };
 
@@ -108,7 +109,7 @@ const GalleryComponent = () => {
       <div className="flex justify-center flex-wrap gap-4 mb-14"
         data-aos="fade-up"
         data-aos-delay="200">
-        {["Anniversary", "Birthday", "Conference"].map((tab) => (
+        {["All", "Anniversary", "Birthday", "Conference"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -130,13 +131,12 @@ const GalleryComponent = () => {
       </div>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 auto-rows-[220px]"
-        data-aos="fade-up"
-        data-aos-delay="300">
-        {galleryData[activeTab].map((img, idx) => (
+      {/* Gallery Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 auto-rows-[220px]" data-aos="fade-up" data-aos-delay="300">
+        {(galleryData[activeTab] || []).map((img, idx) => (
           <motion.div
             key={idx}
-            className={`relative overflow-hidden rounded-2xl shadow-md group cursor-none ${idx === 0
+            className={`relative overflow-hidden rounded-2xl shadow-md group cursor-pointer ${idx === 0
               ? "md:col-span-2 md:row-span-2"
               : "md:col-span-1 md:row-span-1"
               }`}
@@ -146,7 +146,7 @@ const GalleryComponent = () => {
             <Image
               src={img}
               alt={`Gallery ${idx}`}
-              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 hover:cursor-none"
+              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
               placeholder="blur"
             />
 
@@ -159,6 +159,7 @@ const GalleryComponent = () => {
           </motion.div>
         ))}
       </div>
+
 
       {lightboxOpen && (
         <Lightbox

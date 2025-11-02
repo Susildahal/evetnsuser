@@ -22,7 +22,7 @@ import { FaImages, FaPhotoVideo, FaFileAlt, FaClock, FaRecycle } from "react-ico
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/Event of OC/Wedding/Wedding Couple pose 4.jpg";
+import VenueImg from "/public/assets/img/eventimages/gg4444.jpg";
 
 const customVenues = [
     { name: "Edited images", icon: FaImages },
