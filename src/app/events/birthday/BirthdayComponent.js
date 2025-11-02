@@ -169,7 +169,7 @@ export default function BirthdayPage() {
       <RunSheetNew />
 
       {/* FAQ SECTION */}
-      <section className="py-20 bg-[#0B0B0B] text-white">
+      <section className="py-20 bg-[#0B0B0B]">
         <div className="max-w-6xl mx-auto px-6">
           {/* Title */}
           <motion.h2
@@ -192,7 +192,7 @@ export default function BirthdayPage() {
               >
                 {/* Question Button */}
                 <div className="w-full text-left flex justify-between items-center">
-                  <span className="font-semibold text-lg">{faq.q}</span>
+                  <span className="text-gray-300 font-semibold text-lg">{faq.q}</span>
                   <span className="text-xl">{openFaq === index ? "−" : "+"}</span>
                 </div>
 
