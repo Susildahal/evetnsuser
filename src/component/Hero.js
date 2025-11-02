@@ -91,7 +91,7 @@ export default function HeroSection() {
                             <div>
                                 <button
                                     onClick={() => setIsModalOpen(true)}
-                                    className="relative inline-flex items-center justify-center text-white px-6 py-4 rounded-md font-normal transition-all duration-300 overflow-hidden"
+                                    className="relative inline-flex items-center justify-center text-white px-6 py-2 rounded-md font-normal transition-all duration-300 overflow-hidden"
                                     style={{
                                         background: "linear-gradient(to bottom, #BE9546, #7A5E39)",
                                     }}>
