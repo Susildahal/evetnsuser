@@ -96,17 +96,17 @@ export default function CustomPage() {
         overlayDesc="Downtown · 100 Guests · Premium Experience" />
 
       {/* WHAT WE HANDLE */}
-      <section className="container mx-auto px-6 py-[80px]">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-12 py-[60px] sm:py-[80px]">
         <motion.h2
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className={`text-[36px] font-[400] text-center mb-10 text-[#BE9545] ${cinzel.className}`}
+          className={`text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-[400] text-center mb-10 text-[#BE9545] ${cinzel.className}`}
         >
           What We Handle
         </motion.h2>
 
-        <div className="grid md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 text-center">
           {[
             { icon: <FaMapMarkerAlt />, title: "Venue Sourcing", text: "Rooftops, waterfront spaces, private villas, boutique bars (Gold Coast & surrounds)." },
             { icon: <FaBirthdayCake />, title: "Catering", text: "Grazing islands, chef-led stations, sit-down courses, late-night snacks." },
@@ -125,7 +125,7 @@ export default function CustomPage() {
                 scale: { duration: 0.5, ease: "easeInOut" },
                 rotate: { duration: 0 },
               }}
-              className="relative p-8 rounded-2xl flex flex-col items-center justify-center text-center
+              className="relative p-6 sm:p-8 rounded-2xl flex flex-col items-center justify-center text-center
               bg-gradient-to-br from-[#0B0B0B] via-[#1A1A1A] to-[#0B0B0B] shadow-lg transform-gpu
               hover:shadow-[0_0_30px_rgba(255,209,125,0.2)] transition-all duration-500 ease-in-out border border-[#BE9545]/20"
             >
@@ -134,9 +134,9 @@ export default function CustomPage() {
 
               {/* Content */}
               <div className="relative z-10">
-                <div className="text-4xl mb-4 text-[#BE9545] flex justify-center">{item.icon}</div>
-                <h3 className={`text-xl font-semibold mb-2 text-white ${montserrat.className}`}>{item.title}</h3>
-                <p className={`text-gray-200 text-sm leading-relaxed ${montserrat.className}`}>{item.text}</p>
+                <div className="text-3xl sm:text-4xl mb-4 text-[#BE9545] flex justify-center">{item.icon}</div>
+                <h3 className={`text-lg sm:text-xl font-semibold mb-2 text-white ${montserrat.className}`}>{item.title}</h3>
+                <p className={`text-sm sm:text-gray-200 leading-relaxed ${montserrat.className}`}>{item.text}</p>
               </div>
             </motion.div>
           ))}
