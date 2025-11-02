@@ -176,7 +176,7 @@ export default function BirthdayPage() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-14 text-[#D7B26A]"
+            className="text-4xl md:text-5xl font-normal text-center mb-14 text-[#D7B26A]"
             style={{ fontFamily: "var(--font-cinzel-regular)" }}
           >
             FAQs
