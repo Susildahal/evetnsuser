@@ -350,9 +350,7 @@ export default function FourStepModal({ isOpen, onClose }) {
                       <select
                         value={selectedBudget}
                         onChange={handleBudgetChange}
-                        className={`${raleway.className} w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md 
-                     bg-transparent text-[#D7B26A] text-sm
-                     focus:outline-none `}
+                        className={`${raleway.className} w-full border border-[#D7B26A] px-3 py-2 rounded-md bg-black text-[#D7B26A] text-sm focus:outline-none mt-1`}
                       >
                         <option value="">Select Budget</option>
                         <option value="low">Low</option>
@@ -368,9 +366,7 @@ export default function FourStepModal({ isOpen, onClose }) {
                       </label>
                       <select
                         disabled={!selectedBudget}
-                        className={`${raleway.className} w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md 
-                      bg-transparent text-[#D7B26A] text-sm
-                      focus:outline-none focus:ring-1 focus:ring-[#D7B26A] 
+                        className={`${raleway.className} w-full border border-[#D7B26A] px-2 sm:px-3 py-2 rounded-md  bg-black text-[#D7B26A] text-sm focus:outline-none focus:ring-1 focus:ring-[#D7B26A] 
                       ${!selectedBudget ? "opacity-60 cursor-not-allowed" : ""}`}
                       >
                         <option value="">
