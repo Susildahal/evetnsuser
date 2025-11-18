@@ -9,6 +9,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import ThreeStepModal from "../../component/Modal";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Project images
 import Project1a from "/public/assets/img/Event of OC/Anniversary/Champagne.jpg";
@@ -61,6 +62,8 @@ const PortfolioFlipGrid = () => {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxImages, setLightboxImages] = useState([]);
   const cardRefs = useRef([]);
+
+  const router = useRouter();
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -203,17 +206,19 @@ const PortfolioFlipGrid = () => {
                         </p>
 
                         {/* Buttons */}
+
                         <div className="flex items-center gap-6 pt-8">
-                          <Link href="/about">
-                            <button
-                              className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
-                              Know More
-                            </button>
-                          </Link>
+                          <button
+                            onClick={() => router.push("/about")}
+                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
+                          >
+                            Know More
+                          </button>
 
                           <button
                             onClick={() => setIsModalOpen(true)}
-                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
+                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
+                          >
                             Plan Events Now
                           </button>
 
@@ -222,6 +227,7 @@ const PortfolioFlipGrid = () => {
                             onClose={() => setIsModalOpen(false)}
                           />
                         </div>
+
                       </div>
                     )}
 
