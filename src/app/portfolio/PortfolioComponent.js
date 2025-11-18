@@ -209,14 +209,22 @@ const PortfolioFlipGrid = () => {
 
                         <div className="flex items-center gap-6 pt-8">
                           <button
-                            onClick={() => router.push("/about")}
+                            // onClick={() => router.push("/about")}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card flip
+                              router.push("/about");
+                            }}
                             className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
                           >
                             Know More
                           </button>
 
                           <button
-                            onClick={() => setIsModalOpen(true)}
+                            // onClick={() => setIsModalOpen(true)}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card flip
+                              setIsModalOpen(true);
+                            }}
                             className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
                           >
                             Plan Events Now
