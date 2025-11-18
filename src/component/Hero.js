@@ -56,7 +56,7 @@ export default function HeroSection() {
 
     return (
         <div className="bg-black mt-[83px]">
-            <div className="container mx-auto">
+            <div className="">
                 <section className="relative w-full h-[85vh] overflow-hidden">
                     {/* Video Background */}
                     <video
@@ -71,7 +71,7 @@ export default function HeroSection() {
                     <div className="absolute top-0 left-0 w-full h-full bg-black/60 rounded-t-none rounded-b-[20px]"></div>
 
                     {/* Hero Content */}
-                    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+                    <div className="container mx-auto relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
                         <motion.div className={`${cormorant.className} text-white text-4xl md:text-[78px] font-semibold mb-4`}
                             variants={textVariant}
                             initial="hidden"

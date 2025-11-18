@@ -25,9 +25,9 @@ export default function FourStepModal({ isOpen, onClose }) {
 
   // Predefined ranges for each budget level
   const budgetOptions = {
-    low: ["$1,000 - $5,000", "$5,001 - $10,000"],
-    medium: ["$10,001 - $25,000", "$25,001 - $50,000"],
-    high: ["$50,001 - $100,000+", "$100,001 - Above"],
+    low: ["AUD 1,000 - AUD 5,000", "AUD 5,001 - AUD 10,000"],
+    medium: ["AUD 10,001 - AUD 25,000", "AUD 25,001 - AUD 50,000"],
+    high: ["AUD 50,001 - AUD 100,000+", "AUD 100,001 - Above"],
   };
 
   // Handle budget change
@@ -301,7 +301,7 @@ export default function FourStepModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Event Venue */}
-                    <div className="flex-1 relative">
+                    {/* <div className="flex-1 relative">
                       <label className={`block text-sm font-medium text-[#D7B26A] text-start`}>
                         Event Venue <span className="text-red-600 text-2xl align-top">*</span>
                       </label>
@@ -319,7 +319,6 @@ export default function FourStepModal({ isOpen, onClose }) {
                         <option value="emerald_garden">Emerald Garden</option>
                       </select>
 
-                      {/* Dropdown Arrow */}
                       <div className="absolute inset-y-0 top-7 right-3 flex items-center pointer-events-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -332,7 +331,7 @@ export default function FourStepModal({ isOpen, onClose }) {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
-                    </div>
+                    </div> */}
 
                   </div>
                 </div>
@@ -413,6 +412,7 @@ export default function FourStepModal({ isOpen, onClose }) {
                         "Style/Design",
                         "Floral",
                         "Photographer",
+                        "Transport",
                       ].map((service) => (
                         <label
                           key={service}
@@ -443,8 +443,6 @@ export default function FourStepModal({ isOpen, onClose }) {
                           {/* Service name */}
                           <span>{service}</span>
                         </label>
-
-
                       ))}
                     </div>
                   </div>

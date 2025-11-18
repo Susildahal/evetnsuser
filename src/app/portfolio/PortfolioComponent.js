@@ -7,6 +7,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import ThreeStepModal from "../../component/Modal";
+import Link from "next/link";
 
 // Project images
 import Project1a from "/public/assets/img/Event of OC/Anniversary/Champagne.jpg";
@@ -15,7 +17,7 @@ import Project1c from "/public/assets/img/Event of OC/Anniversary/Drinks.jpg";
 import Project1d from "/public/assets/img/eventimages/e3.jpg";
 import Project1e from "/public/assets/img/Event of OC/Anniversary/Red Wine.jpg";
 
-import { Cinzel, Montserrat } from "next/font/google";
+import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
 export const cinzel = Cinzel({
   subsets: ["latin"],
@@ -27,6 +29,13 @@ export const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
   variable: "--font-montserrat",
+});
+
+export const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-raleway",
+  display: "swap",
 });
 
 const projects = [
@@ -53,11 +62,14 @@ const PortfolioFlipGrid = () => {
   const [lightboxImages, setLightboxImages] = useState([]);
   const cardRefs = useRef([]);
 
+  // Modal states
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     AOS.init({ duration: 900, offset: 100, once: true, easing: "ease-out-cubic" });
   }, []);
 
-  // ✅ Handle click outside to reset flipped cards (mobile/tablet only)
+  // Handle click outside to reset flipped cards (mobile/tablet only)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -177,11 +189,40 @@ const PortfolioFlipGrid = () => {
                   <div className="text-white mt-2 text-[15px] md:text-[16px] font-montserrat overflow-auto">
                     {/* Description */}
                     {activeTab === "Description" && (
-                      <p
-                        className={`${montserrat.className} text-justify leading-relaxed`}
-                      >
-                        {project.description}
-                      </p>
+                      <div className="space-y-3 pt-5">
+                        <div
+                          className={`${montserrat.className} text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[28px] font-semibold text-[#D7B26A]`}
+                        >
+                          {project.title}
+                        </div>
+
+                        <p
+                          className={`${montserrat.className} text-justify leading-relaxed`}
+                        >
+                          {project.description}
+                        </p>
+
+                        {/* Buttons */}
+                        <div className="flex items-center gap-6 pt-8">
+                          <Link href="/about">
+                            <button
+                              className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
+                              Know More
+                            </button>
+                          </Link>
+
+                          <button
+                            onClick={() => setIsModalOpen(true)}
+                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}>
+                            Plan Events Now
+                          </button>
+
+                          <ThreeStepModal
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                          />
+                        </div>
+                      </div>
                     )}
 
                     {/* Images */}
