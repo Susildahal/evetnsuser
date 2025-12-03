@@ -57,10 +57,10 @@ export default function HeroSection() {
     return (
         <div className="bg-black mt-[83px]">
             <div className="">
-                <section className="relative w-full h-[85vh] overflow-hidden">
+                <section className="relative w-full h-[85vh] overflow-hidden flex items-center justify-center">
                     {/* Video Background */}
                     <video
-                        className="absolute top-0 left-0 w-full h-full object-cover rounded-t-none rounded-b-[20px]"
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[90%] object-cover rounded-t-none rounded-b-[20px]"
                         src="/assets/videos/20251203-112619.mp4"
                         autoPlay
                         muted
