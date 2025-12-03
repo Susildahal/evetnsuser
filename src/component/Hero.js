@@ -68,26 +68,7 @@ export default function HeroSection() {
                     </video> */}
 
                     <video
-                        className="
-        absolute 
-        top-0 
-        left-1/2 
-        -translate-x-1/2
-
-        /* Width */
-        w-[90%]       /* mobile */
-        sm:w-[75%]    /* tablets */
-        md:w-[60%]    /* desktop */
-
-        /* Height */
-        h-[350px]     /* mobile */
-        sm:h-[260px]  /* tablets */
-        md:h-[90%]  /* desktop */
-
-        object-cover 
-        rounded-t-none 
-        rounded-b-[20px]
-    "
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] sm:w-[75%] md:w-[60%] h-[350px] sm:h-[260px] md:h-[90%] object-cover rounded-t-none rounded-b-[20px]"
                         src="/assets/videos/20251203-112619.mp4"
                         autoPlay
                         muted
