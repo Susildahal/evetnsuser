@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaFacebookF, FaPhoneAlt, FaEnvelope, FaPaperPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { FaTiktok } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Logo from "/public/assets/img/EventOC_Logo.png";
@@ -52,14 +53,14 @@ const Footer = () => {
                     We are more than an event planning service — we create worlds where luxury meets wild freedom.
                     Every moment we craft is designed to be felt, remembered, and never replicated.
                 </p>
-                <div className="flex justify-center gap-6 text-[#D7B26A]/80 text-lg my-6">
-                    <Link href="#" aria-label="Instagram" className="hover:scale-110 transition-transform duration-300">
+                <div className="flex justify-center gap-8 text-[#D7B26A]/80 text-lg my-6">
+                    <Link href="#" aria-label="Instagram" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
                         <FaInstagram size={20} />
                     </Link>
-                    <Link href="#" aria-label="Twitter / X" className="hover:scale-110 transition-transform duration-300">
-                        <FaXTwitter size={20} />
+                    <Link href="#" aria-label="Twitter / X" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
+                        <FaTiktok size={20} />
                     </Link>
-                    <Link href="#" aria-label="Facebook" className="hover:scale-110 transition-transform duration-300">
+                    <Link href="#" aria-label="Facebook" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
                         <FaFacebookF size={20} />
                     </Link>
                 </div>
