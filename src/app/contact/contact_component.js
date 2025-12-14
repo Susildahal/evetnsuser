@@ -27,7 +27,7 @@ const contactData = {
   heading: "Get In Touch",
   description:
     "Our doors are never closed. Let’s start a dialogue and go on an adventure together.",
-  image: "/assets/img/Event of OC/Music/Music.jpg",
+  image: "/assets/img/Event of OC/Music/DJ2.jpg",
   contacts: [
     {
       icon: Phone,
