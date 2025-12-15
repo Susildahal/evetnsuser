@@ -62,7 +62,7 @@ export default function FourStepModal({ isOpen, onClose }) {
   const handleSelectChange = (e) => {
     const value = e.target.value;
     setSelectedEvent(value);
-    if (value !== "other") setCustomEvent(""); // Clear custom if not "other"
+    if (value !== "other") setCustomEvent("");
   };
 
 
@@ -75,7 +75,9 @@ export default function FourStepModal({ isOpen, onClose }) {
       onClose={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
     >
-      <Dialog.Panel className="bg-black rounded-lg w-full max-w-md sm:max-w-2xl p-4 sm:p-6 relative border border-[#D7B26A]/50 shadow-lg max-h-[90vh] overflow-y-auto">
+      <Dialog.Panel className="bg-black rounded-lg w-full max-w-md sm:max-w-2xl p-4 sm:p-6 relative border border-[#D7B26A]/50 shadow-lg max-h-[90vh] overflow-y-auto transition-all duration-300
+    hover:border-[#F5D98A]
+    hover:shadow-[0_0_20px_rgba(215,178,106,0.35)]">
         {!isSuccess ? (
           <>
             {/* Logo & Title */}
@@ -94,34 +96,43 @@ export default function FourStepModal({ isOpen, onClose }) {
             </div>
 
             {/* Step Progress Indicator */}
-            <div className="flex items-center justify-center mb-6 mt-6 flex-wrap gap-2 sm:gap-4">
-              {steps.map((item, index) => (
-                <div key={item.step} className="flex items-center">
-                  <div
-                    className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-semibold transition-all duration-300 ${step === item.step
-                      ? "bg-[#D7B26A] text-black shadow-[0_0_10px_#D7B26A]"
-                      : step > item.step
-                        ? "bg-[#D7B26A]/80 text-black"
-                        : "border border-[#D7B26A]/40 text-[#D7B26A]/60"
-                      }`}
-                  >
-                    {item.step}
-                  </div>
-                  <span
-                    className={`${raleway.className} ml-1 sm:ml-2 text-xs sm:text-sm font-medium ${step === item.step ? "text-[#D7B26A]" : "text-[#D7B26A]/60"
-                      }`}
-                  >
-                    {item.label}
-                  </span>
-                  {index < steps.length - 1 && (
+            <div className="relative mb-6 mt-6">
+              {/* Connector line */}
+              <div className="absolute top-4 left-0 right-0 h-0.5 bg-[#D7B26A]/30" />
+
+              <div className="flex justify-between items-center relative">
+                {steps.map((item) => (
+                  <div key={item.step} className="flex flex-col items-center text-center w-full">
+                    {/* Step circle */}
                     <div
-                      className={`w-10 sm:w-16 h-[2px] mx-1 sm:mx-2 transition-all duration-300 ${step > item.step ? "bg-[#D7B26A]" : "bg-[#D7B26A]/30"
+                      className={`z-10 flex items-center justify-center
+          w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-semibold
+          transition-all duration-300
+          ${step === item.step
+                          ? "bg-[#D7B26A] text-black shadow-[0_0_12px_rgba(215,178,106,0.7)]"
+                          : step > item.step
+                            ? "bg-[#D7B26A]/80 text-black"
+                            : "border border-[#D7B26A]/40 text-[#D7B26A]/60 bg-black"
                         }`}
-                    />
-                  )}
-                </div>
-              ))}
+                    >
+                      {item.step}
+                    </div>
+
+                    {/* Label */}
+                    <span
+                      className={`${raleway.className} mt-2 text-xs sm:text-sm font-medium
+          ${step === item.step
+                          ? "text-[#D7B26A]"
+                          : "text-[#D7B26A]/60"
+                        }`}
+                    >
+                      {item.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
+
 
             {/* Step Content */}
             <div className="text-center text-black dark:text-white text-base sm:text-lg mb-6 space-y-4">
