@@ -1,15 +1,16 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaPalette, FaGlobeAmericas, FaPlane, FaLaptop } from "react-icons/fa";
+import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
 import { BirthdayHeroSection } from "@/component/Birthday/Hero";
 import { HeroSection } from "@/component/Birthday/Hero";
 
-import BirthdayImg from "/public/assets/img/eventimages/gg4444.jpg";
+import BirthdayImg from "../../../../public/assets/img/eventimages/gg4444.jpg";
 
 import { Cinzel, Montserrat } from "next/font/google";
 
@@ -54,8 +55,32 @@ export const montserrat = Montserrat({
 
 export default function CustomPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const faqs = [
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get('/eventsdashboard', {
+        params: {
+          title: 'Custom'
+        }
+      });
+      const responseData = res.data.data;
+      setData(responseData && responseData.length > 0 ? responseData[0] : null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  const faqs = data?.faqs?.map(faq => ({ q: faq.question, a: faq.answer })) || [
     { q: "Can you align with our brand guidelines?", a: "Yes—fonts, colours, tone and styling are matched precisely; we’ll integrate assets you supply" },
     { q: "Do you manage media and influencers?", a: "We can coordinate RSVPs, briefing notes and content flow; or work with your PR team" },
     { q: "What about staging the ‘reveal’?", a: "We design the moment—lighting cues, audio sting, drape drop or LED content sync" },
@@ -74,13 +99,22 @@ export default function CustomPage() {
 
   return (
     <main className="bg-black text-white overflow-hidden">
-      {/* HERO */}
-      <HeroSection
-        topLabel="Celebrate in Style"
-        title="Custom"
-        highlightedText="Events"
-        description="Private brand experiences on an island deck? A secret supper in a warehouse with a single, glowing long table? A sunrise wellness event that ends in a champagne brunch? We craft one-off experiences built entirely around your story"
-        features={[
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-400 text-xl">Loading...</p>
+        </div>
+      ) : (
+        <>
+          {/* HERO */}
+          <HeroSection
+            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            title="Custom"
+            highlightedText={data?.hero?.title || "Events"}
+            description={data?.hero?.description || "Private brand experiences on an island deck? A secret supper in a warehouse with a single, glowing long table? A sunrise wellness event that ends in a champagne brunch? We craft one-off experiences built entirely around your story"}
+            features={data?.hero?.contents?.map(content => ({
+              title: content.title,
+              desc: content.description
+            })) || [
           { title: "Discovery ", desc: "We learn your purpose, guests and dream scenario." },
           { title: "Concept & Mood", desc: "You’ll receive a narrative, style board and preliminary budget." },
           { title: "Build & Book", desc: "Venue, suppliers and schedules locked; designs signed off." },
@@ -88,10 +122,9 @@ export default function CustomPage() {
         ]}
         ctaButtons={[
           { text: "Book Your Event Now", type: "primary" },
-          // { text: "Explore Packages", type: "secondary" },
         ]}
-        imageSrc={BirthdayImg}
-        imageAlt="Birthday Celebration"
+        imageSrc={data?.hero?.image || BirthdayImg}
+        imageAlt="Custom Event"
         overlayTitle="Sunset Rooftop Party"
         overlayDesc="Downtown · 100 Guests · Premium Experience" />
 
@@ -210,6 +243,8 @@ export default function CustomPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </main>
   );
 }

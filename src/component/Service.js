@@ -4,10 +4,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, FreeMode } from "swiper/modules";
 
-import Left_heading_line from "/public/assets/img/Left.png";
-import Right_heading_line from "/public/assets/img/Right.png";
+import Left_heading_line from "../../public/assets/img/Left.png";
+import Right_heading_line from "../../public/assets/img/Right.png";
 
 import { Cinzel, Montserrat, Cormorant_Garamond, Raleway } from "next/font/google";
 
@@ -42,11 +42,11 @@ export const raleway = Raleway({
 import "swiper/css";
 
 // Images (replace with your own)
-import ServiceOne from "/public/assets/img/eventimages/v33333.jpg";
-import ServiceTwo from "/public/assets/img/eventimages/vv33333.jpg";
-import ServiceThree from "/public/assets/img/eventimages/w3ersdrfsdf.jpg";
-import ServiceFour from "/public/assets/img/eventimages/dsadasdasd.jpg";
-import ServiceFive from "/public/assets/img/eventimages/e2.jpg";
+import ServiceOne from "../../public/assets/img/eventimages/v33333.jpg";
+import ServiceTwo from "../../public/assets/img/eventimages/vv33333.jpg";
+import ServiceThree from "../../public/assets/img/eventimages/w3ersdrfsdf.jpg";
+import ServiceFour from "../../public/assets/img/eventimages/dsadasdasd.jpg";
+import ServiceFive from "../../public/assets/img/eventimages/e2.jpg";
 
 const venueImages = [
   { src: ServiceOne, title: "Gold Coast", link: "/services/venuesourcing" },
@@ -87,7 +87,7 @@ export default function ServicesMarquee() {
           }
         >
           <Swiper
-            modules={[Autoplay]}
+            modules={[Autoplay, FreeMode]}
             loop={true}
             speed={9000}
             autoplay={{
@@ -96,8 +96,7 @@ export default function ServicesMarquee() {
             }}
             slidesPerView="auto"
             spaceBetween={24}
-            freeMode={true}
-            freeModeMomentum={false}
+            freeMode={{ enabled: true, momentum: false }}
             loopAdditionalSlides={10}
             allowTouchMove={false}
             className="marquee-swiper"

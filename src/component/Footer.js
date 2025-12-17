@@ -3,13 +3,16 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram, FaFacebookF, FaPhoneAlt, FaEnvelope, FaPaperPlane } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaTwitter, FaLinkedinIn, FaYoutube, FaGithub, FaGlobe, FaLink, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { FaTiktok } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Logo from "/public/assets/img/EventOC_Logo.png";
+import Logo from "../../public/assets/img/EventOC_Logo.png";
 import { Cinzel, Montserrat, Raleway } from "next/font/google";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSettings } from "@/redux/slicer/settingslicer";
+
+
 
 export const cinzel = Cinzel({
     subsets: ["latin"],
@@ -33,6 +36,12 @@ export const raleway = Raleway({
 });
 
 const Footer = () => {
+    const dispatch = useDispatch();
+    const { settings, status, error } = useSelector((state) => state.settings);
+    
+    // Use settings data directly
+    const data = settings || {};
+
     useEffect(() => {
         AOS.init({
             duration: 1000,
@@ -42,6 +51,48 @@ const Footer = () => {
         });
     }, []);
 
+    useEffect(() => {
+        if (status === 'idle') {
+            dispatch(fetchSettings());
+        }
+    }, [dispatch, status]);
+
+    // Debug logging
+    useEffect(() => {
+        console.log('Redux State:', { settings, status, error });
+    }, [settings, status, error]);
+    
+    // Icon mapping for social media
+    const getSocialIcon = (iconName) => {
+        const normalizedIcon = iconName?.toLowerCase().trim();
+        
+        switch (normalizedIcon) {
+            case 'facebook':
+                return <FaFacebookF size={20} />;
+            case 'twitter':
+            case 'x':
+                return <FaXTwitter size={20} />;
+            case 'instagram':
+                return <FaInstagram size={20} />;
+            case 'linkedin':
+                return <FaLinkedinIn size={20} />;
+            case 'youtube':
+                return <FaYoutube size={20} />;
+            case 'github':
+                return <FaGithub size={20} />;
+            case 'tiktok':
+                return <FaTiktok size={20} />;
+            case 'website':
+            case 'globe':
+                return <FaGlobe size={20} />;
+            case 'link':
+                return <FaLink size={20} />;
+            default:
+                return <FaLink size={20} />; // Default icon
+        }
+    };
+            
+
     return (
         <footer className="bg-[#141414] text-gray-300 pt-10 pb-4">
             {/* Logo and Socials */}
@@ -50,20 +101,26 @@ const Footer = () => {
                     <Image src={Logo} alt="EventsOC Logo" width={160} height={95} className="mx-auto" priority />
                 </div>
                 <p className={`text-[#D7B26A]/80 text-sm sm:text-base ${montserrat.className} sm:w-[65%] mx-auto`}>
-                    We are more than an event planning service — we create worlds where luxury meets wild freedom.
-                    Every moment we craft is designed to be felt, remembered, and never replicated.
+                    {data.siteDescription || "We are more than an event planning service — we create worlds where luxury meets wild freedom. Every moment we craft is designed to be felt, remembered, and never replicated."}
                 </p>
-                <div className="flex justify-center gap-8 text-[#D7B26A]/80 text-lg my-6">
-                    <Link href="#" aria-label="Instagram" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
-                        <FaInstagram size={20} />
-                    </Link>
-                    <Link href="#" aria-label="Twitter / X" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
-                        <FaTiktok size={20} />
-                    </Link>
-                    <Link href="#" aria-label="Facebook" className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out">
-                        <FaFacebookF size={20} />
-                    </Link>
-                </div>
+                
+                {/* Dynamic Social Media Icons */}
+                {data.socialMedia && data.socialMedia.length > 0 && (
+                    <div className="flex justify-center gap-8 text-[#D7B26A]/80 text-lg my-6">
+                        {data.socialMedia.map((social, index) => (
+                            <Link 
+                                key={social._id || index} 
+                                href={social.url || "#"} 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={social.name || social.icon}
+                                className="w-10 h-10 border border-[#D7B26A] flex items-center justify-center rounded-full hover:bg-[#D7B26A] hover:text-black hover:scale-110 transition-all duration-300 ease-in-out"
+                            >
+                                {getSocialIcon(social.icon)}
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Divider */}
@@ -146,22 +203,22 @@ const Footer = () => {
                         <li>
                             <a className="flex items-center gap-2 hover:text-[#D7B26A] transition duration-300">
                                 <FaPhoneAlt className="text-[#D7B26A] w-4 h-4" />
-                                <span className="text-[16px]">0426006760</span>
+                                <span className="text-[16px]">{data.phone || '+0426006760'}</span>
                             </a>
                         </li>
                         <li>
                             <a
-                                href="mailto:the.events.oc@gmail.com"
+                                href={`mailto:${data.email || 'the.events.oc@gmail.com'}`}
                                 className="flex items-center gap-2 hover:text-[#D7B26A] transition duration-300"
-                                aria-label="Send an email to the.events.oc@gmail.com"
+                                aria-label={`Send an email to ${data.email || 'the.events.oc@gmail.com'}`}
                             >
                                 <FaEnvelope className="text-[#D7B26A] w-4 h-4" />
-                                <span className="text-[16px]">the.events.oc@gmail.com</span>
+                                <span className="text-[16px]">{data.email ||  '  the.events.oc@gmail.com   '}</span>
                             </a>
                         </li>
                         <li className="flex items-center gap-2">
                             <FaPaperPlane className="text-[#D7B26A]" />
-                            <span className="text-[16px]">Gold Coast</span>
+                            <span className="text-[16px]">{data.address || 'Gold Coast, Australia'}</span>
                         </li>
                     </ul>
                 </div>

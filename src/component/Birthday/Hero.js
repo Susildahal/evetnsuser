@@ -5,7 +5,8 @@ import Image from "next/image";
 import { Cinzel, Montserrat } from "next/font/google";
 import PropTypes from "prop-types";
 import ThreeStepModal from "../Modal";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import axiosInstance from "@/config/axios";
 
 
 export const cinzel = Cinzel({
@@ -30,10 +31,27 @@ export const HeroSection = ({
   ctaButtons = [],
   imageSrc,
   imageAlt,
-  overlayTitle,
-  overlayDesc,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data , setData] = useState({});  
+
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get('/eventsdashboard' , {
+        params: {
+          title: 'birthday'
+        }
+      });
+      setData(response.data.data);
+    }
+    catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+          
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <section className="relative overflow-hidden mt-[100px] py-[50px]">
@@ -139,6 +157,8 @@ export const HeroSection = ({
             <Image
               src={imageSrc}
               alt={imageAlt}
+              width={500}
+              height={500}
               className="object-cover w-full h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] transition-transform duration-700 group-hover:scale-105 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
               quality={100}
             />

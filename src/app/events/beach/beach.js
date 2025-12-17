@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaUmbrellaBeach, FaPizzaSlice, FaGlassMartiniAlt } from "react-icons/fa";
+import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
@@ -10,7 +11,7 @@ import { HeroSection } from "@/component/Birthday/Hero";
 
 import { Cinzel, Montserrat } from "next/font/google";
 
-import BirthdayImg from "/public/assets/img/eventimages/w3ersdrfsdf.jpg";
+import BirthdayImg from "../../../../public/assets/img/eventimages/w3ersdrfsdf.jpg";
 
 
 const beachIdeas = [
@@ -54,8 +55,32 @@ export const montserrat = Montserrat({
 
 export default function BeachPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const faqs = [
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get('/eventsdashboard', {
+        params: {
+          title: 'Beach'
+        }
+      });
+      const responseData = res.data.data;
+      setData(responseData && responseData.length > 0 ? responseData[0] : null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  const faqs = data?.faqs?.map(faq => ({ q: faq.question, a: faq.answer })) || [
     { q: "Do we need permits for the beach?", a: "Some public spaces require permission. We’ll advise and handle applications where applicable" },
     { q: "What if the weather turns?", a: "We plan a clear Plan B—marquee or indoor pivot—with suppliers on hold" },
     { q: "Can you provide lifeguards?", a: "Yes, recommended for larger guest counts or deeper pools" },
@@ -74,26 +99,34 @@ export default function BeachPage() {
 
   return (
     <main className="bg-black text-white overflow-hidden">
-      {/* HERO */}
-      <HeroSection
-        topLabel="Celebrate in Style"
-        title="Beach & "
-        highlightedText="Pool Events"
-        description="From Broadbeach lawn lounges to private pool villas, we create sun-kissed parties with coastal elegance and a little wild freedom. Hydration bars, shade plans, waterproof audio and safety-first staffing keep it smooth from first splash to last song."
-        features={[
-          { title: "Shade strategy", desc: "" },
-          { title: "Sunscreen & hydration stations", desc: "" },
-          { title: "Towel service", desc: "" },
-          { title: "Wet-area power management", desc: "" },
-        ]}
-        ctaButtons={[
-          { text: "Book Your Event Now", type: "primary" },
-          // { text: "Explore Packages", type: "secondary" },
-        ]}
-        imageSrc={BirthdayImg}
-        imageAlt="Birthday Celebration"
-        overlayTitle="Sunset Rooftop Party"
-        overlayDesc="Downtown · 100 Guests · Premium Experience" />
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-400 text-xl">Loading...</p>
+        </div>
+      ) : (
+        <>
+          {/* HERO */}
+          <HeroSection
+            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            title="Beach & "
+            highlightedText={data?.hero?.title || "Pool Events"}
+            description={data?.hero?.description || "From Broadbeach lawn lounges to private pool villas, we create sun-kissed parties with coastal elegance and a little wild freedom. Hydration bars, shade plans, waterproof audio and safety-first staffing keep it smooth from first splash to last song."}
+            features={data?.hero?.contents?.map(content => ({
+              title: content.title,
+              desc: content.description
+            })) || [
+              { title: "Shade strategy", desc: "" },
+              { title: "Sunscreen & hydration stations", desc: "" },
+              { title: "Towel service", desc: "" },
+              { title: "Wet-area power management", desc: "" },
+            ]}
+            ctaButtons={[
+              { text: "Book Your Event Now", type: "primary" },
+            ]}
+            imageSrc={data?.hero?.image || BirthdayImg}
+            imageAlt="Beach & Pool Celebration"
+            overlayTitle="Sunset Rooftop Party"
+            overlayDesc="Downtown · 100 Guests · Premium Experience" />
 
       {/* WHAT WE HANDLE */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-12 py-[60px] sm:py-[80px] text-white">
@@ -210,6 +243,8 @@ export default function BeachPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </main>
   );
 }

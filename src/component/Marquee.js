@@ -3,7 +3,7 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
-import DiamondConnector from "/public/assets/img/Diamond.png";
+import DiamondConnector from "../../public/assets/img/Diamond.png";
 
 export default function ElegantMarquee() {
     const texts = [

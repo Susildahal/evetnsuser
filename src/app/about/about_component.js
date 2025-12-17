@@ -10,14 +10,13 @@ import Service from "@/component/Service";
 import OurTeamSection from "@/component/Team";
 import Methods from "@/component/Methods";
 import WhatWeBelievePage from "@/component/What-we-believe";
-import WhereWePlay from "@/component/Where-we-play";
-import WhatWeCreate from "@/component/What-we-create";
 import BudgetsTimelines from "@/component/Budget-timeline";
 import Banner from "@/component/Banner";
 import ToolsMarquee from "@/component/Tools-Tech";
 import { motion } from "framer-motion";
 import ThreeStepModal from "../../component/Modal"
 import { Leaf, Recycle, Lightbulb, Droplets, Globe2, Plant, Truck, HeartHandshake, Hammer, MessageCircle, Clock, Accessibility, Laptop, BarChart2, Users, Layout, Server, ClipboardCheck } from "lucide-react";
+import axiosInstance from "@/config/axios";
 
 const tools = [
   { title: "Project Clarity", desc: "Detailed timelines, supplier matrices, and guest-flow maps for transparent execution.", icon: <BarChart2 className="w-7 h-7 text-[#BE9545]" /> },
@@ -30,6 +29,18 @@ const tools = [
 
 
 const About_component = () => {
+  const [about, setAbout] = useState([]);
+  const aboutdata = () => {
+    axiosInstance.get('/about').then((response) => {
+      setAbout(response.data.data);
+    }).catch((error) => {
+      console.error('There was an error fetching the about data!', error);
+    });
+  };
+  useEffect(() => {
+    aboutdata();
+  }, []);
+  
   const features = [
     { icon: <Leaf size={28} className="text-[#BE9545]" />, text: "Eco-conscious materials" },
     { icon: <Recycle size={28} className="text-[#BE9545]" />, text: "Zero-waste planning" },
@@ -57,7 +68,6 @@ const About_component = () => {
 
 
   return (
-
     <>
       <div className="mt-[100px] container mx-auto px-4 py-10">
         {/* Header */}
@@ -79,8 +89,7 @@ const About_component = () => {
                 className="block text-white text-2xl sm:text-3xl md:text-[38px] leading-snug md:leading-[1.2]"
                 style={{ fontFamily: "var(--font-cinzel-regular)" }}
               >
-                We don’t just plan parties,
-                <br className="hidden sm:block" /> We craft moments that live forever.
+                {about && about[0]?.hero?.mainTitle}
               </span>
             </div>
 
@@ -94,7 +103,7 @@ const About_component = () => {
                 className="text-gray-400 text-sm sm:text-base md:text-[16px] leading-relaxed md:leading-[1.8]"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                Think luxury meets wild freedom, wrapped in a Gen Z edge andfinished with a touch of coastal elegance. Whether you crave something secretive and mysterious or radiant and unforgettable, we design experiences that feel like stepping into another world — one where every detail is curated to perfection, from the catering to the lighting, from the music to the photographs that capture it all.
+                {about && about[0]?.hero?.description}
               </span>
             </div>
           </div>
@@ -189,9 +198,7 @@ const About_component = () => {
                   className="text-gray-400 leading-relaxed text-[16.5px] text-justify"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
-                  To craft extraordinary, immersive experiences that go far beyond
-                  the ordinary — blending luxury, creativity, and emotion into
-                  moments that live forever.
+                  {about && about[0]?.missionDescription}
                 </p>
               </div>
             </motion.div>
@@ -236,9 +243,7 @@ const About_component = () => {
                   className="text-gray-400 leading-relaxed text-[16.5px] text-justify"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
-                  To redefine what an event can be — transforming gatherings into art
-                  forms that inspire, connect, and set the new global standard for
-                  celebration.
+                  {about && about[0]?.visionDescription}
                 </p>
               </div>
             </motion.div>

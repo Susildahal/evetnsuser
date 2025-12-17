@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Event_OC_Logo from "/public/assets/img/EventOC_Logo.png";
-import Left_heading_line from "/public/assets/img/Left.png";
-import Right_heading_line from "/public/assets/img/Right.png";
+import Event_OC_Logo from "../../public/assets/img/EventOC_Logo.png";
+import Left_heading_line from "../../public/assets/img/Left.png";
+import Right_heading_line from "../../public/assets/img/Right.png";
 import { Gift, Umbrella, Sparkles, Music, Users, Building2, UtensilsCrossed, Headphones, Flower2, Camera, } from "lucide-react";
 import { Dialog } from "@headlessui/react";
 import { Cinzel, Montserrat, Raleway } from "next/font/google";

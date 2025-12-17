@@ -10,13 +10,15 @@ import "yet-another-react-lightbox/styles.css";
 import ThreeStepModal from "../../component/Modal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/config/axios";
+
 
 // Project images
-import Project1a from "/public/assets/img/Event of OC/Anniversary/Champagne.jpg";
-import Project1b from "/public/assets/img/Event of OC/Anniversary/Drink.jpg";
-import Project1c from "/public/assets/img/Event of OC/Anniversary/Drinks.jpg";
-import Project1d from "/public/assets/img/eventimages/e3.jpg";
-import Project1e from "/public/assets/img/Event of OC/Anniversary/Red Wine.jpg";
+import Project1a from "../../../public/assets/img/Event of OC/Anniversary/Champagne.jpg";
+import Project1b from "../../../public/assets/img/Event of OC/Anniversary/Drink.jpg";
+import Project1c from "../../../public/assets/img/Event of OC/Anniversary/Drinks.jpg";
+import Project1d from "../../../public/assets/img/eventimages/e3.jpg";
+import Project1e from "../../../public/assets/img/Event of OC/Anniversary/Red Wine.jpg";
 
 import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
@@ -39,21 +41,7 @@ export const raleway = Raleway({
   display: "swap",
 });
 
-const projects = [
-  {
-    title: "Private Birthday at The Island Rooftop",
-    short_description:
-      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests.",
-    description:
-      "Events OC secured a private rooftop space at The Island for a client’s birthday, accommodating up to 20 guests. The booking was confirmed within a single day, even on a weekend, and included complimentary arrival shots for the group, negotiated as part of the package. The celebration was seamless, and guests left with an unforgettable experience.",
-    images: [Project1d, Project1a, Project1b, Project1c, Project1e],
-    reviews: [
-      { name: "John Doe", rating: 5, comment: "Amazing experience! Everything was perfect." },
-      { name: "Jane Smith", rating: 4.5, comment: "Very smooth booking and great venue." },
-    ],
-    date: "June 2025",
-  },
-];
+
 
 const PortfolioFlipGrid = () => {
   const [activeTabs, setActiveTabs] = useState({});
@@ -67,6 +55,98 @@ const PortfolioFlipGrid = () => {
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Portfolio state and fetch must be inside the component (hooks must be called in component bodies)
+  const [Portfolioitems, setPortfolioitems] = useState([]);
+  const [portfolioImages, setPortfolioImages] = useState({});
+  const [portfolioPreviews, setPortfolioPreviews] = useState({});
+  const [loadingImages, setLoadingImages] = useState({});
+  const [loadingPreviews, setLoadingPreviews] = useState({});
+  const [reviewForm, setReviewForm] = useState({});
+  const [submittingReview, setSubmittingReview] = useState({});
+  const [response , setResponse] = useState(null);
+  const fetchPortfolioitems = async () => {
+    try {
+      const res = await axiosInstance.get("/portfolio",{
+        params: {
+        status:true
+        }
+      });
+      setPortfolioitems(res.data.data);
+    } catch (error) {
+      console.error("Error fetching portfolio items:", error);
+    }
+  };
+
+  const fetchPortfolioImages = async (portfolioId) => {
+    if (portfolioImages[portfolioId]) return; // Already fetched
+    
+    try {
+      setLoadingImages(prev => ({ ...prev, [portfolioId]: true }));
+      const res = await axiosInstance.get(`/portfolio/image/${portfolioId}`);
+      setPortfolioImages(prev => ({ ...prev, [portfolioId]: res.data.data || res.data }));
+    } catch (error) {
+      console.error("Error fetching portfolio images:", error);
+    } finally {
+      setLoadingImages(prev => ({ ...prev, [portfolioId]: false }));
+    }
+  };
+
+  const fetchPortfolioPreviews = async (portfolioId) => {
+    if (portfolioPreviews[portfolioId]) return; // Already fetched
+    
+    try {
+      setLoadingPreviews(prev => ({ ...prev, [portfolioId]: true }));
+      const res = await axiosInstance.get(`/preview/${portfolioId}`);
+      setPortfolioPreviews(prev => ({ ...prev, [portfolioId]: res.data.data || res.data }));
+    } catch (error) {
+      console.error("Error fetching portfolio previews:", error);
+    } finally {
+      setLoadingPreviews(prev => ({ ...prev, [portfolioId]: false }));
+    }
+  };
+
+  const submitReview = async (portfolioId) => {
+    const formData = reviewForm[portfolioId];
+    
+    if (!formData?.name || !formData?.star || !formData?.description) {
+      return;
+    }
+
+    try {
+      setSubmittingReview(prev => ({ ...prev, [portfolioId]: true }));
+    const response = await axiosInstance.post(`/preview/${portfolioId}`, {
+        name: formData.name,
+        star: formData.star,
+        description: formData.description,
+      }).then(() => {
+
+ setResponse("Review submitted successfully!");
+ setTimeout(() => {
+  setResponse(null);
+ },3000);
+
+      });
+      
+      
+      // Clear form
+      setReviewForm(prev => ({ ...prev, [portfolioId]: { name: '', star: '', description: '' } }));
+      
+      // Refresh reviews
+      setPortfolioPreviews(prev => ({ ...prev, [portfolioId]: null }));
+      fetchPortfolioPreviews(portfolioId);
+      
+
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    } finally {
+      setSubmittingReview(prev => ({ ...prev, [portfolioId]: false }));
+    }
+  };
+
+  useEffect(() => {
+    fetchPortfolioitems();
+  }, []);
 
   useEffect(() => {
     AOS.init({ duration: 900, offset: 100, once: true, easing: "ease-out-cubic" });
@@ -98,11 +178,21 @@ const PortfolioFlipGrid = () => {
     };
   }, []);
 
-  const handleTabClick = (index, tab) =>
+  const handleTabClick = (index, tab, portfolioId) => {
     setActiveTabs((prev) => ({ ...prev, [index]: tab }));
+    
+    // Fetch data when switching to Images or Reviews tabs
+    if (tab === "Images" && portfolioId) {
+      fetchPortfolioImages(portfolioId);
+    } else if (tab === "Reviews" && portfolioId) {
+      fetchPortfolioPreviews(portfolioId);
+    }
+  };
 
   const openLightbox = (images, index) => {
-    setLightboxImages(images.map((img) => ({ src: img.src || img })));
+    setLightboxImages(images.map((img) => ({ 
+      src: img?.src || img?.image || img 
+    })));
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
@@ -122,21 +212,18 @@ const PortfolioFlipGrid = () => {
         close={() => setLightboxOpen(false)}
         slides={lightboxImages}
       />
-
+<div className="">
       <div
-        className="grid gap-6"
-        style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"
       >
-        {projects.map((project, index) => {
+        {Portfolioitems.map((project, index) => {
           const activeTab = activeTabs[index] || "Description";
           const isFlipped = flippedCards[index] || false;
 
           return (
             <div
               key={index}
-              className="perspective h-[400px] w-full cursor-pointer"
+              className="perspective h-[400px] sm:h-[450px] md:h-[500px] w-full cursor-pointer"
               ref={(el) => (cardRefs.current[index] = el)}
               onClick={() => toggleFlip(index)}
             >
@@ -146,15 +233,18 @@ const PortfolioFlipGrid = () => {
               >
                 {/* Front Side */}
                 <div className="absolute w-full h-full backface-hidden rounded-3xl overflow-hidden bg-[#111]">
-                  <Image
-                    src={project.images[0]}
+                  <img
+                    src={project.image?.src || project.image}
                     alt={project.title}
-                    className="object-cover w-full h-full rounded-3xl"
+                    className="object-cover w-full h-full rounded-3xl hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 to-transparent rounded-b-3xl text-white">
                     <span className={`text-[#D7B26A] ${montserrat.className}`}>
-                      {project.date}
-                    </span>
+{ new Date(project.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+})}                    </span>
                     <h3
                       className="text-[26px] md:text-[28px] font-medium mb-1 tracking-wide"
                       style={{ fontFamily: "var(--font-cinzel-regular)" }}
@@ -164,24 +254,24 @@ const PortfolioFlipGrid = () => {
                     <p
                       className={`text-gray-300 text-[14px] md:text-[15px] ${montserrat.className}`}
                     >
-                      {project.short_description}
+                      {project.subtitle}
                     </p>
                   </div>
                 </div>
 
                 {/* Back Side */}
-                <div className="absolute w-full h-full rotate-x-180 backface-hidden bg-[#111] rounded-3xl overflow-auto p-4 text-white border border-[#D7B26A]">
-                  <div className="flex flex-wrap gap-3 mb-4">
+                <div className="absolute w-full h-full rotate-x-180 backface-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-3xl overflow-auto p-4 sm:p-6 text-white border-2 border-[#D7B26A] shadow-2xl">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
                     {["Description", "Images", "Reviews"].map((tab) => (
                       <button
                         key={tab}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleTabClick(index, tab);
+                          handleTabClick(index, tab, project._id || project.id);
                         }}
-                        className={`${montserrat.className} px-4 py-1 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${activeTab === tab
-                          ? "bg-[#D7B26A] text-black shadow-lg"
-                          : "bg-gray-700 text-gray-300"
+                        className={`${montserrat.className} px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer transform hover:scale-105 ${activeTab === tab
+                          ? "bg-gradient-to-r from-[#BE9545] to-[#D7B26A] text-black shadow-lg"
+                          : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                           }`}
                       >
                         {tab}
@@ -241,31 +331,42 @@ const PortfolioFlipGrid = () => {
 
                     {/* Images */}
                     {activeTab === "Images" && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-2">
-                        {project.images.map((img, idx) => (
-                          <div
-                            key={idx}
-                            className="w-full aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openLightbox(project.images, idx);
-                            }}
-                          >
-                            <Image
-                              src={img}
-                              alt={`${project.title} image ${idx + 1}`}
-                              className="object-cover w-full h-full"
-                              placeholder="blur"
-                            />
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
+                        {loadingImages[project._id || project.id] ? (
+                          <div className="col-span-full text-center text-gray-400 py-8">
+                            <p>Loading images...</p>
                           </div>
-                        ))}
+                        ) : (
+                          (portfolioImages[project._id || project.id] || project.images || []).map((img, idx) => (
+                            <div
+                              key={idx}
+                              className="w-full aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const imagesToShow = portfolioImages[project._id || project.id] || project.images || [];
+                                openLightbox(imagesToShow, idx);
+                              }}
+                            >
+                              <img
+                                src={img?.src || img?.image || img}
+                                alt={`${project.title} image ${idx + 1}`}
+                                className="object-cover w-full h-full"
+                              />
+                            </div>
+                          ))
+                        )}
                       </div>
                     )}
 
                     {/* Reviews */}
                     {activeTab === "Reviews" && (
                       <div className="flex flex-col gap-6 mt-2">
-                        {project.reviews.map((review, idx) => (
+                        {loadingPreviews[project._id || project.id] ? (
+                          <div className="text-center text-gray-400 py-8">
+                            <p>Loading reviews...</p>
+                          </div>
+                        ) : (
+                          (portfolioPreviews[project._id || project.id] || project.reviews || []).map((review, idx) => (
                           <div
                             key={idx}
                             className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 hover:bg-gray-700/80 transition-colors duration-300"
@@ -278,18 +379,18 @@ const PortfolioFlipGrid = () => {
                                 <h4
                                   className={`font-semibold text-white ${montserrat.className}`}
                                 >
-                                  {review.name}
+                                  {review.description}
                                 </h4>
                                 <div className="flex items-center gap-1">
-                                  {Array.from({ length: 5 }).map((_, starIdx) => (
+                                  {Array.from({ length:(review.star) }).map((_, starIdx) => (
                                     <svg
                                       key={starIdx}
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill={
-                                        starIdx < Math.floor(review.rating)
+                                        starIdx < Math.floor(review.star)
                                           ? "#FFD700"
-                                          : starIdx < review.rating
+                                          : starIdx < review.star
                                             ? "url(#halfStar)"
                                             : "#555"
                                       }
@@ -307,7 +408,8 @@ const PortfolioFlipGrid = () => {
                               </p>
                             </div>
                           </div>
-                        ))}
+                        ))
+                        )}
 
                         {/* Static Review Form */}
                         <div className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col gap-4 mt-6">
@@ -320,10 +422,30 @@ const PortfolioFlipGrid = () => {
                           <input
                             type="text"
                             placeholder="Your Name"
+                            value={reviewForm[project._id || project.id]?.name || ''}
+                            onChange={(e) => {
+                              const portfolioId = project._id || project.id;
+                              setReviewForm(prev => ({
+                                ...prev,
+                                [portfolioId]: { ...prev[portfolioId], name: e.target.value }
+                              }));
+                            }}
+                            onClick={(e) => e.stopPropagation()}
                             className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
                           />
 
-                          <select className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]">
+                          <select 
+                            value={reviewForm[project._id || project.id]?.star || ''}
+                            onChange={(e) => {
+                              const portfolioId = project._id || project.id;
+                              setReviewForm(prev => ({
+                                ...prev,
+                                [portfolioId]: { ...prev[portfolioId], star: e.target.value }
+                              }));
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                          >
                             <option value="">Select Rating</option>
                             <option value="1">1 Star</option>
                             <option value="2">2 Stars</option>
@@ -335,12 +457,31 @@ const PortfolioFlipGrid = () => {
                           <textarea
                             placeholder="Write your review..."
                             rows={3}
+                            value={reviewForm[project._id || project.id]?.description || ''}
+                            onChange={(e) => {
+                              const portfolioId = project._id || project.id;
+                              setReviewForm(prev => ({
+                                ...prev,
+                                [portfolioId]: { ...prev[portfolioId], description: e.target.value }
+                              }));
+                            }}
+                            onClick={(e) => e.stopPropagation()}
                             className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
                           ></textarea>
 
-                          <button className="px-4 py-2 bg-[#D7B26A] text-black font-semibold rounded-md hover:bg-[#c4a240] transition-colors duration-300">
-                            Submit Review
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              submitReview(project._id || project.id);
+                            }}
+                            disabled={submittingReview[project._id || project.id]}
+                            className="px-4 py-2 bg-[#D7B26A] text-black font-semibold rounded-md hover:bg-[#c4a240] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {submittingReview[project._id || project.id] ? 'Submitting...' : 'Submit Review'}
+                        
                           </button>
+
+                              {response && <span className="ml-2 mt-3 text-green-600 font-normal">{response}</span>}
                         </div>
                       </div>
                     )}
@@ -350,6 +491,7 @@ const PortfolioFlipGrid = () => {
             </div>
           );
         })}
+      </div>
       </div>
 
       <style jsx>{`

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Preloader from "@/component/Preloader";
 import { motion, AnimatePresence } from "framer-motion";
+import ReduxProvider from "@/redux/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,19 +24,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`antialiased ${geistSans.variable} ${geistMono.variable} bg-black`}>
-        {/* Preloader always on top */}
-        <Preloader />
-        {/* Page fade-in after preloader */}
-        <AnimatePresence mode="wait">
-          <motion.main
-            key="page"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.5, duration: 1.2, ease: "easeInOut" }}
-          >
-            {children}
-          </motion.main>
-        </AnimatePresence>
+        <ReduxProvider>
+          {/* Preloader always on top */}
+          <Preloader />
+          {/* Page fade-in after preloader */}
+          <AnimatePresence mode="wait">
+            <motion.main
+              key="page"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.5, duration: 1.2, ease: "easeInOut" }}
+            >
+              {children}
+            </motion.main>
+          </AnimatePresence>
+        </ReduxProvider>
       </body>
     </html>
   );

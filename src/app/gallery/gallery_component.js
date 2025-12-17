@@ -2,55 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import SectionHeader from "@/component/Title";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import axiosInstance from "@/config/axios";
 // Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-
-// Example images
-import GalleryImg1 from "/public/assets/img/Event of OC/Anniversary/Champagne.jpg";
-import GalleryImg2 from "/public/assets/img/Event of OC/Birthday/Birthday celebration 2.jpg";
-import GalleryImg3 from "/public/assets/img/Event of OC/Music/Concert.jpg";
-import GalleryImg4 from "/public/assets/img/Event of OC/Anniversary/Pink-Wine.jpg";
-import GalleryImg5 from "/public/assets/img/Event of OC/Places/Opera-House.jpg";
-import GalleryImg6 from "/public/assets/img/Event of OC/Wedding/Bottle opening.jpg";
-
-import annivarsary_one from "/public/assets/img/eventimages/123.jpg";
-import annivarsary_two from "/public/assets/img/eventimages/2345234324.jpg";
-import annivarsary_three from "/public/assets/img/eventimages/33eeee.jpg";
-import annivarsary_four from "/public/assets/img/eventimages/345rtfefte.jpg";
-
-
-import birthday_one from "/public/assets/img/eventimages/34ertsdfdfgdfvg.jpg";
-import birthday_two from "/public/assets/img/eventimages/3edfdfsdf.jpg";
-import birthday_three from "/public/assets/img/eventimages/4434234.jpg";
-import birthday_four from "/public/assets/img/eventimages/4r4fr4.jpg";
-import birthday_five from "/public/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg";
-
-
-import conference_one from "/public/assets/img/eventimages/bvnbvnvbnvbn.jpg";
-import conference_two from "/public/assets/img/eventimages/bvcbcvb.jpg";
-
-import conference_five from "/public/assets/img/eventimages/cvgnvbnvbnvb.jpg";
-import conference_six from "/public/assets/img/eventimages/dfg333.jpg";
-import conference_seven from "/public/assets/img/eventimages/dsadasdasd.jpg";
-
-import conference_eight from "/public/assets/img/eventimages/e1.jpg";
-import conference_nine from "/public/assets/img/eventimages/e2.jpg";
-import conference_ten from "/public/assets/img/eventimages/e3.jpg";
-import conference_eleven from "/public/assets/img/eventimages/ergfdsas.jpg";
-import conference_twelve from "/public/assets/img/eventimages/gg4444.jpg";
-import conference_thirteen from "/public/assets/img/eventimages/sdfsdfsdfsdfsd.jpg";
-
-import conference_fourteen from "/public/assets/img/eventimages/uyjkyujiyt.jpg";
-import conference_fifteen from "/public/assets/img/eventimages/v33333.jpg";
-import conference_sixteen from "/public/assets/img/eventimages/vv33333.jpg";
-
-import conference_seventeen from "/public/assets/img/eventimages/w3ersdrfsdf.jpg";
 
 
 import { Cinzel, Montserrat } from "next/font/google";
@@ -71,6 +30,9 @@ const GalleryComponent = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [categories, setCategories] = useState(["All"]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     AOS.init({
@@ -80,18 +42,47 @@ const GalleryComponent = () => {
     });
   }, []);
 
-  // Gallery data
-  const galleryData = {
-    All: [annivarsary_one, annivarsary_two, annivarsary_three, annivarsary_four, birthday_one, birthday_two, birthday_three, birthday_four, conference_one,
-      conference_two, conference_five, conference_six, conference_seven, conference_eight, conference_nine, conference_ten, conference_eleven, conference_twelve, conference_thirteen, conference_fourteen,
-      conference_fifteen, conference_sixteen, conference_seventeen, annivarsary_two],
-    Anniversary: [annivarsary_one, annivarsary_two, annivarsary_three, annivarsary_four],
-    Birthday: [birthday_four, birthday_one, birthday_two, birthday_three, birthday_four],
-    Conference: [conference_one, conference_two],
+  const fetchGalleryData = async (category = null) => {
+    try {
+      setLoading(true);
+      const params = { status: true };
+      if (category && category !== "All") {
+        params.title = category;
+      }
+      const res = await axiosInstance.get("/gallery", { params: { ...params, limit: 100 } });
+      const data = res.data.data || [];
+      setGalleryItems(data);
+    } catch (error) {
+      console.error("Error fetching gallery data:", error);
+      setGalleryItems([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Convert Next.js image imports to plain URLs for lightbox
-  const gallerySrc = galleryData[activeTab]?.map((img) => img.src) || [];
+  const fetchCategories = async () => {
+    try {
+      const res = await axiosInstance.get("/gallery", { params: { status: true } });
+      const data = res.data.data || [];
+      // Extract unique categories from gallery items
+      const uniqueCategories = [...new Set(data.map(item => item.title || item.category).filter(Boolean))];
+      setCategories(["All", ...uniqueCategories]);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+    fetchGalleryData();
+  }, []);
+
+  useEffect(() => {
+    fetchGalleryData(activeTab);
+  }, [activeTab]);
+
+  // Convert API images to lightbox format
+  const gallerySrc = galleryItems?.map((item) => item.image || item.url || item.src) || [];
 
 
   const openLightbox = (index) => {
@@ -109,7 +100,7 @@ const GalleryComponent = () => {
       <div className="flex justify-center flex-wrap gap-4 mb-14"
         data-aos="fade-up"
         data-aos-delay="200">
-        {["All", "Anniversary", "Birthday", "Conference"].map((tab) => (
+        {categories.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -131,34 +122,63 @@ const GalleryComponent = () => {
       </div>
 
       {/* Gallery Grid */}
-      {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 auto-rows-[220px]" data-aos="fade-up" data-aos-delay="300">
-        {(galleryData[activeTab] || []).map((img, idx) => (
+      {loading ? (
+        <div className="text-center text-gray-400 py-20">
+          <p className={montserrat.className}>Loading gallery...</p>
+        </div>
+      ) : galleryItems.length === 0 ? (
+        <div className="text-center text-gray-400 py-20">
+          <p className={montserrat.className}>No images found in this category.</p>
+        </div>
+      ) : (
+        <AnimatePresence mode="wait">
           <motion.div
-            key={idx}
-            className={`relative overflow-hidden rounded-2xl shadow-md group cursor-pointer ${idx === 0
-              ? "md:col-span-2 md:row-span-2"
-              : "md:col-span-1 md:row-span-1"
-              }`}
-            whileHover={{ scale: 1.02 }}
-            onClick={() => openLightbox(idx)}
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 auto-rows-[220px]"
           >
-            <Image
-              src={img}
-              alt={`Gallery ${idx}`}
-              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
-              placeholder="blur"
-            />
+            {galleryItems.map((item, idx) => {
+              const imgSrc = item.image || item.url || item.src;
+              return (
+                <motion.div
+                  key={item._id || item.id || idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  className={`relative overflow-hidden rounded-2xl shadow-md group cursor-pointer ${idx === 0
+                    ? "md:col-span-2 md:row-span-2"
+                    : "md:col-span-1 md:row-span-1"
+                    }`}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => openLightbox(idx)}
+                >
+                  <div className="relative w-full h-full">
+                    <img
+                      src={imgSrc}
+                      alt={item.title || item.alt || `Gallery ${idx}`}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.src = '/assets/img/eventimages/e1.jpg'; // Fallback image
+                      }}
+                    />
+                  </div>
 
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="flex items-center justify-center w-20 h-20 rounded-full border-2 border-white bg-black/40 backdrop-blur-sm text-white font-semibold text-lg transition-transform duration-300">
-                View
-              </div>
-            </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-full border-2 border-white bg-black/40 backdrop-blur-sm text-white font-semibold text-lg transition-transform duration-300 group-hover:scale-110">
+                      View
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
-        ))}
-      </div>
+        </AnimatePresence>
+      )}
 
 
       {lightboxOpen && (

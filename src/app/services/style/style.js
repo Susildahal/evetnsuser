@@ -9,6 +9,7 @@ import Banner from "@/component/Banner";
 
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
+import axiosInstance from "@/config/axios";
 
 import {
     Building2,
@@ -20,7 +21,7 @@ import {
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/eventimages/dsadasdasd.jpg";
+import VenueImg from "../../../../public/assets/img/eventimages/dsadasdasd.jpg";
 
 const customVenues = [
     { name: "Coastal Luxe", icon: Building2 },
@@ -61,6 +62,26 @@ const customAddons = [
 
 const VenueSourcingComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [data, setData] = React.useState({});
+    
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get('/servicedashboard', {
+                params: {
+                    servicename: 'Style & Design'
+                }
+            });
+            const responseData = response.data.data;
+            setData(Array.isArray(responseData) ? responseData : [responseData]);
+        }
+        catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -93,36 +114,36 @@ const VenueSourcingComponent = () => {
                             className="text-[36px] md:text-[48px] leading-tight text-white font-semibold mt-3 mb-5"
                             style={{ fontFamily: "var(--font-cinzel-regular)" }}
                         >
-                            Style & <span className="text-[#BE9545]">Designs</span>
+                            {data?.[0]?.hero?.title || "Style & "}<span className="text-[#BE9545]">{data?.[0]?.hero?.highlightedText || "Designs"}</span>
                         </h2>
 
                         <p
                             className="text-gray-400 text-[16px] md:text-[17px] leading-[1.8] mb-5 text-justify"
                             style={{ fontFamily: "var(--font-montserrat)" }}
                         >
-                            Our creative team develops a concept that flows from entrance to after-glow: textures, colour, furniture, signage, tablescapes and feature moments that photograph beautifully and feel effortless in person.
+                            {data?.[0]?.hero?.description || "Our creative team develops a concept that flows from entrance to after-glow: textures, colour, furniture, signage, tablescapes and feature moments that photograph beautifully and feel effortless in person."}
                         </p>
 
                         {/* Highlight Features */}
                         <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                            {[
+                            {(data?.[0]?.hero?.criteria || [
                                 {
-                                    title: "Concept & mood",
-                                    desc: "narrative, colour direction, reference board",
+                                    label: "Concept & mood",
+                                    description: "narrative, colour direction, reference board",
                                 },
                                 {
-                                    title: "Spatial plan",
-                                    desc: "floor plan, guest journey, focal points, dance floor, bar",
+                                    label: "Spatial plan",
+                                    description: "floor plan, guest journey, focal points, dance floor, bar",
                                 },
                                 {
-                                    title: "Materials & rentals",
-                                    desc: "lounges, tables, chairs, linens, cutlery, glassware, backdrops",
+                                    label: "Materials & rentals",
+                                    description: "lounges, tables, chairs, linens, cutlery, glassware, backdrops",
                                 },
                                 {
-                                    title: "Signage & print",
-                                    desc: "welcome, bar lists, menus, seating plans, decals, dance-floor wraps",
+                                    label: "Signage & print",
+                                    description: "welcome, bar lists, menus, seating plans, decals, dance-floor wraps",
                                 },
-                            ].map((item, i) => (
+                            ]).map((item, i) => (
                                 <motion.div
                                     key={i}
                                     whileHover={{ scale: 1.02 }}
@@ -132,13 +153,13 @@ const VenueSourcingComponent = () => {
                                         className="text-white text-[17px] font-semibold"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.title}
+                                        {item.label || item.title}
                                     </h4>
                                     <p
                                         className="text-gray-400 text-[15px]"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.desc}
+                                        {item.description || item.desc}
                                     </p>
                                 </motion.div>
                             ))}
@@ -177,11 +198,12 @@ const VenueSourcingComponent = () => {
                     >
                         <div className="relative overflow-hidden rounded-[30px] border border-[#BE9545]/30 shadow-2xl group">
                             <Image
-                                src={VenueImg}
-                                alt="Venue Sourcing"
+                                src={data?.[0]?.hero?.image || VenueImg}
+                                alt="Style & Design Service"
                                 className="object-cover w-full h-[500px] transition-transform duration-700 group-hover:scale-105"
                                 quality={100}
-                                placeholder="blur"
+                                width={600}
+                                height={500}
                             />
 
                             {/* Overlay */}

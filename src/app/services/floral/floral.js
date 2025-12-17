@@ -8,6 +8,7 @@ import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
+import axiosInstance from "@/config/axios";
 
 import { FaSeedling, FaLeaf, FaCamera, FaGift, FaSun, FaRecycle, FaWater } from "react-icons/fa";
 
@@ -21,7 +22,7 @@ import {
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/Event of OC/Wedding/Wedding Venue.jpg";
+import VenueImg from "../../../../public/assets/img/Event of OC/Wedding/Wedding Venue.jpg";
 
 const customVenues = [
     { name: "Fresh blooms", icon: FaLeaf },
@@ -62,6 +63,26 @@ const customAddons = [
 
 const VenueSourcingComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [data, setData] = React.useState({});
+    
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get('/servicedashboard', {
+                params: {
+                    servicename: 'floral'
+                }
+            });
+            const responseData = response.data.data;
+            setData(Array.isArray(responseData) ? responseData : [responseData]);
+        }
+        catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -94,36 +115,36 @@ const VenueSourcingComponent = () => {
                             className="text-[36px] md:text-[48px] leading-tight text-white font-semibold mt-3 mb-5"
                             style={{ fontFamily: "var(--font-cinzel-regular)" }}
                         >
-                            Sculptural<span className="text-[#BE9545]">{" "} Florals</span>
+                       Sculptural<span className="text-[#BE9545]">{data?.[0]?.hero?.highlightedText || " Florals"}</span>
                         </h2>
 
                         <p
                             className="text-gray-400 text-[16px] md:text-[17px] leading-[1.8] mb-5 text-justify"
                             style={{ fontFamily: "var(--font-montserrat)" }}
                         >
-                            From table meadows and pedestal moments to large-scale installs, we design florals that suit the climate, the space and your palette. Coastal-ready varieties keep their cool; dramatic after-dark tones bring depth when the lights go low.
+                            {data?.[0]?.hero?.description || "From table meadows and pedestal moments to large-scale installs, we design florals that suit the climate, the space and your palette. Coastal-ready varieties keep their cool; dramatic after-dark tones bring depth when the lights go low."}
                         </p>
 
                         {/* Highlight Features */}
                         <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                            {[
+                            {(data?.[0]?.hero?.criteria || [
                                 {
-                                    title: "Design & palette",
-                                    desc: "seasonal guide, textures and forms to match your theme",
+                                    label: "Design & palette",
+                                    description: "seasonal guide, textures and forms to match your theme",
                                 },
                                 {
-                                    title: "Arrangements",
-                                    desc: "table florals, bar features, entry pieces, plinths, arches, ceiling treatments",
+                                    label: "Arrangements",
+                                    description: "table florals, bar features, entry pieces, plinths, arches, ceiling treatments",
                                 },
                                 {
-                                    title: "Conditioning & care",
-                                    desc: "heat/salt-tolerant selections where needed; on-site maintenance",
+                                    label: "Conditioning & care",
+                                    description: "heat/salt-tolerant selections where needed; on-site maintenance",
                                 },
                                 {
-                                    title: "Install & bump-out",
-                                    desc: "safe rigging, venue protection, next-day collection or same-night removal",
+                                    label: "Install & bump-out",
+                                    description: "safe rigging, venue protection, next-day collection or same-night removal",
                                 },
-                            ].map((item, i) => (
+                            ]).map((item, i) => (
                                 <motion.div
                                     key={i}
                                     whileHover={{ scale: 1.02 }}
@@ -133,13 +154,13 @@ const VenueSourcingComponent = () => {
                                         className="text-white text-[17px] font-semibold"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.title}
+                                        {item.label || item.title}
                                     </h4>
                                     <p
                                         className="text-gray-400 text-[15px]"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.desc}
+                                        {item.description || item.desc}
                                     </p>
                                 </motion.div>
                             ))}
@@ -178,11 +199,12 @@ const VenueSourcingComponent = () => {
                     >
                         <div className="relative overflow-hidden rounded-[30px] border border-[#BE9545]/30 shadow-2xl group">
                             <Image
-                                src={VenueImg}
-                                alt="Venue Sourcing"
+                                src={data?.[0]?.hero?.image || VenueImg}
+                                alt="Floral Service"
                                 className="object-cover w-full h-[500px] transition-transform duration-700 group-hover:scale-105"
                                 quality={100}
-                                placeholder="blur"
+                                width={600}
+                                height={500}
                             />
 
                             {/* Overlay */}

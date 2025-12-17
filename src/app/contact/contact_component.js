@@ -1,11 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import SectionHeader from "@/component/Title";
 import { Phone, Mail, MapPin } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Cormorant_Garamond, Cinzel, Montserrat, Raleway } from "next/font/google";
+import axiosInstance from "@/config/axios";
+import { Formik } from "formik";
 
 export const raleway = Raleway({
   subsets: ["latin"],
@@ -21,31 +23,7 @@ export const montserrat = Montserrat({
 });
 
 // Dynamic Data
-const contactData = {
-  title: "Contact Us",
-  subtitle: "Let’s Talk",
-  heading: "Get In Touch",
-  description:
-    "Our doors are never closed. Let’s start a dialogue and go on an adventure together.",
-  image: "/assets/img/Event of OC/Music/DJ2.jpg",
-  contacts: [
-    {
-      icon: Phone,
-      label: "Phone",
-      value: "+0426006760",
-    },
-    {
-      icon: Mail,
-      label: "Email",
-      value: "the.events.oc@gmail.com",
-    },
-    {
-      icon: MapPin,
-      label: "Address",
-      value: "Gold Coast, Australia",
-    },
-  ],
-};
+
 
 const ContactComponent = () => {
 
@@ -58,6 +36,68 @@ const ContactComponent = () => {
       easing: "ease-out-cubic",
     });
   }, []);
+
+  const inationalvalue = {
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  };
+  const [data , setData] = React.useState(inationalvalue);
+const getdata = async () => {
+  const res = await axiosInstance.get('/settings');
+  setData(res.data);
+}
+useEffect(() => { 
+  getdata();
+}, []);
+ 
+
+  const [loading, setLoading] = React.useState(false);
+  const [successMessage, setSuccessMessage] = React.useState("");
+
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.post('/contactus', values);
+      console.log('Form submitted successfully:', response.data);
+      setSuccessMessage("Message sent successfully!");
+      resetForm();
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+   
+const contactData = {
+  title: "Contact Us",
+  subtitle: "Let’s Talk",
+  heading: "Get In Touch",
+  description:
+    "Our doors are never closed. Let’s start a dialogue and go on an adventure together.",
+  image: "/assets/img/Event of OC/Music/DJ2.jpg",
+  contacts: [
+    {
+      icon: Phone,
+      label: "Phone",
+      value: data.phone || "+0426006760",
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: data.email || "the.events.oc@gmail.com",
+    },
+    {
+      icon: MapPin,
+      label: "Address",
+      value: data.address || "Gold Coast, Australia"
+    },
+  ],
+};
+
 
 
   return (
@@ -123,87 +163,118 @@ const ContactComponent = () => {
         </div>
 
         {/* Form */}
-        <form className="w-full md:w-[75%] mx-auto mt-10 flex flex-col items-center"
-          data-aos="fade-up"
-          data-aos-delay="200">
-          {/* Two-column layout for top fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-            {/* Name */}
-            <div className="flex flex-col w-full">
-              <label htmlFor="name" className={`${montserrat.className} text-gray-300 font-medium mb-1`}>
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Your Name"
-                className={`${montserrat.className} border-b border-[#D7B26A] focus:border-b-2 focus:outline-none py-2 bg-transparent text-gray-300 w-full`}
-              />
-            </div>
+      
+<Formik
+  initialValues={{
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  }}
+  onSubmit={handleSubmit}
+>
+  {({ values, handleChange, handleSubmit }) => (
+    <form
+      onSubmit={handleSubmit}
+      className="w-full md:w-[75%] mx-auto mt-10 flex flex-col items-center"
+      data-aos="fade-up"
+      data-aos-delay="200"
+    >
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+        {/* Name */}
+        <div className="flex flex-col w-full">
+          <label className={`${montserrat.className} text-gray-300 mb-1`}>
+            Name
+          </label>
+          <input
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            type="text"
+            placeholder="Your Name"
+            className={`${montserrat.className} border-b border-[#D7B26A] bg-transparent py-2 text-gray-300 focus:outline-none`}
+          />
+        </div>
 
-            {/* Email */}
-            <div className="flex flex-col w-full">
-              <label htmlFor="email" className={`${montserrat.className} text-gray-300 font-medium mb-1`}>
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="Your Email"
-                className={`${montserrat.className} border-b border-[#D7B26A] focus:border-b-2 focus:outline-none py-2 bg-transparent text-gray-300 w-full`}
-              />
-            </div>
+        {/* Email */}
+        <div className="flex flex-col w-full">
+          <label className={`${montserrat.className} text-gray-300 mb-1`}>
+            Email
+          </label>
+          <input
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            type="email"
+            placeholder="Your Email"
+            className={`${montserrat.className} border-b border-[#D7B26A] bg-transparent py-2 text-gray-300 focus:outline-none`}
+          />
+        </div>
 
-            {/* Phone */}
-            <div className="flex flex-col w-full">
-              <label htmlFor="phone" className={`${montserrat.className} text-gray-300 font-medium mb-1`}>
-                Phone
-              </label>
-              <input
-                id="phone"
-                type="text"
-                placeholder="Your Phone"
-                className={`${montserrat.className} border-b border-[#D7B26A] focus:border-b-2 focus:outline-none py-2 bg-transparent text-gray-300 w-full`}
-              />
-            </div>
+        {/* Phone */}
+        <div className="flex flex-col w-full">
+          <label className={`${montserrat.className} text-gray-300 mb-1`}>
+            Phone
+          </label>
+          <input
+            name="phone"
+            value={values.phone}
+            onChange={handleChange}
+            type="text"
+            placeholder="Your Phone"
+            className={`${montserrat.className} border-b border-[#D7B26A] bg-transparent py-2 text-gray-300 focus:outline-none`}
+          />
+        </div>
 
-            {/* Subject */}
-            <div className="flex flex-col w-full">
-              <label htmlFor="subject" className={`${montserrat.className} text-gray-300 font-medium mb-1`}>
-                Subject
-              </label>
-              <input
-                id="subject"
-                type="text"
-                placeholder="Subject"
-                className={`${montserrat.className} border-b border-[#D7B26A] focus:border-b-2 focus:outline-none py-2 bg-transparent text-gray-200 w-full`}
-              />
-            </div>
-          </div>
+        {/* Subject */}
+        <div className="flex flex-col w-full">
+          <label className={`${montserrat.className} text-gray-300 mb-1`}>
+            Subject
+          </label>
+          <input
+            name="subject"
+            value={values.subject}
+            onChange={handleChange}
+            type="text"
+            placeholder="Subject"
+            className={`${montserrat.className} border-b border-[#D7B26A] bg-transparent py-2 text-gray-300 focus:outline-none`}
+          />
+        </div>
+      </div>
 
-          {/* Message Field */}
-          <div className="flex flex-col mt-6 w-full">
-            <label htmlFor="message" className={`${montserrat.className} text-gray-300 font-medium mb-1`}>
-              Message
-            </label>
-            <textarea
-              id="message"
-              rows="4"
-              placeholder="Write your message..."
-              className={`${montserrat.className} border-b border-[#D7B26A] focus:border-b-2 focus:outline-none py-2 bg-transparent text-gray-300 w-full`}
-            ></textarea>
-          </div>
+      {/* Message */}
+      <div className="flex flex-col mt-6 w-full">
+        <label className={`${montserrat.className} text-gray-300 mb-1`}>
+          Message
+        </label>
+        <textarea
+          name="message"
+          value={values.message}
+          onChange={handleChange}
+          rows="4"
+          placeholder="Write your message..."
+          className={`${montserrat.className} border-b border-[#D7B26A] bg-transparent py-2 text-gray-300 focus:outline-none`}
+        />
+      </div>
 
-          {/* Submit Button */}
-          <div className="mt-8">
-            <button
-              type="submit"
-              className={`${montserrat.className} inline-block px-6 py-2 rounded-md font-medium transition-shadow shadow-sm bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
-            >
-              Send Message
-            </button>
-          </div>
-        </form>
+      {/* Submit */}
+      <div className="mt-8">
+        <button
+          type="submit"
+          className="px-6 py-2 bg-gradient-to-b from-[#BE9545] to-[#7A5E39] text-white rounded-md"
+        >
+          {loading ? "Sending..." : ""}
+          Send Message
+        </button>
+        {successMessage && (
+          <p className="mt-4 text-green-500">{successMessage}</p>
+        )}
+      </div>
+    </form>
+  )}
+</Formik>
 
       </div>
     </div>

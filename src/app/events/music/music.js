@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaGuitar, FaMoon } from "react-icons/fa";
+import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
@@ -10,7 +11,7 @@ import { BirthdayHeroSection } from "@/component/Birthday/Hero";
 import { Cinzel, Montserrat } from "next/font/google";
 
 import { HeroSection } from "@/component/Birthday/Hero";
-import BirthdayImg from "/public/assets/img/eventimages/345rtfefte.jpg";
+import BirthdayImg from "../../../../public/assets/img/eventimages/345rtfefte.jpg";
 
 
 const beachIdeas = [
@@ -54,8 +55,32 @@ export const montserrat = Montserrat({
 
 export default function MusicPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const faqs = [
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get('/eventsdashboard', {
+        params: {
+          title: 'Music'
+        }
+      });
+      const responseData = res.data.data;
+      setData(responseData && responseData.length > 0 ? responseData[0] : null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  const faqs = data?.faqs?.map(faq => ({ q: faq.question, a: faq.answer })) || [
     { q: "Can you align with our brand guidelines?", a: "Yes—fonts, colours, tone and styling are matched precisely; we’ll integrate assets you supply" },
     { q: "Do you manage media and influencers?", a: "We can coordinate RSVPs, briefing notes and content flow; or work with your PR team" },
     { q: "What about staging the ‘reveal’?", a: "We design the moment—lighting cues, audio sting, drape drop or LED content sync" },
@@ -74,26 +99,34 @@ export default function MusicPage() {
 
   return (
     <main className="bg-black text-white overflow-hidden">
-      {/* HERO */}
-      <HeroSection
-        topLabel="Music"
-        title="Music Night"
-        highlightedText="Events"
-        description="From intimate vinyl sessions to high-energy DJ takeovers, we build music-forward events with impeccable audio, atmospheric lighting and seamless stage management—so artists shine and guests feel the vibe from first track to encore."
-        features={[
-          { title: "Venue sourcing", desc: "Unique birthday themes tailored to your style and mood." },
-          { title: "Talent", desc: "Handpicked venues that match your vision and guest count." },
-          { title: "Audio & visuals", desc: "Live DJs, performers, and interactive experiences." },
-          { title: "Style & design", desc: "End-to-end event coordination for stress-free celebrations." },
-        ]}
-        ctaButtons={[
-          { text: "Book Your Event Now", type: "primary" },
-          // { text: "Explore Packages", type: "secondary" },
-        ]}
-        imageSrc={BirthdayImg}
-        imageAlt="Birthday Celebration"
-        overlayTitle="Sunset Rooftop Party"
-        overlayDesc="Downtown · 100 Guests · Premium Experience" />
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-400 text-xl">Loading...</p>
+        </div>
+      ) : (
+        <>
+          {/* HERO */}
+          <HeroSection
+            topLabel={data?.hero?.subtitle || "Music"}
+            title="Music Night"
+            highlightedText={data?.hero?.title || "Music Events"}
+            description={data?.hero?.description || "From intimate vinyl sessions to high-energy DJ takeovers, we build music-forward events with impeccable audio, atmospheric lighting and seamless stage management—so artists shine and guests feel the vibe from first track to encore."}
+            features={data?.hero?.contents?.map(content => ({
+              title: content.title,
+              desc: content.description
+            })) || [
+              { title: "Venue sourcing", desc: "Unique birthday themes tailored to your style and mood." },
+              { title: "Talent", desc: "Handpicked venues that match your vision and guest count." },
+              { title: "Audio & visuals", desc: "Live DJs, performers, and interactive experiences." },
+              { title: "Style & design", desc: "End-to-end event coordination for stress-free celebrations." },
+            ]}
+            ctaButtons={[
+              { text: "Book Your Event Now", type: "primary" },
+            ]}
+            imageSrc={data?.hero?.image || BirthdayImg}
+            imageAlt="Music Event"
+            overlayTitle="Sunset Rooftop Party"
+            overlayDesc="Downtown · 100 Guests · Premium Experience" />
 
       {/* WHAT WE HANDLE */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-12 py-[60px] sm:py-[80px]">
@@ -210,6 +243,8 @@ export default function MusicPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </main>
   );
 }

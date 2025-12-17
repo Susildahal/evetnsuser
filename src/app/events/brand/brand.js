@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaSignInAlt, FaUsers, FaFileAlt, FaChartLine } from "react-icons/fa";
+import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
@@ -10,7 +11,7 @@ import { BirthdayHeroSection } from "@/component/Birthday/Hero";
 import { Cinzel, Montserrat } from "next/font/google";
 import { HeroSection } from "@/component/Birthday/Hero";
 
-import BirthdayImg from "/public/assets/img/Event of OC/Conference/Conference1.jpg";
+import BirthdayImg from "../../../../public/assets/img/Event of OC/Conference/Conference1.jpg";
 
 
 
@@ -55,8 +56,32 @@ export const montserrat = Montserrat({
 
 export default function BrandPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const faqs = [
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get('/eventsdashboard', {
+        params: {
+          title: 'Branch Launch'
+        }
+      });
+      const responseData = res.data.data;
+      setData(responseData && responseData.length > 0 ? responseData[0] : null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  const faqs = data?.faqs?.map(faq => ({ q: faq.question, a: faq.answer })) || [
     { q: "Can you align with our brand guidelines?", a: "Yes—fonts, colours, tone and styling are matched precisely; we’ll integrate assets you supply" },
     { q: "Do you manage media and influencers?", a: "We can coordinate RSVPs, briefing notes and content flow; or work with your PR team" },
     { q: "What about staging the ‘reveal’?", a: "We design the moment—lighting cues, audio sting, drape drop or LED content sync" },
@@ -75,24 +100,31 @@ export default function BrandPage() {
 
   return (
     <main className="bg-black text-white overflow-hidden">
-      {/* HERO */}
-      <HeroSection
-        topLabel="Celebrate in Style"
-        title="Brand"
-        highlightedText="Launch Events"
-        description="From product reveals to pop-up brand worlds, we design launch experiences that turn attentioninto advocacy. Expect crisp sound, cinematic lighting, on-brand styling and content capture that lives on long after doors close."
-        features={[
-          { title: "Press & Influencer Preview", desc: "Tight run sheet, staged reveals, content touch-points." },
-          { title: "Customer Pop-Up", desc: "Interactive zones, sampling, live demos, POS integration." },
-          // { title: "Entertainment", desc: "Live DJs, performers, and interactive experiences." },
-          { title: "Executive/Partner Launch", desc: "Keynote seating, media wall, hospitality lounge." },
-        ]}
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-400 text-xl">Loading...</p>
+        </div>
+      ) : (
+        <>
+          {/* HERO */}
+          <HeroSection
+            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            title="Brand"
+            highlightedText={data?.hero?.title || "Launch Events"}
+            description={data?.hero?.description || "From product reveals to pop-up brand worlds, we design launch experiences that turn attention into advocacy. Expect crisp sound, cinematic lighting, on-brand styling and content capture that lives on long after doors close."}
+            features={data?.hero?.contents?.map(content => ({
+              title: content.title,
+              desc: content.description
+            })) || [
+              { title: "Press & Influencer Preview", desc: "Tight run sheet, staged reveals, content touch-points." },
+              { title: "Customer Pop-Up", desc: "Interactive zones, sampling, live demos, POS integration." },
+              { title: "Executive/Partner Launch", desc: "Keynote seating, media wall, hospitality lounge." },
+            ]}
         ctaButtons={[
           { text: "Book Your Event Now", type: "primary" },
-          // { text: "Explore Packages", type: "secondary" },
         ]}
-        imageSrc={BirthdayImg}
-        imageAlt="Birthday Celebration"
+        imageSrc={data?.hero?.image || BirthdayImg}
+        imageAlt="Brand Launch Event"
         overlayTitle="Sunset Rooftop Party"
         overlayDesc="Downtown · 100 Guests · Premium Experience" />
 
@@ -211,6 +243,8 @@ export default function BrandPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </main>
   );
 }

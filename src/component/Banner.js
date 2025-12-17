@@ -10,9 +10,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 
-import Left_heading_line from "/public/assets/img/Left.png";
-import Right_heading_line from "/public/assets/img/Right.png";
-import BannerBg from "/public/assets/img/Banner.png";
+import Left_heading_line from "../../public/assets/img/Left.png";
+import Right_heading_line from "../../public/assets/img/Right.png";
+import BannerBg from "../../public/assets/img/Banner.png";
 import ThreeStepModal from "./Modal";
 
 

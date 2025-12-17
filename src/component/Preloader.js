@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Logo from "/public/assets/img/EventOC_Logo.png";
+import Logo from "../../public/assets/img/EventOC_Logo.png";
 
 export default function Preloader({ duration = 2500 }) {
     const [visible, setVisible] = useState(true);

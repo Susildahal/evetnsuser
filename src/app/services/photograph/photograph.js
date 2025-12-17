@@ -8,6 +8,7 @@ import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
+import axiosInstance from "@/config/axios";
 
 
 import {
@@ -22,7 +23,7 @@ import { FaImages, FaPhotoVideo, FaFileAlt, FaClock, FaRecycle } from "react-ico
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/eventimages/gg4444.jpg";
+import VenueImg from "../../../../public/assets/img/eventimages/gg4444.jpg";
 
 const customVenues = [
     { name: "Edited images", icon: FaImages },
@@ -64,6 +65,26 @@ const customAddons = [
 
 const VenueSourcingComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [data, setData] = React.useState({});
+    
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get('/servicedashboard', {
+                params: {
+                    servicename: 'Photographs'
+                }
+            });
+            const responseData = response.data.data;
+            setData(Array.isArray(responseData) ? responseData : [responseData]);
+        }
+        catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -89,43 +110,39 @@ const VenueSourcingComponent = () => {
                             className="uppercase tracking-[0.3em] text-[#BE9545] text-sm font-semibold"
                             style={{ fontFamily: "var(--font-montserrat)" }}
                         >
-                            Moment lives long after the lights go out
+                          Moment lives long after the lights go out
                         </span>
 
                         <h2
                             className="text-[36px] md:text-[48px] leading-tight text-white font-semibold mt-3 mb-5"
                             style={{ fontFamily: "var(--font-cinzel-regular)" }}
                         >
-                            Candid <span className="text-[#BE9545]">energy</span>with editorial polish
+                        Candid<span className="text-[#BE9545]"> energy</span>with editorial polish
                         </h2>
 
                         <p
                             className="text-gray-400 text-[16px] md:text-[17px] leading-[1.8] mb-5 text-justify"
                             style={{ fontFamily: "var(--font-montserrat)" }}
                         >
-                            Our photographers work discreetly to capture real interactions, hero details and the big beats. Delivery is fast, curated and ready for social or press
+                            {data?.[0]?.hero?.description || "Our photographers work discreetly to capture real interactions, hero details and the big beats. Delivery is fast, curated and ready for social or press"}
                         </p>
 
                         {/* Highlight Features */}
                         <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                            {[
+                            {(data?.[0]?.hero?.criteria || [
                                 {
-                                    title: "Pre-production",
-                                    desc: "shot list aligned to your run sheet and styling elements",
+                                    label: "Pre-production",
+                                    description: "shot list aligned to your run sheet and styling elements",
                                 },
                                 {
-                                    title: "On the day",
-                                    desc: "lead photographer (and second shooter if needed), event coverage from arrivals to last formal moment",
+                                    label: "On the day",
+                                    description: "lead photographer (and second shooter if needed), event coverage from arrivals to last formal moment",
                                 },
                                 {
-                                    title: "Lighting",
-                                    desc: "natural-light priority with on-camera/off-camera flash where appropriate; coordination with our AV team for key cues",
+                                    label: "Lighting",
+                                    description: "natural-light priority with on-camera/off-camera flash where appropriate; coordination with our AV team for key cues",
                                 },
-                                // {
-                                //     title: "Install & bump-out",
-                                //     desc: "safe rigging, venue protection, next-day collection or same-night removal",
-                                // },
-                            ].map((item, i) => (
+                            ]).map((item, i) => (
                                 <motion.div
                                     key={i}
                                     whileHover={{ scale: 1.02 }}
@@ -135,13 +152,13 @@ const VenueSourcingComponent = () => {
                                         className="text-white text-[17px] font-semibold"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.title}
+                                        {item.label || item.title}
                                     </h4>
                                     <p
                                         className="text-gray-400 text-[15px]"
                                         style={{ fontFamily: "var(--font-montserrat)" }}
                                     >
-                                        {item.desc}
+                                        {item.description || item.desc}
                                     </p>
                                 </motion.div>
                             ))}
@@ -180,11 +197,12 @@ const VenueSourcingComponent = () => {
                     >
                         <div className="relative overflow-hidden rounded-[30px] border border-[#BE9545]/30 shadow-2xl group">
                             <Image
-                                src={VenueImg}
-                                alt="Venue Sourcing"
+                                src={data?.[0]?.hero?.image || VenueImg}
+                                alt="Photography Service"
                                 className="object-cover w-full h-[500px] transition-transform duration-700 group-hover:scale-105"
                                 quality={100}
-                                placeholder="blur"
+                                width={600}
+                                height={500}
                             />
 
                             {/* Overlay */}

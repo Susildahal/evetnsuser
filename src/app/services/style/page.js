@@ -12,10 +12,9 @@ const page = () => {
             <main className="grow">
                 <VenueSourcingComponent />
             </main>
-
             <Footer />
         </div>
     )
 }
 
-export default page
+export default page;

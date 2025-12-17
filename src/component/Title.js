@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import TopLogo from "/public/assets/img/logo_page.png";
+import TopLogo from "../../public/assets/img/logo_page.png";
 import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
 export const raleway = Raleway({

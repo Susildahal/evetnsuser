@@ -6,6 +6,7 @@ import VenueStyles from "@/component/Venue/Venue-style";
 import AddonsSection from "@/component/Venue/Addon";
 import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
+import axiosInstance from "@/config/axios";
 
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
@@ -21,7 +22,7 @@ import { FaBirthdayCake, FaWineGlassAlt, FaCoffee, FaIceCream, FaGlassWhiskey } 
 
 
 // Replace with your actual asset
-import VenueImg from "/public/assets/img/Event of OC/Wedding/Dinning 2.jpg";
+import VenueImg from "../../../../public/assets/img/Event of OC/Wedding/Dinning 2.jpg";
 
 const customVenues = [
   { name: "Bar packages", icon: Building2 },
@@ -62,7 +63,25 @@ const customAddons = [
 
 const VenueSourcingComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = React.useState({});
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get('/servicedashboard', {    
+        params: {
+          servicename: 'catering'
+        }
+      });
+      const responseData = response.data.data;
+      setData(Array.isArray(responseData) ? responseData : [responseData]);
+    }
+    catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  React.useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       {/* HERO SECTION */}
@@ -94,36 +113,36 @@ const VenueSourcingComponent = () => {
               className="text-[36px] md:text-[48px] leading-tight text-white font-semibold mt-3 mb-5"
               style={{ fontFamily: "var(--font-cinzel-regular)" }}
             >
-              Menus <span className="text-[#BE9545]">designed</span> for your moment
+              {data?.[0]?.hero?.title || "Menus "}<span className="text-[#BE9545]">{data?.[0]?.hero?.highlightedText || "designed"}</span>{data?.[0]?.hero?.titleSuffix || " for your moment"}
             </h2>
 
             <p
               className="text-gray-400 text-[16px] md:text-[17px] leading-[1.8] mb-5 text-justify"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              We partner with leading chefs and caterers to deliver service styles that suit your event: canapés with pace, chef-led stations for theatre, or a slow, generous feast. Beverage programs range from signature cocktails to premium zero-alcohol lists.
+              {data?.[0]?.hero?.description || "We partner with leading chefs and caterers to deliver service styles that suit your event: canapés with pace, chef-led stations for theatre, or a slow, generous feast. Beverage programs range from signature cocktails to premium zero-alcohol lists."}
             </p>
 
             {/* Highlight Features */}
             <div className="grid sm:grid-cols-2 gap-6 mb-10">
-              {[
+              {(data?.[0]?.hero?.criteria || [
                 {
-                  title: "Canapés & small plates",
-                  desc: "6–12 bites per guest; roaming trays; vegetarian/vegan/GF covered",
+                  label: "Canapés & small plates",
+                  description: "6–12 bites per guest; roaming trays; vegetarian/vegan/GF covered",
                 },
                 {
-                  title: "Grazing & harvest",
-                  desc: "premium charcuterie, local cheeses, seafood add-ons, warm elements",
+                  label: "Grazing & harvest",
+                  description: "premium charcuterie, local cheeses, seafood add-ons, warm elements",
                 },
                 {
-                  title: "Chef stations",
-                  desc: "shared platters or plated courses, bread & sides, cake service",
+                  label: "Chef stations",
+                  description: "shared platters or plated courses, bread & sides, cake service",
                 },
                 {
-                  title: "Late-night bites",
-                  desc: "sliders, pies, churros, gelato cart, espresso service.",
+                  label: "Late-night bites",
+                  description: "sliders, pies, churros, gelato cart, espresso service.",
                 },
-              ].map((item, i) => (
+              ]).map((item, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.02 }}
@@ -133,13 +152,13 @@ const VenueSourcingComponent = () => {
                     className="text-white text-[17px] font-semibold"
                     style={{ fontFamily: "var(--font-montserrat)" }}
                   >
-                    {item.title}
+                    {item.label || item.title}
                   </h4>
                   <p
                     className="text-gray-400 text-[15px]"
                     style={{ fontFamily: "var(--font-montserrat)" }}
                   >
-                    {item.desc}
+                    {item.description || item.desc}
                   </p>
                 </motion.div>
               ))}
@@ -178,11 +197,12 @@ const VenueSourcingComponent = () => {
           >
             <div className="relative overflow-hidden rounded-[30px] border border-[#BE9545]/30 shadow-2xl group">
               <Image
-                src={VenueImg}
-                alt="Venue Sourcing"
+                src={data?.[0]?.hero?.image || VenueImg}
+                alt="Catering Service"
                 className="object-cover w-full h-[500px] transition-transform duration-700 group-hover:scale-105"
                 quality={100}
-                placeholder="blur"
+                width={600}
+                height={500}
               />
 
               {/* Overlay */}
@@ -236,6 +256,7 @@ const VenueSourcingComponent = () => {
 
         {/* Banner */}
         <Banner />
+   
       </section>
     </>
   );

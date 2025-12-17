@@ -6,13 +6,13 @@ import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaSun, 
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
-import { BirthdayHeroSection } from "@/component/Birthday/Hero";
-import { Cinzel, Montserrat, Raleway } from "next/font/google";
 import { HeroSection } from "@/component/Birthday/Hero";
+import { Cinzel, Montserrat } from "next/font/google";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import axiosInstance from "@/config/axios";
 
-import BirthdayImg from "/public/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg";
+import BirthdayImg from "../../../../public/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg";
 
 const birthdayIdeas = [
   {
@@ -56,6 +56,31 @@ export const montserrat = Montserrat({
 
 export default function BirthdayPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getdata = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get('/eventsdashboard', {
+        params: {
+          title: 'Birthday'
+        }
+      });
+      const responseData = res.data.data;
+      setData(responseData && responseData.length > 0 ? responseData[0] : null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
 
   useEffect(() => {
     AOS.init({
@@ -66,15 +91,12 @@ export default function BirthdayPage() {
     });
   }, []);
 
-  const faqs = [
-    { q: "How far in advance should I book?", a: "Six to eight weeks is ideal; we can fast-track smaller parties sooner if suppliers are free." },
+  const faqs = data?.faqs?.map(faq => ({ q: faq.question, a: faq.answer })) || [
+    { q: "What's included in your birthday packages?", a: "Full event management, premium styling, catering coordination, entertainment and photography." },
     { q: "Do you organise cakes and entertainment?", a: "Yes—custom cakes, performers, DJs, live sax/strings, magicians and more." },
     { q: "Can you work in my home or Airbnb?", a: "Absolutely. We’ll assess access, noise and styling logistics, and obtain permissions where needed." },
     { q: "What about noise and neighbours?", a: "We’ll plan levels with the venue and follow local guidelines, recommending finishing times where appropriate." },
-    { q: "Can I add a surprise element?", a: "Love that. We’ll design a seamless reveal that your guest of honour won’t see coming." },
-    { q: "Do you provide bar service?", a: "Yes—RSA-certified staff with cocktail packages or BYO management." },
-    { q: "What happens if it rains?", a: "We build a weather-safe Plan B (marquee/indoor switch) into every outdoor brief." },
-    { q: "Accessibility considerations?", a: "We’ll ensure access, seating and amenities suit your guests’ needs." },
+
   ];
 
   const packages = [
@@ -85,27 +107,35 @@ export default function BirthdayPage() {
 
   return (
     <main className="bg-black text-white overflow-hidden">
-      {/* HERO */}
-      <HeroSection
-        topLabel="Celebrate in Style"
-        title="Magical"
-        highlightedText="Birthday Events"
-        description="From sunset rooftop cocktails in Surfers to a candle-lit private dinner in Burleigh, we curate birthday celebrations that feel effortless, elevated and absolutely you. Think: statement styling, next-level catering, crisp audio for speeches, and photographs that look editorial."
-        features={[
-          { title: "Curated Themes", desc: "Unique birthday themes tailored to your style and mood." },
-          { title: "Premium Venues", desc: "Handpicked venues that match your vision and guest count." },
-          { title: "Entertainment", desc: "Live DJs, performers, and interactive experiences." },
-          { title: "Seamless Planning", desc: "End-to-end event coordination for stress-free celebrations." },
-        ]}
-        ctaButtons={[
-          { text: "Book Your Event Now", type: "primary" },
-          // { text: "Explore Packages", type: "secondary" },
-        ]}
-        imageSrc={BirthdayImg}
-        imageAlt="Birthday Celebration"
-        overlayTitle="Sunset Rooftop Party"
-        overlayDesc="Downtown · 100 Guests · Premium Experience"
-      />
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-400 text-xl">Loading...</p>
+        </div>
+      ) : (
+        <>
+          {/* HERO */}
+          <HeroSection
+            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            title="Magical"
+            highlightedText={data?.hero?.title || "Birthday Events"}
+            description={data?.hero?.description || "From sunset rooftop cocktails in Surfers to a candle-lit private dinner in Burleigh, we curate birthday celebrations that feel effortless, elevated and absolutely you. Think: statement styling, next-level catering, crisp audio for speeches, and photographs that look editorial."}
+            features={data?.hero?.contents?.map(content => ({
+              title: content.title,
+              desc: content.description
+            })) || [
+              { title: "Curated Themes", desc: "Unique birthday themes tailored to your style and mood." },
+              { title: "Premium Venues", desc: "Handpicked venues that match your vision and guest count." },
+              { title: "Entertainment", desc: "Live DJs, performers, and interactive experiences." },
+              { title: "Seamless Planning", desc: "End-to-end event coordination for stress-free celebrations." },
+            ]}
+            ctaButtons={[
+              { text: "Book Your Event Now", type: "primary" },
+            ]}
+            imageSrc={data?.hero?.image || BirthdayImg}
+            imageAlt="Birthday Celebration"
+            overlayTitle="Sunset Rooftop Party"
+            overlayDesc="Downtown · 100 Guests · Premium Experience"
+          />
 
       {/* WHAT WE HANDLE */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-12 py-[60px] sm:py-[80px] text-white">
@@ -226,6 +256,8 @@ export default function BirthdayPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </main>
   );
 }
