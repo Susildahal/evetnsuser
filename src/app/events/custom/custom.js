@@ -107,7 +107,7 @@ export default function CustomPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            topLabel={data?.hero?.title || "Celebrate in Style"}
             title="Custom"
             highlightedText={data?.hero?.title || "Events"}
             description={data?.hero?.description || "Private brand experiences on an island deck? A secret supper in a warehouse with a single, glowing long table? A sunrise wellness event that ends in a champagne brunch? We craft one-off experiences built entirely around your story"}

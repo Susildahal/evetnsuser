@@ -107,9 +107,9 @@ export default function BeachPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            topLabel={data?.hero?.title || "Celebrate in Style"}
             title="Beach & "
-            highlightedText={data?.hero?.title || "Pool Events"}
+            highlightedText="Pool Events"
             description={data?.hero?.description || "From Broadbeach lawn lounges to private pool villas, we create sun-kissed parties with coastal elegance and a little wild freedom. Hydration bars, shade plans, waterproof audio and safety-first staffing keep it smooth from first splash to last song."}
             features={data?.hero?.contents?.map(content => ({
               title: content.title,

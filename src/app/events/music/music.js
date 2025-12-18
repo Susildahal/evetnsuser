@@ -107,9 +107,9 @@ export default function MusicPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.subtitle || "Music"}
+            topLabel={data?.hero?.title || "Music"}
             title="Music Night"
-            highlightedText={data?.hero?.title || "Music Events"}
+            highlightedText="Music Events"
             description={data?.hero?.description || "From intimate vinyl sessions to high-energy DJ takeovers, we build music-forward events with impeccable audio, atmospheric lighting and seamless stage management—so artists shine and guests feel the vibe from first track to encore."}
             features={data?.hero?.contents?.map(content => ({
               title: content.title,

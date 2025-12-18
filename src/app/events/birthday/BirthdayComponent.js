@@ -115,7 +115,7 @@ export default function BirthdayPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            topLabel={data?.hero?.title || "Celebrate in Style"}
             title="Magical"
             highlightedText={data?.hero?.title || "Birthday Events"}
             description={data?.hero?.description || "From sunset rooftop cocktails in Surfers to a candle-lit private dinner in Burleigh, we curate birthday celebrations that feel effortless, elevated and absolutely you. Think: statement styling, next-level catering, crisp audio for speeches, and photographs that look editorial."}

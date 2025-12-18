@@ -108,9 +108,9 @@ export default function BrandPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.subtitle || "Celebrate in Style"}
+            topLabel={data?.hero?.title || "Celebrate in Style"}
             title="Brand"
-            highlightedText={data?.hero?.title || "Launch Events"}
+            highlightedText="Launch Events"
             description={data?.hero?.description || "From product reveals to pop-up brand worlds, we design launch experiences that turn attention into advocacy. Expect crisp sound, cinematic lighting, on-brand styling and content capture that lives on long after doors close."}
             features={data?.hero?.contents?.map(content => ({
               title: content.title,
