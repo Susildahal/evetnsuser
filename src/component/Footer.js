@@ -203,7 +203,7 @@ const Footer = () => {
                         <li>
                             <a className="flex items-center gap-2 hover:text-[#D7B26A] transition duration-300">
                                 <FaPhoneAlt className="text-[#D7B26A] w-4 h-4" />
-                                <span className="text-[16px]">{data.phone || '+0426006760'}</span>
+                                <span className="text-[16px]">{data.phone || '0426006760'}</span>
                             </a>
                         </li>
                         <li>
