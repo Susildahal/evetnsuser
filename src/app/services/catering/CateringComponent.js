@@ -7,6 +7,7 @@ import AddonsSection from "@/component/Venue/Addon";
 import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
 import axiosInstance from "@/config/axios";
+import Skeleton from "@/UI/Skeleton";
 
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";

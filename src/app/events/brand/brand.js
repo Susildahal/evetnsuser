@@ -10,7 +10,7 @@ import { RunSheetNew } from "@/component/Birthday/Run-sheet";
 import { BirthdayHeroSection } from "@/component/Birthday/Hero";
 import { Cinzel, Montserrat } from "next/font/google";
 import { HeroSection } from "@/component/Birthday/Hero";
-
+import Skeleton from "@/UI/Skeleton";
 import BirthdayImg from "../../../../public/assets/img/Event of OC/Conference/Conference1.jpg";
 
 
@@ -102,7 +102,8 @@ export default function BrandPage() {
     <main className="bg-black text-white overflow-hidden">
       {loading ? (
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-400 text-xl">Loading...</p>
+          {/* <p className="text-gray-400 text-xl">Loading...</p> */}
+          <Skeleton />
         </div>
       ) : (
         <>

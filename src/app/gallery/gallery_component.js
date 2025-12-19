@@ -7,6 +7,7 @@ import SectionHeader from "@/component/Title";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axiosInstance from "@/config/axios";
+import Skeleton from "@/UI/Skeleton";
 // Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -87,7 +88,7 @@ const GalleryComponent = () => {
         data-aos="fade-up"
         data-aos-delay="200">
         {categoriesLoading ? (
-          <div className="text-center text-gray-400 py-4">Loading categories...</div>
+          <div className="text-center text-gray-400 py-4"><Skeleton /></div>
         ) : (
           categories.map((tab) => (
             <button

@@ -8,6 +8,7 @@ import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
 import { HeroSection } from "@/component/Birthday/Hero";
+import Skeleton from "@/UI/Skeleton";
 
 import { Cinzel, Montserrat } from "next/font/google";
 
@@ -101,7 +102,7 @@ export default function BeachPage() {
     <main className="bg-black text-white overflow-hidden">
       {loading ? (
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-400 text-xl">Loading...</p>
+          <Skeleton />
         </div>
       ) : (
         <>

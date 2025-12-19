@@ -13,6 +13,7 @@ import "aos/dist/aos.css";
 import axiosInstance from "@/config/axios";
 
 import BirthdayImg from "../../../../public/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg";
+import Skeleton from "@/UI/Skeleton";
 
 const birthdayIdeas = [
   {
@@ -109,7 +110,7 @@ export default function BirthdayPage() {
     <main className="bg-black text-white overflow-hidden">
       {loading ? (
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-400 text-xl">Loading...</p>
+     <Skeleton  />
         </div>
       ) : (
         <>
