@@ -115,7 +115,7 @@ const GalleryComponent = () => {
       {/* Gallery Grid */}
       {loading ? (
         <div className="text-center text-gray-400 py-20">
-          <p className={montserrat.className}>Loading gallery...</p>
+          <Skeleton />
         </div>
       ) : galleryItems.length === 0 ? (
         <div className="text-center text-gray-400 py-20">
