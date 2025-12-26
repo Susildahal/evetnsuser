@@ -57,13 +57,13 @@ const PortfolioFlipGrid = () => {
   const [loadingPreviews, setLoadingPreviews] = useState({});
   const [reviewForm, setReviewForm] = useState({});
   const [submittingReview, setSubmittingReview] = useState({});
-  const [response , setResponse] = useState(null);
+  const [response, setResponse] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 });
-  
+
   const fetchPortfolioitems = async (page = 1) => {
     try {
-      const res = await axiosInstance.get("/portfolio",{
+      const res = await axiosInstance.get("/portfolio", {
         params: {
           status: true,
           page: page,
@@ -82,7 +82,7 @@ const PortfolioFlipGrid = () => {
 
   const fetchPortfolioImages = async (portfolioId) => {
     if (portfolioImages[portfolioId]) return; // Already fetched
-    
+
     try {
       setLoadingImages(prev => ({ ...prev, [portfolioId]: true }));
       const res = await axiosInstance.get(`/portfolio/image/${portfolioId}`);
@@ -96,7 +96,7 @@ const PortfolioFlipGrid = () => {
 
   const fetchPortfolioPreviews = async (portfolioId) => {
     if (portfolioPreviews[portfolioId]) return; // Already fetched
-    
+
     try {
       setLoadingPreviews(prev => ({ ...prev, [portfolioId]: true }));
       const res = await axiosInstance.get(`/preview/${portfolioId}`);
@@ -110,34 +110,34 @@ const PortfolioFlipGrid = () => {
 
   const submitReview = async (portfolioId) => {
     const formData = reviewForm[portfolioId];
-    
+
     if (!formData?.name || !formData?.star || !formData?.description) {
       return;
     }
 
     try {
       setSubmittingReview(prev => ({ ...prev, [portfolioId]: true }));
-    const response = await axiosInstance.post(`/preview/${portfolioId}`, {
+      const response = await axiosInstance.post(`/preview/${portfolioId}`, {
         name: formData.name,
         star: formData.star,
         description: formData.description,
       }).then(() => {
 
- setResponse("Review submitted successfully!");
- setTimeout(() => {
-  setResponse(null);
- },3000);
+        setResponse("Review submitted successfully!");
+        setTimeout(() => {
+          setResponse(null);
+        }, 3000);
 
       });
-      
-      
+
+
       // Clear form
       setReviewForm(prev => ({ ...prev, [portfolioId]: { name: '', star: '', description: '' } }));
-      
+
       // Refresh reviews
       setPortfolioPreviews(prev => ({ ...prev, [portfolioId]: null }));
       fetchPortfolioPreviews(portfolioId);
-      
+
 
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -160,91 +160,91 @@ const PortfolioFlipGrid = () => {
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
       style.id = styleId;
-      style.textContent = `
-        /* Global Scrollbar for entire website */
-        ::-webkit-scrollbar {
-          width: 14px;
-          height: 14px;
-        }
+      // style.textContent = `
+      //   /* Global Scrollbar for entire website */
+      //   ::-webkit-scrollbar {
+      //     width: 14px;
+      //     height: 14px;
+      //   }
 
-        ::-webkit-scrollbar-track {
-          background: rgba(17, 17, 17, 0.8);
-          border-radius: 0;
-        }
+      //   ::-webkit-scrollbar-track {
+      //     background: rgba(17, 17, 17, 0.8);
+      //     border-radius: 0;
+      //   }
 
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #BE9545 0%, #D7B26A 50%, #BE9545 100%);
-          border-radius: 0;
-          border: 3px solid rgba(17, 17, 17, 0.8);
-          box-shadow: inset 0 0 10px rgba(215, 178, 106, 0.5);
-        }
+      //   ::-webkit-scrollbar-thumb {
+      //     background: linear-gradient(180deg, #BE9545 0%, #D7B26A 50%, #BE9545 100%);
+      //     border-radius: 0;
+      //     border: 3px solid rgba(17, 17, 17, 0.8);
+      //     box-shadow: inset 0 0 10px rgba(215, 178, 106, 0.5);
+      //   }
 
-        ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #D7B26A 0%, #E8C77A 50%, #D7B26A 100%);
-          box-shadow: inset 0 0 15px rgba(215, 178, 106, 0.7);
-        }
+      //   ::-webkit-scrollbar-thumb:hover {
+      //     background: linear-gradient(180deg, #D7B26A 0%, #E8C77A 50%, #D7B26A 100%);
+      //     box-shadow: inset 0 0 15px rgba(215, 178, 106, 0.7);
+      //   }
 
-        /* Firefox Global Scrollbar */
-        * {
-          scrollbar-width: thin;
-          scrollbar-color: #D7B26A rgba(17, 17, 17, 0.8);
-        }
+      //   /* Firefox Global Scrollbar */
+      //   * {
+      //     scrollbar-width: thin;
+      //     scrollbar-color: #D7B26A rgba(17, 17, 17, 0.8);
+      //   }
 
-        /* Custom Scrollbar for Portfolio Cards */
-        .portfolio-scrollable::-webkit-scrollbar {
-          width: 12px;
-          height: 12px;
-        }
+      //   /* Custom Scrollbar for Portfolio Cards */
+      //   .portfolio-scrollable::-webkit-scrollbar {
+      //     width: 12px;
+      //     height: 12px;
+      //   }
 
-        .portfolio-scrollable::-webkit-scrollbar-track {
-          background: rgba(26, 26, 26, 0.5);
-          border-radius: 6px;
-          border: 1px solid rgba(215, 178, 106, 0.1);
-        }
+      //   .portfolio-scrollable::-webkit-scrollbar-track {
+      //     background: rgba(26, 26, 26, 0.5);
+      //     border-radius: 6px;
+      //     border: 1px solid rgba(215, 178, 106, 0.1);
+      //   }
 
-        .portfolio-scrollable::-webkit-scrollbar-thumb {
-          background: linear-gradient(to bottom, #BE9545, #D7B26A);
-          border-radius: 6px;
-          border: 2px solid rgba(26, 26, 26, 0.5);
-          box-shadow: 0 0 10px rgba(215, 178, 106, 0.3);
-        }
+      //   .portfolio-scrollable::-webkit-scrollbar-thumb {
+      //     background: linear-gradient(to bottom, #BE9545, #D7B26A);
+      //     border-radius: 6px;
+      //     border: 2px solid rgba(26, 26, 26, 0.5);
+      //     box-shadow: 0 0 10px rgba(215, 178, 106, 0.3);
+      //   }
 
-        .portfolio-scrollable::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(to bottom, #D7B26A, #E8C77A);
-          box-shadow: 0 0 15px rgba(215, 178, 106, 0.5);
-        }
+      //   .portfolio-scrollable::-webkit-scrollbar-thumb:hover {
+      //     background: linear-gradient(to bottom, #D7B26A, #E8C77A);
+      //     box-shadow: 0 0 15px rgba(215, 178, 106, 0.5);
+      //   }
 
-        /* For Firefox */
-        .portfolio-scrollable {
-          scrollbar-width: thin;
-          scrollbar-color: #D7B26A rgba(26, 26, 26, 0.5);
-        }
+      //   /* For Firefox */
+      //   .portfolio-scrollable {
+      //     scrollbar-width: thin;
+      //     scrollbar-color: #D7B26A rgba(26, 26, 26, 0.5);
+      //   }
 
-        /* Custom scrollbar for review section */
-        .reviews-scroll::-webkit-scrollbar {
-          width: 8px;
-        }
+      //   /* Custom scrollbar for review section */
+      //   .reviews-scroll::-webkit-scrollbar {
+      //     width: 8px;
+      //   }
 
-        .reviews-scroll::-webkit-scrollbar-track {
-          background: rgba(17, 17, 17, 0.3);
-          border-radius: 4px;
-        }
+      //   .reviews-scroll::-webkit-scrollbar-track {
+      //     background: rgba(17, 17, 17, 0.3);
+      //     border-radius: 4px;
+      //   }
 
-        .reviews-scroll::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #BE9545 0%, #D7B26A 100%);
-          border-radius: 4px;
-          border: 1px solid rgba(26, 26, 26, 0.3);
-        }
+      //   .reviews-scroll::-webkit-scrollbar-thumb {
+      //     background: linear-gradient(180deg, #BE9545 0%, #D7B26A 100%);
+      //     border-radius: 4px;
+      //     border: 1px solid rgba(26, 26, 26, 0.3);
+      //   }
 
-        .reviews-scroll::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #D7B26A 0%, #E8C77A 100%);
-        }
+      //   .reviews-scroll::-webkit-scrollbar-thumb:hover {
+      //     background: linear-gradient(180deg, #D7B26A 0%, #E8C77A 100%);
+      //   }
 
-        .reviews-scroll {
-          scrollbar-width: thin;
-          scrollbar-color: #D7B26A rgba(17, 17, 17, 0.3);
-        }
-      `;
+      //   .reviews-scroll {
+      //     scrollbar-width: thin;
+      //     scrollbar-color: #D7B26A rgba(17, 17, 17, 0.3);
+      //   }
+      // `;
       document.head.appendChild(style);
     }
     return () => {
@@ -281,7 +281,7 @@ const PortfolioFlipGrid = () => {
 
   const handleTabClick = (index, tab, portfolioId) => {
     setActiveTabs((prev) => ({ ...prev, [index]: tab }));
-    
+
     // Fetch data when switching to Images or Reviews tabs
     if (tab === "Images" && portfolioId) {
       fetchPortfolioImages(portfolioId);
@@ -291,8 +291,8 @@ const PortfolioFlipGrid = () => {
   };
 
   const openLightbox = (images, index) => {
-    setLightboxImages(images.map((img) => ({ 
-      src: img?.src || img?.image || img 
+    setLightboxImages(images.map((img) => ({
+      src: img?.src || img?.image || img
     })));
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -313,313 +313,313 @@ const PortfolioFlipGrid = () => {
         close={() => setLightboxOpen(false)}
         slides={lightboxImages}
       />
-<div className="">
-      <div
-        className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 max-w-7xl mx-auto"
-      >
-        {Portfolioitems.map((project, index) => {
-          const activeTab = activeTabs[index] || "Description";
-          const isFlipped = flippedCards[index] || false;
+      <div className="">
+        <div
+          className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 max-w-7xl mx-auto"
+        >
+          {Portfolioitems.map((project, index) => {
+            const activeTab = activeTabs[index] || "Description";
+            const isFlipped = flippedCards[index] || false;
 
-          return (
-            <div
-              key={index}
-              className="perspective h-[500px] sm:h-[450px] md:h-[500px] w-full cursor-pointer"
-              ref={(el) => (cardRefs.current[index] = el)}
-              onClick={() => toggleFlip(index)}
-            >
+            return (
               <div
-                className={`relative w-full h-full transition-transform duration-700 transform-style preserve-3d rounded-3xl shadow-2xl
-                  ${isFlipped ? "rotate-x-180" : ""}`}
+                key={index}
+                className="perspective h-[500px] sm:h-[450px] md:h-[500px] w-full cursor-pointer"
+                ref={(el) => (cardRefs.current[index] = el)}
+                onClick={() => toggleFlip(index)}
               >
-                {/* Front Side */}
-                <div className="absolute w-full h-full backface-hidden rounded-3xl overflow-hidden bg-[#111]">
-                  <img
-                    src={project.image?.src || project.image}
-                    alt={project.title}
-                    className="object-cover w-full h-full rounded-3xl hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 to-transparent rounded-b-3xl text-white">
-                    <span className={`text-[#D7B26A] ${montserrat.className}`}>
-{ new Date(project.date).toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-})}                    </span>
-                    <h3
-                      className="text-[26px] md:text-[28px] font-medium mb-1 tracking-wide"
-                      style={{ fontFamily: "var(--font-cinzel-regular)" }}
-                    >
-                      {project.title}
-                    </h3>
-                    <p
-                      className={`text-gray-300 text-[14px] md:text-[15px] ${montserrat.className}`}
-                    >
-                      {project.subtitle}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Back Side */}
-                <div className="absolute w-full h-full rotate-x-180 backface-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-3xl overflow-auto portfolio-scrollable p-4 sm:p-6 text-white border-2 border-[#D7B26A] shadow-2xl">
-                  <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
-                    {["Description", "Images", "Reviews"].map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleTabClick(index, tab, project._id || project.id);
-                        }}
-                        className={`${montserrat.className} px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer transform hover:scale-105 ${activeTab === tab
-                          ? "bg-gradient-to-r from-[#BE9545] to-[#D7B26A] text-black shadow-lg"
-                          : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                          }`}
+                <div
+                  className={`relative w-full h-full transition-transform duration-700 transform-style preserve-3d rounded-3xl shadow-2xl
+                  ${isFlipped ? "rotate-x-180" : ""}`}
+                >
+                  {/* Front Side */}
+                  <div className="absolute w-full h-full backface-hidden rounded-3xl overflow-hidden bg-[#111]">
+                    <img
+                      src={project.image?.src || project.image}
+                      alt={project.title}
+                      className="object-cover w-full h-full rounded-3xl hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 to-transparent rounded-b-3xl text-white">
+                      <span className={`text-[#D7B26A] ${montserrat.className}`}>
+                        {new Date(project.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}                    </span>
+                      <h3
+                        className="text-[26px] md:text-[28px] font-medium mb-1 tracking-wide"
+                        style={{ fontFamily: "var(--font-cinzel-regular)" }}
                       >
-                        {tab}
-                      </button>
-                    ))}
+                        {project.title}
+                      </h3>
+                      <p
+                        className={`text-gray-300 text-[14px] md:text-[15px] ${montserrat.className}`}
+                      >
+                        {project.subtitle}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="text-white mt-2 text-[15px] md:text-[16px] font-montserrat overflow-auto portfolio-scrollable">
-                    {/* Description */}
-                    {activeTab === "Description" && (
-                      <div className="space-y-3 pt-5">
-                        <div
-                          className={`${montserrat.className} text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[28px] font-semibold text-[#D7B26A]`}
+                  {/* Back Side */}
+                  <div className="absolute w-full h-full rotate-x-180 backface-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-3xl overflow-auto portfolio-scrollable p-4 sm:p-6 text-white border-2 border-[#D7B26A] shadow-2xl">
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
+                      {["Description", "Images", "Reviews"].map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleTabClick(index, tab, project._id || project.id);
+                          }}
+                          className={`${montserrat.className} px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer transform hover:scale-105 ${activeTab === tab
+                            ? "bg-gradient-to-r from-[#BE9545] to-[#D7B26A] text-black shadow-lg"
+                            : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                            }`}
                         >
-                          {project.title}
-                        </div>
+                          {tab}
+                        </button>
+                      ))}
+                    </div>
 
-                        <p
-                          className={`${montserrat.className} text-justify leading-relaxed`}
-                        >
-                          {project.description}
-                        </p>
-
-                        {/* Buttons */}
-
-                        <div className="hidden sm:flex items-center gap-6 pt-8">
-                          <button
-                            // onClick={() => router.push("/about")}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              router.push("/about");
-                            }}
-                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
+                    <div className="text-white mt-2 text-[15px] md:text-[16px] font-montserrat overflow-auto portfolio-scrollable">
+                      {/* Description */}
+                      {activeTab === "Description" && (
+                        <div className="space-y-3 pt-5">
+                          <div
+                            className={`${montserrat.className} text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[28px] font-semibold text-[#D7B26A]`}
                           >
-                            Know More
-                          </button>
-
-                          <button
-                            // onClick={() => setIsModalOpen(true)}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsModalOpen(true);
-                            }}
-                            className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
-                          >
-                            Plan Events Now
-                          </button>
-
-                          <ThreeStepModal
-                            isOpen={isModalOpen}
-                            onClose={() => setIsModalOpen(false)}
-                          />
-                        </div>
-
-                      </div>
-                    )}
-
-                    {/* Images */}
-                    {activeTab === "Images" && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
-                        {loadingImages[project._id || project.id] ? (
-                          <div className="col-span-full text-center text-gray-400 py-8">
-                            <p>Loading images...</p>
+                            {project.title}
                           </div>
-                        ) : (
-                          (portfolioImages[project._id || project.id] || project.images || []).map((img, idx) => (
-                            <div
-                              key={idx}
-                         className="w-full aspect-square object-cover rounded-lg h-[120px] sm:h-[160px] md:h-[230px] md:w-[230px] overflow-hidden shadow-md cursor-pointer"
+
+                          <p
+                            className={`${montserrat.className} text-justify leading-relaxed`}
+                          >
+                            {project.description}
+                          </p>
+
+                          {/* Buttons */}
+
+                          <div className="hidden sm:flex items-center gap-6 pt-8">
+                            <button
+                              // onClick={() => router.push("/about")}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                const imagesToShow = portfolioImages[project._id || project.id] || project.images || [];
-                                openLightbox(imagesToShow, idx);
+                                router.push("/about");
                               }}
+                              className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
                             >
-                              <img
-                                src={img?.src || img?.image || img}
-                                alt={`${project.title} image ${idx + 1}`}
-                                className="object-cover w-full h-full"
-                              />
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    )}
+                              Know More
+                            </button>
 
-                    {/* Reviews */}
-                    {activeTab === "Reviews" && (
-                      <div className="flex flex-col gap-6 mt-2 max-h-[350px] overflow-y-auto reviews-scroll pr-2">
-                        {loadingPreviews[project._id || project.id] ? (
-                          <div className="text-center text-gray-400 py-8">
-                            <p>Loading reviews...</p>
+                            <button
+                              // onClick={() => setIsModalOpen(true)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setIsModalOpen(true);
+                              }}
+                              className={`${raleway.className} inline-block px-6 py-2 rounded-md transition-shadow shadow-sm bg-linear-to-b from-[#BE9545] to-[#7A5E39] text-white cursor-pointer`}
+                            >
+                              Plan Events Now
+                            </button>
+
+                            <ThreeStepModal
+                              isOpen={isModalOpen}
+                              onClose={() => setIsModalOpen(false)}
+                            />
                           </div>
-                        ) : (
-                          (portfolioPreviews[project._id || project.id] || project.reviews || []).map((review, idx) => (
-                          <div
-                            key={idx}
-                            className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 hover:bg-gray-700/80 transition-colors duration-300"
-                          >
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-12 lg:h-12 xl:w-14 xl:h-14 flex items-center justify-center rounded-full bg-[#D7B26A] text-black font-semibold text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl">
-                              {review.name.split(" ").map((n) => n[0]).join("")}
+
+                        </div>
+                      )}
+
+                      {/* Images */}
+                      {activeTab === "Images" && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
+                          {loadingImages[project._id || project.id] ? (
+                            <div className="col-span-full text-center text-gray-400 py-8">
+                              <p>Loading images...</p>
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-center justify-between mb-1">
-                                <div className=" flex flex-col">
-                                <p>{review.name}</p>
-                                <h4
-                                  className={`font-semibold text-white ${montserrat.className}`}
-                                >
-                                  {review.description}
-                                </h4>
+                          ) : (
+                            (portfolioImages[project._id || project.id] || project.images || []).map((img, idx) => (
+                              <div
+                                key={idx}
+                                className="w-full aspect-square object-cover rounded-lg h-[120px] sm:h-[160px] md:h-[230px] md:w-[230px] overflow-hidden shadow-md cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const imagesToShow = portfolioImages[project._id || project.id] || project.images || [];
+                                  openLightbox(imagesToShow, idx);
+                                }}
+                              >
+                                <img
+                                  src={img?.src || img?.image || img}
+                                  alt={`${project.title} image ${idx + 1}`}
+                                  className="object-cover w-full h-full"
+                                />
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+
+                      {/* Reviews */}
+                      {activeTab === "Reviews" && (
+                        <div className="flex flex-col gap-6 mt-2 max-h-[350px] overflow-y-auto reviews-scroll pr-2">
+                          {loadingPreviews[project._id || project.id] ? (
+                            <div className="text-center text-gray-400 py-8">
+                              <p>Loading reviews...</p>
+                            </div>
+                          ) : (
+                            (portfolioPreviews[project._id || project.id] || project.reviews || []).map((review, idx) => (
+                              <div
+                                key={idx}
+                                className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 hover:bg-gray-700/80 transition-colors duration-300"
+                              >
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-12 lg:h-12 xl:w-14 xl:h-14 flex items-center justify-center rounded-full bg-[#D7B26A] text-black font-semibold text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl">
+                                  {review.name.split(" ").map((n) => n[0]).join("")}
                                 </div>
-                                <div className="flex items-center gap-1">
-                                  {Array.from({ length:(review.star) }).map((_, starIdx) => (
-                                    <svg
-                                      key={starIdx}
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20"
-                                      fill={
-                                        starIdx < Math.floor(review.star)
-                                          ? "#FFD700"
-                                          : starIdx < review.star
-                                            ? "url(#halfStar)"
-                                            : "#555"
-                                      }
-                                      className="w-4 h-4"
-                                    >
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.625a1 1 0 00.95.69h3.862c.969 0 1.371 1.24.588 1.81l-3.124 2.27a1 1 0 00-.364 1.118l1.18 3.625c.3.921-.755 1.688-1.54 1.118l-3.124-2.27a1 1 0 00-1.176 0l-3.124 2.27c-.784.57-1.838-.197-1.539-1.118l1.18-3.625a1 1 0 00-.364-1.118L2.15 9.052c-.783-.57-.38-1.81.588-1.81h3.862a1 1 0 00.95-.69l1.18-3.625z" />
-                                    </svg>
-                                  ))}
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <div className=" flex flex-col">
+                                      <p>{review.name}</p>
+                                      <h4
+                                        className={`font-semibold text-white ${montserrat.className}`}
+                                      >
+                                        {review.description}
+                                      </h4>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      {Array.from({ length: (review.star) }).map((_, starIdx) => (
+                                        <svg
+                                          key={starIdx}
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          viewBox="0 0 20 20"
+                                          fill={
+                                            starIdx < Math.floor(review.star)
+                                              ? "#FFD700"
+                                              : starIdx < review.star
+                                                ? "url(#halfStar)"
+                                                : "#555"
+                                          }
+                                          className="w-4 h-4"
+                                        >
+                                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.625a1 1 0 00.95.69h3.862c.969 0 1.371 1.24.588 1.81l-3.124 2.27a1 1 0 00-.364 1.118l1.18 3.625c.3.921-.755 1.688-1.54 1.118l-3.124-2.27a1 1 0 00-1.176 0l-3.124 2.27c-.784.57-1.838-.197-1.539-1.118l1.18-3.625a1 1 0 00-.364-1.118L2.15 9.052c-.783-.57-.38-1.81.588-1.81h3.862a1 1 0 00.95-.69l1.18-3.625z" />
+                                        </svg>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <p
+                                    className={`text-gray-200 text-sm ${montserrat.className}`}
+                                  >
+                                    {review.comment}
+                                  </p>
                                 </div>
                               </div>
-                              <p
-                                className={`text-gray-200 text-sm ${montserrat.className}`}
-                              >
-                                {review.comment}
-                              </p>
-                            </div>
+                            ))
+                          )}
+
+                          {/* Static Review Form */}
+                          <div className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col gap-4 mt-6">
+                            <h3
+                              className={`text-white font-semibold ${montserrat.className}`}
+                            >
+                              Leave a Review
+                            </h3>
+
+                            <input
+                              type="text"
+                              placeholder="Your Name"
+                              value={reviewForm[project._id || project.id]?.name || ''}
+                              onChange={(e) => {
+                                const portfolioId = project._id || project.id;
+                                setReviewForm(prev => ({
+                                  ...prev,
+                                  [portfolioId]: { ...prev[portfolioId], name: e.target.value }
+                                }));
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                            />
+
+                            <select
+                              value={reviewForm[project._id || project.id]?.star || ''}
+                              onChange={(e) => {
+                                const portfolioId = project._id || project.id;
+                                setReviewForm(prev => ({
+                                  ...prev,
+                                  [portfolioId]: { ...prev[portfolioId], star: e.target.value }
+                                }));
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                            >
+                              <option value="">Select Rating</option>
+                              <option value="1">1 Star</option>
+                              <option value="2">2 Stars</option>
+                              <option value="3">3 Stars</option>
+                              <option value="4">4 Stars</option>
+                              <option value="5">5 Stars</option>
+                            </select>
+
+                            <textarea
+                              placeholder="Write your review..."
+                              rows={3}
+                              value={reviewForm[project._id || project.id]?.description || ''}
+                              onChange={(e) => {
+                                const portfolioId = project._id || project.id;
+                                setReviewForm(prev => ({
+                                  ...prev,
+                                  [portfolioId]: { ...prev[portfolioId], description: e.target.value }
+                                }));
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
+                            ></textarea>
+
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                submitReview(project._id || project.id);
+                              }}
+                              disabled={submittingReview[project._id || project.id]}
+                              className="px-4 py-2 bg-[#D7B26A] text-black font-semibold rounded-md hover:bg-[#c4a240] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {submittingReview[project._id || project.id] ? 'Submitting...' : 'Submit Review'}
+
+                            </button>
+
+                            {response && <span className="ml-2 mt-3 text-green-600 font-normal">{response}</span>}
                           </div>
-                        ))
-                        )}
-
-                        {/* Static Review Form */}
-                        <div className="bg-gray-800/70 p-4 rounded-xl shadow-lg flex flex-col gap-4 mt-6">
-                          <h3
-                            className={`text-white font-semibold ${montserrat.className}`}
-                          >
-                            Leave a Review
-                          </h3>
-
-                          <input
-                            type="text"
-                            placeholder="Your Name"
-                            value={reviewForm[project._id || project.id]?.name || ''}
-                            onChange={(e) => {
-                              const portfolioId = project._id || project.id;
-                              setReviewForm(prev => ({
-                                ...prev,
-                                [portfolioId]: { ...prev[portfolioId], name: e.target.value }
-                              }));
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
-                          />
-
-                          <select 
-                            value={reviewForm[project._id || project.id]?.star || ''}
-                            onChange={(e) => {
-                              const portfolioId = project._id || project.id;
-                              setReviewForm(prev => ({
-                                ...prev,
-                                [portfolioId]: { ...prev[portfolioId], star: e.target.value }
-                              }));
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
-                          >
-                            <option value="">Select Rating</option>
-                            <option value="1">1 Star</option>
-                            <option value="2">2 Stars</option>
-                            <option value="3">3 Stars</option>
-                            <option value="4">4 Stars</option>
-                            <option value="5">5 Stars</option>
-                          </select>
-
-                          <textarea
-                            placeholder="Write your review..."
-                            rows={3}
-                            value={reviewForm[project._id || project.id]?.description || ''}
-                            onChange={(e) => {
-                              const portfolioId = project._id || project.id;
-                              setReviewForm(prev => ({
-                                ...prev,
-                                [portfolioId]: { ...prev[portfolioId], description: e.target.value }
-                              }));
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-md bg-gray-900 text-white border border-gray-700 focus:outline-none focus:border-[#D7B26A]"
-                          ></textarea>
-
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              submitReview(project._id || project.id);
-                            }}
-                            disabled={submittingReview[project._id || project.id]}
-                            className="px-4 py-2 bg-[#D7B26A] text-black font-semibold rounded-md hover:bg-[#c4a240] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {submittingReview[project._id || project.id] ? 'Submitting...' : 'Submit Review'}
-                        
-                          </button>
-
-                              {response && <span className="ml-2 mt-3 text-green-600 font-normal">{response}</span>}
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      
-      {/* Pagination Controls */}
-      {pagination.total > pagination.limit && (
-        <div className="flex justify-between  gap-6 mt-12 mb-8 max-w-7xl mx-auto">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
-            className="px-6 py-3 bg-gradient-to-r from-[#BE9545] to-[#7A5E39] text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(190,149,69,0.5)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
-            style={{ fontFamily: "var(--font-montserrat)" }}
-          >
-            Previous
-          </button>
-          
-          <button
-            onClick={() => setCurrentPage(prev => prev + 1)}
-            disabled={currentPage >= Math.ceil(pagination.total / pagination.limit)}
-            className="px-6 py-3 bg-gradient-to-r from-[#BE9545] to-[#7A5E39] text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(190,149,69,0.5)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
-            style={{ fontFamily: "var(--font-montserrat)" }}
-          >
-            Next
-          </button>
+            );
+          })}
         </div>
-      )}
-    </div>
+
+        {/* Pagination Controls */}
+        {pagination.total > pagination.limit && (
+          <div className="flex justify-between  gap-6 mt-12 mb-8 max-w-7xl mx-auto">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-6 py-3 bg-gradient-to-r from-[#BE9545] to-[#7A5E39] text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(190,149,69,0.5)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              style={{ fontFamily: "var(--font-montserrat)" }}
+            >
+              Previous
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(prev => prev + 1)}
+              disabled={currentPage >= Math.ceil(pagination.total / pagination.limit)}
+              className="px-6 py-3 bg-gradient-to-r from-[#BE9545] to-[#7A5E39] text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(190,149,69,0.5)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              style={{ fontFamily: "var(--font-montserrat)" }}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
 
       <style jsx>{`
         .perspective {
