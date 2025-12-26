@@ -95,8 +95,8 @@ export default function HeroSection() {
                             custom={1}>
                             Birthdays , beach & pool parties, brand launches, hens, live music-planned end-to-end.
                         </motion.span> */}
-                        <div className="flex gap-4 pb-5">
-                            {/* Book Now */}
+                        {/* <div className="flex gap-4 pb-5">
+                        
                             <div>
                                 <button
                                     onClick={() => setIsModalOpen(true)}
@@ -114,25 +114,23 @@ export default function HeroSection() {
                                 />
                             </div>
 
-                            {/* Contact Organiser */}
                             <a
                                 href="tel:0426006760"
                                 className="group relative inline-flex items-center justify-center text-white px-6 py-2 rounded-lg font-normal border border-white hover:border-transparent overflow-hidden transition-all duration-300"
                             >
                                 <span className="relative z-10">Contact Organiser</span>
 
-                                {/* Smooth Hover Gradient Overlay */}
                                 <span
                                     className="absolute inset-0 rounded-lg bg-gradient-to-b from-[#BE9546] to-[#7A5E39] 
                                     opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                                 ></span>
 
-                                {/* Border disappears smoothly on hover */}
+                            
                                 <span className="absolute inset-0 rounded-lg border border-transparent group-hover:border-transparent transition-all duration-300"></span>
                             </a>
 
 
-                        </div>
+                        </div> */}
                     </div>
                 </section>
             </div>

@@ -441,7 +441,7 @@ const PortfolioFlipGrid = () => {
                           (portfolioImages[project._id || project.id] || project.images || []).map((img, idx) => (
                             <div
                               key={idx}
-                              className="w-full aspect-square rounded-lg overflow-hidden shadow-md cursor-pointer"
+                         className="w-full aspect-square object-cover rounded-lg h-[120px] sm:h-[160px] md:h-[230px] md:w-[230px] overflow-hidden shadow-md cursor-pointer"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const imagesToShow = portfolioImages[project._id || project.id] || project.images || [];
