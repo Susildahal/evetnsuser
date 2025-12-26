@@ -73,6 +73,8 @@ export default function HeroSection() {
                         autoPlay
                         muted
                         loop
+                 playsInline preload="auto"
+                            
                     />
 
 
