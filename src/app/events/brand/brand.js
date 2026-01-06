@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaSignInAlt, FaUsers, FaFileAlt, FaChartLine } from "react-icons/fa";
+import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake,FaCarSide } from "react-icons/fa";
 import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
@@ -109,7 +109,7 @@ export default function BrandPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.title || "Celebrate in Style"}
+            topLabel={ "Celebrate in Style"}
             title="Brand"
             highlightedText="Launch Events"
             description={data?.hero?.description || "From product reveals to pop-up brand worlds, we design launch experiences that turn attention into advocacy. Expect crisp sound, cinematic lighting, on-brand styling and content capture that lives on long after doors close."}
@@ -148,6 +148,12 @@ export default function BrandPage() {
             { icon: <FaStar />, title: "Style & Design", text: "Concepting, mood boards, tablescapes, signage, balloons/installs." },
             { icon: <FaGlassCheers />, title: "Floral & Decor", text: "Coastal luxe arrangements, sculptural pieces, photo-worthy backdrops." },
             { icon: <FaStar />, title: "Photography", text: "Documentary-style coverage, portrait set-ups, highlight reels." },
+            {
+  icon: <FaCarSide />,
+  title: "Transport",
+  text: "Guest shuttles, private transfers, VIP arrivals, and seamless arrival & departure coordination."
+}
+
           ].map((item, i) => (
             <motion.div
               key={i}

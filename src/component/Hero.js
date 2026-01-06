@@ -58,23 +58,16 @@ export default function HeroSection() {
         <div className="bg-black mt-[83px]">
             <div className="">
                 <section className="relative w-full h-[45vh] sm:h-[85vh] overflow-hidden flex items-center justify-center">
-                    {/* Video Background */}
-                    {/* <video
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[90%] object-cover rounded-t-none rounded-b-[20px]"
-                        src="/assets/videos/20251203-112619.mp4"
-                        autoPlay
-                        muted
-                        loop>
-                    </video> */}
+                
 
-                    <video
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] sm:w-[75%] md:w-[60%] h-[350px] sm:h-[260px] md:h-[90%] object-cover rounded-t-none rounded-b-[20px]"
-                        src="/assets/videos/20251203-112619.mp4"
+                  <video
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] sm:h-[260px] md:h-full object-cover rounded-t-none rounded-b-[20px]"
+                        src="/video.mp4"
                         autoPlay
+                        playsInline
+                        preload="auto"
                         muted
                         loop
-                 playsInline preload="auto"
-                            
                     />
 
 
@@ -83,56 +76,7 @@ export default function HeroSection() {
 
                     {/* Hero Content */}
                     <div className="container mx-auto relative z-10 flex flex-col items-center justify-end h-full text-center px-4">
-                        {/* <motion.div className={`${cormorant.className} text-white text-4xl md:text-[78px] font-semibold mb-4`}
-                            variants={textVariant}
-                            initial="hidden"
-                            animate="visible"
-                            custom={0}>
-                            Where events become <br /> experiences
-                        </motion.div>
-                        <motion.span className={`font-medium text-gray-300 text-lg md:text-[16px] mb-8 max-w-2xl ${raleway.className}`}
-                            variants={textVariant}
-                            initial="hidden"
-                            animate="visible"
-                            custom={1}>
-                            Birthdays , beach & pool parties, brand launches, hens, live music-planned end-to-end.
-                        </motion.span> */}
-                        {/* <div className="flex gap-4 pb-5">
                         
-                            <div>
-                                <button
-                                    onClick={() => setIsModalOpen(true)}
-                                    className="relative inline-flex items-center justify-center text-white px-6 py-2 rounded-md font-normal transition-all duration-300 overflow-hidden"
-                                    style={{
-                                        background: "linear-gradient(to bottom, #BE9546, #7A5E39)",
-                                    }}>
-                                    <span className={`${raleway.className} font-medium relative z-10 cursor-pointer`}>Book Now</span>
-                                    <span className={`${raleway.className} font-medium absolute inset-0 bg-linear-to-b from-[#7A5E39] to-[#BE9546] opacity-0 hover:opacity-20 rounded-lg transition-opacity duration-300`}></span>
-                                </button>
-
-                                <ThreeStepModal
-                                    isOpen={isModalOpen}
-                                    onClose={() => setIsModalOpen(false)}
-                                />
-                            </div>
-
-                            <a
-                                href="tel:0426006760"
-                                className="group relative inline-flex items-center justify-center text-white px-6 py-2 rounded-lg font-normal border border-white hover:border-transparent overflow-hidden transition-all duration-300"
-                            >
-                                <span className="relative z-10">Contact Organiser</span>
-
-                                <span
-                                    className="absolute inset-0 rounded-lg bg-gradient-to-b from-[#BE9546] to-[#7A5E39] 
-                                    opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                                ></span>
-
-                            
-                                <span className="absolute inset-0 rounded-lg border border-transparent group-hover:border-transparent transition-all duration-300"></span>
-                            </a>
-
-
-                        </div> */}
                     </div>
                 </section>
             </div>

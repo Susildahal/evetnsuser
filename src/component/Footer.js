@@ -134,7 +134,7 @@ const Footer = () => {
                         QUICK LINKS
                     </h3>
                     <ul className={`space-y-2 text-[#b9b9b9] ${raleway.className}`}>
-                        {["Home", "About Us", "Gallery", "FAQs"].map((item, idx) => (
+                        {["Home", "About", "Gallery", "FAQs"].map((item, idx) => (
                             <li key={idx}>
                                 <Link
                                     href={`/${item === "Home" ? "" : item.toLowerCase().replace(/\s+/g, "-")}`}

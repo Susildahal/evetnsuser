@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/config/axios";
 
 
+
 import { Cinzel, Montserrat, Raleway } from "next/font/google";
 
 export const cinzel = Cinzel({
@@ -476,16 +477,12 @@ const PortfolioFlipGrid = () => {
                                   {review.name.split(" ").map((n) => n[0]).join("")}
                                 </div>
                                 <div className="flex-1">
-                                  <div className="flex items-center justify-between mb-1">
+                                  <div className="flex   flex-col justify-between mb-1">
                                     <div className=" flex flex-col">
                                       <p>{review.name}</p>
-                                      <h4
-                                        className={`font-semibold text-white ${montserrat.className}`}
-                                      >
-                                        {review.description}
-                                      </h4>
-                                    </div>
-                                    <div className="flex items-center gap-1">
+
+
+                                      <div className="flex items-center gap-1">
                                       {Array.from({ length: (review.star) }).map((_, starIdx) => (
                                         <svg
                                           key={starIdx}
@@ -504,7 +501,16 @@ const PortfolioFlipGrid = () => {
                                         </svg>
                                       ))}
                                     </div>
+                                    
+                                    </div>
+                                    
+                                    
                                   </div>
+                                    <h4
+                                        className={`font-semibold text-white ${montserrat.className}`}
+                                      >
+                                        {review.description}
+                                      </h4>
                                   <p
                                     className={`text-gray-200 text-sm ${montserrat.className}`}
                                   >

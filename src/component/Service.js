@@ -53,7 +53,7 @@ const venueImages = [
   { src: ServiceTwo, title: "Byron Bay", link: "/services/venuesourcing" },
   { src: ServiceThree, title: "Sunshine Coast", link: "/services/venuesourcing" },
   { src: ServiceFour, title: "Brisbane", link: "/services/venuesourcing" },
-  { src: ServiceFive, title: "Sydney", link: "/services/venuesourcing" },
+  { src: ServiceFive, title: " Gold Coast", link: "/services/venuesourcing" },
 ];
 
 export default function ServicesMarquee() {

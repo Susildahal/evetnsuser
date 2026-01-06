@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaPalette, FaGlobeAmericas, FaPlane, FaLaptop } from "react-icons/fa";
+import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake,FaCarSide, FaPalette, FaGlobeAmericas, FaPlane, FaLaptop } from "react-icons/fa";
 import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
@@ -109,7 +109,7 @@ export default function CustomPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.title || "Celebrate in Style"}
+            topLabel="Celebrate in Style"
             title="Custom"
             highlightedText={data?.hero?.title || "Events"}
             description={data?.hero?.description || "Private brand experiences on an island deck? A secret supper in a warehouse with a single, glowing long table? A sunrise wellness event that ends in a champagne brunch? We craft one-off experiences built entirely around your story"}
@@ -149,6 +149,11 @@ export default function CustomPage() {
             { icon: <FaStar />, title: "Style & Design", text: "Concepting, mood boards, tablescapes, signage, balloons/installs." },
             { icon: <FaGlassCheers />, title: "Floral & Decor", text: "Coastal luxe arrangements, sculptural pieces, photo-worthy backdrops." },
             { icon: <FaStar />, title: "Photography", text: "Documentary-style coverage, portrait set-ups, highlight reels." },
+                    {
+  icon: <FaCarSide />,
+  title: "Transport",
+  text: "Guest shuttles, private transfers, VIP arrivals, and seamless arrival & departure coordination."
+}
           ].map((item, i) => (
             <motion.div
               key={i}

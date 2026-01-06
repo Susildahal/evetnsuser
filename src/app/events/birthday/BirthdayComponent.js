@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState, useEffect } from "react";
-import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaSun, FaUtensils, FaGlassMartiniAlt } from "react-icons/fa";
+import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaCarSide  } from "react-icons/fa";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
 import { RunSheetNew } from "@/component/Birthday/Run-sheet";
@@ -116,7 +116,7 @@ export default function BirthdayPage() {
         <>
           {/* HERO */}
           <HeroSection
-            topLabel={data?.hero?.title || "Celebrate in Style"}
+            topLabel="Celebrate in Style"   
             title="Magical"
             highlightedText={data?.hero?.title || "Birthday Events"}
             description={data?.hero?.description || "From sunset rooftop cocktails in Surfers to a candle-lit private dinner in Burleigh, we curate birthday celebrations that feel effortless, elevated and absolutely you. Think: statement styling, next-level catering, crisp audio for speeches, and photographs that look editorial."}
@@ -158,6 +158,12 @@ export default function BirthdayPage() {
             { icon: <FaStar />, title: "Style & Design", text: "Concepting, mood boards, tablescapes, signage, balloons/installs." },
             { icon: <FaGlassCheers />, title: "Floral & Decor", text: "Coastal luxe arrangements, sculptural pieces, photo-worthy backdrops." },
             { icon: <FaStar />, title: "Photography", text: "Documentary-style coverage, portrait set-ups, highlight reels." },
+{
+  icon: <FaCarSide />,
+  title: "Transport",
+  text: "Guest shuttles, private transfers, VIP arrivals, and seamless arrival & departure coordination."
+}
+
           ].map((item, i) => (
             <motion.div
               key={item.title}

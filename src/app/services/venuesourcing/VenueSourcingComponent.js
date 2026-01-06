@@ -6,18 +6,13 @@ import VenueStyles from "@/component/Venue/Venue-style";
 import AddonsSection from "@/component/Venue/Addon";
 import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
+ import Skeleton from "@/UI/Skeleton";
 
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
 import axiosInstance from "@/config/axios";
 
-import {
-  Building2,
-  Sun,
-  Home,
-  GlassWater,
-  Ship, Car, Hotel, ShieldCheck, MapPin, Users, UtensilsCrossed, Headphones, Sparkles, Flower2, Camera
-} from "lucide-react";
+
 
 import { FaBuilding, FaUmbrellaBeach, FaHome, FaCocktail, FaImage, FaWarehouse, FaHotel, FaTree, FaCar, FaShieldAlt, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 
@@ -178,7 +173,7 @@ const VenueSourcingComponent = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="px-8 py-3 bg-[#BE9545] text-white rounded-full font-medium tracking-wide hover:bg-[#a7843e] transition-all duration-300 cursor-pointer"
               >
-                Book You Event Now
+                Book Your Event Now
               </motion.button>
 
               <ThreeStepModal

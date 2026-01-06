@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake, FaGuitar, FaMoon } from "react-icons/fa";
+import { FaGlassCheers, FaMusic, FaStar, FaMapMarkerAlt, FaBirthdayCake,FaCarSide, FaGuitar, FaMoon } from "react-icons/fa";
 import axiosInstance from "@/config/axios";
 import SignatureIdeas from "@/component/Birthday/Signature-ideas";
 import { PackagesComponent } from "@/component/Birthday/Birthday-package";
@@ -148,6 +148,11 @@ export default function MusicPage() {
             { icon: <FaStar />, title: "Style & Design", text: "Concepting, mood boards, tablescapes, signage, balloons/installs." },
             { icon: <FaGlassCheers />, title: "Floral & Decor", text: "Coastal luxe arrangements, sculptural pieces, photo-worthy backdrops." },
             { icon: <FaStar />, title: "Photography", text: "Documentary-style coverage, portrait set-ups, highlight reels." },
+                    {
+  icon: <FaCarSide />,
+  title: "Transport",
+  text: "Guest shuttles, private transfers, VIP arrivals, and seamless arrival & departure coordination."
+}
           ].map((item, i) => (
             <motion.div
               key={i}

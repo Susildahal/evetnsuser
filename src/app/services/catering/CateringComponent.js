@@ -171,7 +171,7 @@ const VenueSourcingComponent = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="px-8 py-3 bg-[#BE9545] text-white rounded-full font-medium tracking-wide hover:bg-[#a7843e] transition-all duration-300 cursor-pointer"
               >
-                Book You Event Now
+                Book Your Event Now
               </motion.button>
 
               <ThreeStepModal
