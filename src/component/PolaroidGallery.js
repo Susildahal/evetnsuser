@@ -15,7 +15,7 @@ const PolaroidGallery = () => {
 
     const photos = [
         {
-            src: "/assets/img/Event of OC/Birthday/Birthday Celebration 1.jpg",
+            src: "/assets/img/Event of OC/Birthday/Cake.jpg",
             caption: "BIRTHDAYS ARE SPECIAL",
             rotate: "-rotate-6",
         },

@@ -60,16 +60,15 @@ export default function HeroSection() {
                 <section className="relative w-full h-[45vh] sm:h-[85vh] overflow-hidden flex items-center justify-center">
                 
 
-                  <video
+               <video
                         className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] sm:h-[260px] md:h-full object-cover rounded-t-none rounded-b-[20px]"
-                        src="/video.mp4"
+                        src="/assets/videos/latest_banner.mp4"
                         autoPlay
                         playsInline
                         preload="auto"
                         muted
                         loop
                     />
-
 
                     {/* Overlay for better text visibility */}
                     <div className="absolute top-0 left-0 w-full h-full bg-black/30 rounded-t-none rounded-b-[20px]"></div>
