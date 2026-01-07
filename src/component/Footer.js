@@ -35,6 +35,33 @@ export const raleway = Raleway({
     display: "swap",
 });
 
+const url = [{
+    items:" Home ",
+    link:"/"
+} ,
+{
+    items:" About Us ",
+    link:"/about"
+},
+{
+    items:" Gallery ",
+    link:"/gallery"
+},
+{
+    items:" FAQs ",
+    link:"/faq"
+}
+];
+const urls = [{
+    items:" Terms & Conditions ",
+    link:"/terms-and-conditions"
+} ,
+{
+    items:" Privacy Policy ",
+    link:"/privacy-policy"
+},
+
+];
 const Footer = () => {
     const dispatch = useDispatch();
     const { settings, status, error } = useSelector((state) => state.settings);
@@ -134,16 +161,16 @@ const Footer = () => {
                         QUICK LINKS
                     </h3>
                     <ul className={`space-y-2 text-[#b9b9b9] ${raleway.className}`}>
-                        {["Home", "About", "Gallery", "FAQs"].map((item, idx) => (
-                            <li key={idx}>
+                        {url.map((item, idx) => (
+                            <li key={item.link || idx}>
                                 <Link
-                                    href={`/${item === "Home" ? "" : item.toLowerCase().replace(/\s+/g, "-")}`}
+                                    href={item.link || '/'}
                                     className="text-[16px] relative hover:text-[#D7B26A] transition duration-300 
                   after:content-[''] after:absolute after:left-0 after:-bottom-[2px] 
                   after:w-0 after:h-[1px] after:bg-[#D7B26A] after:transition-all after:duration-300 
                   hover:after:w-full"
                                 >
-                                    {item}
+                                    {String(item.items).trim()}
                                 </Link>
                             </li>
                         ))}
@@ -178,16 +205,16 @@ const Footer = () => {
                         TERMS & POLICIES
                     </h3>
                     <ul className={`space-y-2 text-[#b9b9b9] ${raleway.className}`}>
-                        {["Terms & Conditions", "Privacy Policy"].map((policy, idx) => (
-                            <li key={idx}>
+                        {urls.map((policy, idx) => (
+                            <li key={policy.link || idx}>
                                 <Link
-                                    href={`/terms-and-conditions`}
+                                    href={policy.link || '/'}
                                     className="text-[16px] relative hover:text-[#D7B26A] transition duration-300 
                   after:content-[''] after:absolute after:left-0 after:-bottom-[2px] 
                   after:w-0 after:h-[1px] after:bg-[#D7B26A] after:transition-all after:duration-300 
                   hover:after:w-full"
                                 >
-                                    {policy}
+                                    {String(policy.items).trim()}
                                 </Link>
                             </li>
                         ))}

@@ -39,12 +39,12 @@ const Page = () => {
             {/* Main Content */}
             <main className="flex-grow px-6 md:px-16 lg:px-32 py-12">
                 <h1 className={`text-3xl md:text-4xl font-bold text-[#D7B26A] mb-6 ${cinzel.className}`}>
-                    Terms & Conditions
+                    Privacy Policy
                 </h1>
 
                 <div className={`space-y-6 text-sm md:text-base leading-relaxed text-gray-300 ${montserrat.className}`}>
                     <p>
-                        These Terms and Conditions (“Terms”) apply to all services provided
+                        This Privacy Policy  applies to all services provided
                         by <span className="text-[#D7B26A]">Events of The Century</span>
                         {" "} (we, us, or our). By booking our services, the client (you)
                         agrees to the following:
@@ -120,12 +120,12 @@ const Page = () => {
 
                     <section>
                         <h2 className="text-xl font-semibold text-[#D7B26A] mb-2">
-                            Acceptance of Terms
+                            Acceptance of Privacy
                         </h2>
                         <p>
                             By confirming your booking and paying the deposit, you acknowledge
-                            that you have read, understood, and agree to these Terms &
-                            Conditions.
+                            that you have read, understood, and agree to this Privacy
+                            policy.
                         </p>
                     </section>
                 </div>
