@@ -38,7 +38,7 @@ const beachIdeas = [
     id: "beach",
     label: "Lead capture",
     icon: "FaChartLine",
-    image: "/assets/img/content_image/beach.jpg",
+    image: "/assets/img/Event of OC/Music/Concert.jpg",
   },
 ];
 

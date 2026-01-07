@@ -38,7 +38,7 @@ const beachIdeas = [
     id: "beach",
     label: "Hybrid brand",
     icon: "FaLaptop",
-    image: "/assets/img/content_image/beach.jpg",
+    image: "/assets/img/content_image/service_three.jpg",
   },
 ];
 

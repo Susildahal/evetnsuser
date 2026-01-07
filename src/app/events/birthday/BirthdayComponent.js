@@ -20,13 +20,13 @@ const birthdayIdeas = [
     id: "golden",
     label: "Golden Hour Rooftop",
     icon: "FaSun",
-    image: "/assets/img/Birthday/birthday.webp",
+    image: "/assets/img/birthday/birthday.webp",
   },
   {
     id: "villa",
     label: "Private Villa Dinner",
     icon: "FaUtensils",
-    image: "/assets/img/Birthday/birthday1.jpg",
+    image: "/assets/img/birthday/birthday1.jpg",
   },
   {
     id: "lounge",
