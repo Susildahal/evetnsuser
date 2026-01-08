@@ -256,7 +256,7 @@ const Footer = () => {
 
             {/* Copyright */}
             <div className={`${raleway.className} text-center text-[#b9b9b9] text-[14px] sm:text-[16px] px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32 2xl:px-40`}>
-                2025 Copyright © <span className="text-[#D7B26A]">EventsOC</span> - Events of the Century. Crafted by{" "}
+                {new Date().getFullYear()} Copyright © <span className="text-[#D7B26A]">EventsOC</span> - Events of the Century. Crafted by{" "}
                 <Link href="https://murphystechnology.com/" className="text-[#D7B26A]">Murphys Technology</Link>
             </div>
         </footer>

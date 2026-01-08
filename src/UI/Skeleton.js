@@ -2,6 +2,7 @@ import React from "react";
 
 function Skeleton() {
   return (
+    <div className=" flex justify-center items-center h-screen">
     <div role="status" className="animate-pulse">
       <div className="space-y-8 md:flex md:items-center md:space-y-0 md:space-x-8 rtl:space-x-reverse">
         
@@ -35,6 +36,7 @@ function Skeleton() {
       </div>
 
       <span className="sr-only">Loading...</span>
+    </div>
     </div>
   );
 }

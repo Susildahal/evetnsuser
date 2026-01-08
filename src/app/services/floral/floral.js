@@ -9,6 +9,7 @@ import Banner from "@/component/Banner";
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
 import axiosInstance from "@/config/axios";
+import Skeleton from "@/UI/Skeleton";
 
 import { FaSeedling, FaLeaf, FaCamera, FaGift, FaSun, FaRecycle, FaWater } from "react-icons/fa";
 
@@ -64,9 +65,11 @@ const customAddons = [
 const VenueSourcingComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = React.useState({});
+    const [loading, setLoading] = React.useState(true);
     
     const fetchData = async () => {
         try {
+            setLoading(true);
             const response = await axiosInstance.get('/servicedashboard', {
                 params: {
                     servicename: 'floral'
@@ -77,12 +80,18 @@ const VenueSourcingComponent = () => {
         }
         catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     React.useEffect(() => {
         fetchData();
     }, []);
+
+    if (loading) {
+        return <Skeleton />;
+    }
 
     return (
         <>

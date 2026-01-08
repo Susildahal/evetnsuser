@@ -15,11 +15,10 @@ import {
   Building2,
   Sun,
   Home,
-  GlassWater,
-  Ship, Car, Hotel, ShieldCheck, MapPin, Users, UtensilsCrossed, Headphones, Sparkles, Flower2, Camera
 } from "lucide-react";
 
 import { FaBirthdayCake, FaWineGlassAlt, FaCoffee, FaIceCream, FaGlassWhiskey } from "react-icons/fa";
+
 
 
 // Replace with your actual asset
@@ -65,8 +64,10 @@ const customAddons = [
 const VenueSourcingComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get('/servicedashboard', {    
         params: {
           servicename: 'catering'
@@ -77,12 +78,18 @@ const VenueSourcingComponent = () => {
     }
     catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Skeleton />;
+  }
   return (
     <>
       {/* HERO SECTION */}

@@ -61,8 +61,10 @@ const customAddons = [
 const VenueSourcingComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
   const fetchData = async () => {
-    try { 
+    try {
+      setLoading(true);
       const response = await axiosInstance.get('/servicedashboard' , { 
         params: {
           servicename: 'venue'
@@ -73,12 +75,18 @@ const VenueSourcingComponent = () => {
     }
     catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Skeleton />;
+  }
 
   return (
     <>

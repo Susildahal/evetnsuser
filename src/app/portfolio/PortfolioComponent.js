@@ -11,6 +11,7 @@ import ThreeStepModal from "../../component/Modal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/config/axios";
+import Skeleton from "@/UI/Skeleton";
 
 
 
@@ -56,6 +57,7 @@ const PortfolioFlipGrid = () => {
   const [portfolioPreviews, setPortfolioPreviews] = useState({});
   const [loadingImages, setLoadingImages] = useState({});
   const [loadingPreviews, setLoadingPreviews] = useState({});
+  const [loadingPortfolio, setLoadingPortfolio] = useState(true);
   const [reviewForm, setReviewForm] = useState({});
   const [submittingReview, setSubmittingReview] = useState({});
   const [response, setResponse] = useState(null);
@@ -64,6 +66,7 @@ const PortfolioFlipGrid = () => {
   const [portfolioHasImages, setPortfolioHasImages] = useState({});
   const fetchPortfolioitems = async (page = 1) => {
     try {
+      setLoadingPortfolio(true);
       const res = await axiosInstance.get("/portfolio", {
         params: {
           status: true,
@@ -78,6 +81,8 @@ const PortfolioFlipGrid = () => {
       setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching portfolio items:", error);
+    } finally {
+      setLoadingPortfolio(false);
     }
   };
 
@@ -239,6 +244,10 @@ const PortfolioFlipGrid = () => {
 
   const toggleFlip = (index) =>
     setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
+
+  if (loadingPortfolio) {
+    return <Skeleton />;
+  }
 
   return (
     <div className="mt-20 container mx-auto px-6 py-[60px]">

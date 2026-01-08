@@ -6,7 +6,7 @@ import VenueStyles from "@/component/Venue/Venue-style";
 import AddonsSection from "@/component/Venue/Addon";
 import TimelineSection from "@/component/Venue/Timeline";
 import Banner from "@/component/Banner";
-
+import Skeleton from "@/UI/Skeleton";
 import ThreeStepModal from "../../../component/Modal";
 import { useState } from "react";
 import axiosInstance from "@/config/axios";
@@ -63,9 +63,11 @@ const customAddons = [
 const VenueSourcingComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = React.useState({});
+    const [loading, setLoading] = React.useState(true);
     
     const fetchData = async () => {
         try {
+            setLoading(true);
             const response = await axiosInstance.get('/servicedashboard', {
                 params: {
                     servicename: 'Style & Design'
@@ -76,12 +78,18 @@ const VenueSourcingComponent = () => {
         }
         catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     React.useEffect(() => {
         fetchData();
     }, []);
+
+    if (loading) {
+        return <Skeleton />;
+    }
 
     return (
         <>
